@@ -93,7 +93,7 @@ Tim beranggotakan enam pengembang dengan pembagian tugas independen berbasis mod
 | :---: | :--- | :---: | :--- | :--- | :--- |
 | 1 | **Ghalib Safaraz Harimurti** | `102022430041` | Scrum Master, PM & Auth | **PBI-01**: Halaman Informasi Statis<br>**PBI-02**: Glosarium Istilah KBG<br>**PBI-03**: Pengumuman Publik | `halaman_informasi`<br>`glosarium_kbg`<br>`pengumuman` |
 | 2 | **Glen Vian Agus Cahya Tarigan** | `102022400308` | Backend Dev - Kasus | **PBI-04**: Status & Penugasan Kasus<br>**PBI-05**: Kegiatan/Webinar Edukasi<br>**PBI-06**: Log Penanganan Kasus | `status_kasus`, `penanganan_kasus`<br>`kegiatan_edukasi`, `pendaftaran_kegiatan`<br>`log_penanganan` |
-| 3 | **Muhammad Haqi Aqilla** | `102022400092` | Full-Stack Dev - Bantuan | **PBI-07**: Instansi Bantuan<br>**PBI-08**: Layanan & Kontak Bantuan<br>**PBI-09**: FAQ / Pusat Bantuan | `instansi_bantuan`<br>`layanan_bantuan`, `kontak_bantuan`<br>`faq` |
+| 3 | **Muhammad Haqi Aqilla** | `102022400092` | Full-Stack Dev - Bantuan & Dashboard | **PBI-07**: Instansi Bantuan<br>**PBI-08**: Layanan & Kontak Bantuan<br>**PBI-09**: FAQ / Pusat Bantuan | `instansi_bantuan`<br>`layanan_bantuan`, `kontak_bantuan`<br>`faq` |
 | 4 | **Niky Setiawan** | `102022400155` | Frontend/Content Dev | **PBI-10**: Artikel Edukasi<br>**PBI-11**: Kategori Artikel<br>**PBI-12**: Feedback Artikel | `artikel`<br>`kategori_artikel`<br>`feedback_artikel` |
 | 5 | **Altaf Maulana** | `102022400049` | Full-Stack Dev - Konseling | **PBI-13**: Data Konselor/Psikolog<br>**PBI-14**: Jadwal Konseling<br>**PBI-15**: Sesi Konseling | `konselor`<br>`jadwal_konseling`<br>`sesi_konseling` |
 | 6 | **Fauzi Abdurrahman Musyaffa** | `102022400078` | Backend Dev - Pelaporan | **PBI-16**: Laporan Kasus & Lampiran Bukti<br>**PBI-17**: Profil Pelapor & Mode Anonim<br>**PBI-18**: Notifikasi Sistem | `laporan_kasus`, `lampiran_laporan`<br>`profil_pelapor`<br>`notifikasi` |
@@ -216,6 +216,8 @@ Untuk mencegah konflik merge antar enam anggota:
 - [Arsitektur Sistem & Workflow Persetujuan (docs/architecture/)](docs/architecture/system-architecture.md)
 - [Kamus Data & Skema ERD 26 Tabel (docs/database/)](docs/database/data-dictionary.md)
 - [Detail Pembagian PBI & Jadwal Sprint (docs/sprints/)](docs/sprints/sprint-backlog.md)
+- [Artefak Desain: Use Case, ERD, Class Diagram & Mockup (docs/design/)](docs/design/index.md)
+- [Catatan Deviasi & Keputusan Skema (kamus data, Bagian 4)](docs/database/data-dictionary.md#4-catatan-deviasi-yang-disepakati)
 
 ---
 *Proyek ini dikembangkan untuk tujuan akademis dan sosial dalam pencegahan serta penanganan Kekerasan Berbasis Gender.*

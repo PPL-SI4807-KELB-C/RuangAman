@@ -61,8 +61,8 @@ Kami menerapkan modifikasi alur **Git Flow** yang disederhanakan:
 
 4. **Jalankan pengujian dan formatting lokal**:
    ```bash
-   # Jalankan linter dan PHPUnit
-   ./vendor/bin/pest  # atau php artisan test
+   # Jalankan pengujian dan kompilasi asset
+   php artisan test
    npm run build
    ```
 

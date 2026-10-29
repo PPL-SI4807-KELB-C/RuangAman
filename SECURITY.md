@@ -26,8 +26,8 @@ Keamanan informasi dan kerahasiaan data korban/pelapor merupakan pilar fundament
    - Halaman pelacakan publik tanpa login hanya menampilkan status saat ini (`Pending`, `Proses`, `Selesai`, `Ditolak`) dan timestamp pembaruan terakhir. Halaman ini **tidak pernah menampilkan** kronologi kasus, identitas pelapor, bukti lampiran, maupun catatan internal penanganan.
 
 5. **Tombol Keluar Cepat (*Quick Exit*)**:
-   - Diimplementasikan di setiap halaman antarmuka.
-   - Ketika ditekan atau pintasan darurat keyboard diaktifkan (tombol `Esc` ganda), sistem seketika mengalihkan browser pengguna ke situs netral (seperti Google Search atau Berita Umum) dan menghapus jejak session tab sensitif.
+   - Diimplementasikan di setiap halaman antarmuka; dipicu dengan satu klik atau menekan `Esc` dua kali dalam 1,2 detik.
+   - Sistem menghapus data sensitif tab (`sessionStorage`), mengirim `POST /logout` bersama token CSRF sehingga **sesi di server berakhir**, lalu mengalihkan browser ke situs netral (seperti Google Search atau Berita Umum) menggunakan `location.replace` agar tombol *Back* tidak kembali ke halaman kasus.
 
 6. **Pencatatan Audit Trail (Log Penanganan Kasus)**:
    - Setiap perubahan status, penugasan konselor, dan verifikasi admin dicatat dalam tabel `log_penanganan` yang terkunci (*immutable*) dari pengubahan atau penghapusan manual.

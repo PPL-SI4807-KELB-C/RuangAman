@@ -17,6 +17,7 @@ yarn-error.log
 .vscode
 *.sublime-project
 *.sublime-workspace
+.phpunit.result.cache
 .DS_Store
 Thumbs.db
 

@@ -67,8 +67,10 @@ Sesuai rancangan proposal:
   4. Konselor melakukan pendampingan dan mencatat hasil hingga penanganan tuntas (`Selesai`).
   5. Setiap perubahan status menulis ke tiga entitas sekaligus secara atomik (*Database Transaction*):
      - Memperbarui `status_id` di `laporan_kasus`.
-     - Memperbarui catatan di `penanganan_kasus`.
+     - Memperbarui `penanganan_kasus` (petugas, tanggal mulai, tanggal selesai, atau catatan tindak lanjut).
      - Menulis catatan audit permanen di `log_penanganan` yang terkunci dari penghapusan (*immutable*).
+  6. Hanya transisi pada Tabel 4.4.1 yang diterima; selain itu service melempar `InvalidArgumentException`. Penolakan laporan mewajibkan alasan, dan `Pending -> Proses` mewajibkan petugas aktif.
+  7. Baris `log_penanganan` selalu menyimpan `laporan_id`. Kolom `penanganan_id` boleh `NULL` untuk laporan yang ditolak sebelum pernah ditugaskan, sehingga audit penolakan tetap utuh tanpa membuat data penugasan palsu.
 
 ### B. Isolasi Berkas Bukti Sensitif (*Private Storage*)
 - Bukti lampiran laporan kasus KBG (foto luka, tangkapan layar chat, dokumen medis) adalah data sangat sensitif.
@@ -89,7 +91,12 @@ Sesuai rancangan proposal:
   - Alamat email pengguna tidak pernah di-query atau dirender di halaman manapun di luar profil akun pribadi pelapor.
 
 ### D. Fitur Tombol "Keluar Cepat" (*Quick Exit*)
-- Tombol permanen di navbar/header aplikasi.
-- Saat diklik (atau menekan tombol `Esc` ganda):
-  - Browser seketika me-redirect URL ke halaman umum yang aman (contoh: `https://www.google.com`).
-  - History session lokal dan cached tab dibersihkan untuk melindungi keselamatan fisik penyintas jika pelaku mendekat secara tiba-tiba.
+- Tombol permanen di navbar/header aplikasi, dapat dipicu dengan satu klik atau menekan `Esc` **dua kali** dalam 1,2 detik (mencegah Esc tak sengaja saat menutup modal).
+- Urutan eksekusi:
+  1. `sessionStorage.clear()` menghapus jejak data sensitif di tab.
+  2. `POST /logout` dengan token CSRF agar **sesi di server benar-benar berakhir**.
+  3. `window.location.replace()` ke halaman umum yang aman (contoh: `https://www.google.com`), sehingga tombol *Back* tidak kembali ke halaman kasus.
+- Layout wajib memuat `<meta name="csrf-token" content="{{ csrf_token() }}">` agar langkah 2 dapat dijalankan.
+
+### E. Konsekuensi Penamaan Skema
+Primary key mengikuti Tabel 4.3.1 (`laporan_id`, `halaman_id`, dst.), sehingga setiap model Eloquent wajib mendeklarasikan `protected $primaryKey`; model `User` juga meng-override `getAuthPassword()` agar membaca `password_hash`. Daftar keputusan lengkap ada di [kamus data, Bagian 4](../database/data-dictionary.md#4-catatan-deviasi-yang-disepakati).
