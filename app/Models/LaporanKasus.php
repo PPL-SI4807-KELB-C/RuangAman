@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class LaporanKasus extends Model
 {
@@ -46,5 +47,10 @@ class LaporanKasus extends Model
     public function lampiran(): HasMany
     {
         return $this->hasMany(LampiranLaporan::class, 'laporan_id', 'laporan_id');
+    }
+
+    public function penangananKasus(): HasOne
+    {
+        return $this->hasOne(PenangananKasus::class, 'laporan_id', 'laporan_id');
     }
 }

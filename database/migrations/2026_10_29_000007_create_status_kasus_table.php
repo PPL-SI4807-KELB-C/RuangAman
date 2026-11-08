@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('status_kasus', function (Blueprint $table) {
             $table->bigIncrements('status_id');
             $table->string('nama_status', 50)->unique();
-            $table->string('deskripsi', 255)->nullable();
+            $table->text('deskripsi')->nullable();
             $table->timestamps();
         });
     }
