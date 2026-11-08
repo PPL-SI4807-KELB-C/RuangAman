@@ -11,14 +11,14 @@
 
         <form method="POST" action="{{ route('laporan.store') }}" enctype="multipart/form-data"
               x-data="{
-                  step: {{ old('step', 1) }},
+                  step: Number({{ old('step', 1) }}),
                   mode_anonim: {{ old('mode_anonim', true) ? 'true' : 'false' }},
-                  judul: @json(old('judul')),
-                  kategori: @json(old('kategori_kekerasan')),
-                  waktu: @json(old('waktu_kejadian')),
-                  lokasi: @json(old('lokasi_kejadian')),
-                  urgensi: @json(old('tingkat_urgensi')),
-                  kronologi: @json(old('kronologi')),
+                  judul: @json(old('judul') ?? ''),
+                  kategori: @json(old('kategori_kekerasan') ?? ''),
+                  waktu: @json(old('waktu_kejadian') ?? ''),
+                  lokasi: @json(old('lokasi_kejadian') ?? ''),
+                  urgensi: @json(old('tingkat_urgensi') ?? ''),
+                  kronologi: @json(old('kronologi') ?? ''),
               }">
             @csrf
             <input type="hidden" name="step" :value="step">
@@ -31,29 +31,29 @@
                             <div class="flex flex-col items-center text-center">
                                 <div class="flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold transition"
                                      :class="{
-                                         'bg-brand-600 text-white': step > {{ $stepNumber }},
-                                         'bg-brand-100 text-brand-700 ring-2 ring-brand-600': step === {{ $stepNumber }},
-                                         'bg-slate-100 text-slate-500': step < {{ $stepNumber }}
+                                         'bg-brand-600 text-white': Number(step) > {{ $stepNumber }},
+                                         'bg-brand-100 text-brand-700 ring-2 ring-brand-600': Number(step) == {{ $stepNumber }},
+                                         'bg-slate-100 text-slate-500': Number(step) < {{ $stepNumber }}
                                      }">
-                                    <template x-if="step > {{ $stepNumber }}">
+                                    <template x-if="Number(step) > {{ $stepNumber }}">
                                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
                                         </svg>
                                     </template>
-                                    <span x-show="step <= {{ $stepNumber }}">{{ $stepNumber }}</span>
+                                    <span x-show="Number(step) <= {{ $stepNumber }}">{{ $stepNumber }}</span>
                                 </div>
                                 <span class="mt-1.5 text-xs font-medium transition"
                                       :class="{
-                                          'text-brand-700': step === {{ $stepNumber }},
-                                          'text-slate-700': step > {{ $stepNumber }},
-                                          'text-slate-500': step < {{ $stepNumber }}
+                                          'text-brand-700 font-bold': Number(step) == {{ $stepNumber }},
+                                          'text-slate-700': Number(step) > {{ $stepNumber }},
+                                          'text-slate-500': Number(step) < {{ $stepNumber }}
                                       }">
                                     {{ $label }}
                                 </span>
                             </div>
                             @if (! $loop->last)
                                 <div class="absolute left-1/2 top-4 hidden h-0.5 w-[calc(100%-1rem)] -translate-y-1/2 sm:block transition"
-                                     :class="step > {{ $stepNumber }} ? 'bg-brand-600' : 'bg-slate-200'"></div>
+                                     :class="Number(step) > {{ $stepNumber }} ? 'bg-brand-600' : 'bg-slate-200'"></div>
                             @endif
                         </li>
                     @endforeach
@@ -61,7 +61,7 @@
             </nav>
 
             {{-- Langkah 1 --}}
-            <div x-show="step === 1" x-transition>
+            <div x-show="Number(step) == 1" x-transition>
                 <x-card>
                     <h2 class="text-lg font-semibold text-slate-900">Identitas Pelapor</h2>
                     <p class="text-sm text-slate-600">Gunakan alias untuk melindungi identitas Anda.</p>
@@ -87,7 +87,7 @@
             </div>
 
             {{-- Langkah 2 --}}
-            <div x-show="step === 2" x-transition x-cloak>
+            <div x-show="Number(step) == 2" x-transition x-cloak>
                 <x-card>
                     <h2 class="text-lg font-semibold text-slate-900">Detail Kejadian</h2>
                     <p class="text-sm text-slate-600">Ceritakan apa yang terjadi secara ringkas.</p>
@@ -114,7 +114,7 @@
             </div>
 
             {{-- Langkah 3 --}}
-            <div x-show="step === 3" x-transition x-cloak>
+            <div x-show="Number(step) == 3" x-transition x-cloak>
                 <x-card>
                     <h2 class="text-lg font-semibold text-slate-900">Kronologi & Bukti</h2>
                     <p class="text-sm text-slate-600">Jelaskan kronologi secara lengkap. Lampiran bersifat opsional.</p>
@@ -139,7 +139,7 @@
             </div>
 
             {{-- Langkah 4 --}}
-            <div x-show="step === 4" x-transition x-cloak>
+            <div x-show="Number(step) == 4" x-transition x-cloak>
                 <x-card>
                     <h2 class="text-lg font-semibold text-slate-900">Konfirmasi Laporan</h2>
                     <p class="text-sm text-slate-600">Periksa ringkasan sebelum mengirim.</p>
@@ -159,7 +159,7 @@
                         </div>
                         <div class="flex justify-between border-b border-slate-200 pb-2">
                             <span class="text-slate-500">Waktu</span>
-                            <span class="font-medium text-slate-900" x-text="waktu ? new Date(waktu).toLocaleString('id-ID') : '-'"></span>
+                            <span class="font-medium text-slate-900" x-text="waktu ? (new Date(waktu).toString() !== 'Invalid Date' ? new Date(waktu).toLocaleString('id-ID') : waktu) : '-'"></span>
                         </div>
                         <div class="flex justify-between border-b border-slate-200 pb-2">
                             <span class="text-slate-500">Lokasi</span>

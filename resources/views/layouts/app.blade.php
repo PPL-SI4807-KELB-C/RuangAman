@@ -16,6 +16,7 @@
     </a>
 
     <x-quick-exit />
+    <x-confirm-modal />
 
     <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
@@ -33,6 +34,22 @@
                 <a href="{{ route('lacak.form') }}" class="hover:text-brand-700">Pelacakan</a>
                 <a href="#" class="hover:text-brand-700">Edukasi</a>
                 <a href="#" class="hover:text-brand-700">Bantuan</a>
+
+                @can('admin-kasus')
+                    <div class="h-4 w-px bg-slate-300"></div>
+                    <a href="{{ route('admin.status-kasus.index') }}" class="inline-flex items-center gap-1 font-semibold text-brand-700 hover:text-brand-800 {{ request()->routeIs('admin.status-kasus.*') ? 'text-brand-800 underline underline-offset-4' : '' }}">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                        <span>Status Kasus</span>
+                    </a>
+                    <a href="{{ route('admin.penanganan-kasus.index') }}" class="inline-flex items-center gap-1 font-semibold text-brand-700 hover:text-brand-800 {{ request()->routeIs('admin.penanganan-kasus.*') ? 'text-brand-800 underline underline-offset-4' : '' }}">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <span>Penugasan Kasus</span>
+                    </a>
+                @endcan
             </nav>
 
             <div class="hidden items-center gap-3 md:flex">
@@ -63,6 +80,14 @@
                 <a href="{{ route('lacak.form') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Pelacakan</a>
                 <a href="#" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Edukasi</a>
                 <a href="#" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Bantuan</a>
+
+                @can('admin-kasus')
+                    <div class="border-t border-slate-100 pt-2 mt-2">
+                        <div class="px-3 py-1 text-xs font-semibold text-slate-400 uppercase tracking-wider">Admin Kasus</div>
+                        <a href="{{ route('admin.status-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Status Kasus</a>
+                        <a href="{{ route('admin.penanganan-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Penugasan Kasus</a>
+                    </div>
+                @endcan
                 @auth
                     <form method="POST" action="{{ route('logout') }}" class="border-t border-slate-100 pt-2">
                         @csrf

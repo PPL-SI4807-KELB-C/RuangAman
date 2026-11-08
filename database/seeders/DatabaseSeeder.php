@@ -148,12 +148,7 @@ class DatabaseSeeder extends Seeder
 
     private function seedStatusKasus(): void
     {
-        foreach (self::STATUS_KASUS as $namaStatus => $keterangan) {
-            DB::table('status_kasus')->updateOrInsert(
-                ['nama_status' => $namaStatus],
-                ['deskripsi' => $keterangan, 'created_at' => now(), 'updated_at' => now()]
-            );
-        }
+        $this->call(StatusKasusSeeder::class);
     }
 
     private function seedKategoriArtikel(): void
