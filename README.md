@@ -143,20 +143,33 @@ Basis data RuangAman dirancang dengan prinsip **independensi modul**: *setiap PB
 - PHP >= 8.3 (dengan ekstensi `pdo_mysql`, `mbstring`, `openssl`, `tokenizer`, `xml`, `ctype`, `curl`, `fileinfo`)
 - Composer >= 2.x
 - Node.js >= 20.x & NPM
-- MySQL >= 8.0
+- TiDB Cloud (Sudah disetup dan tersambung terpusat, sertifikat SSL `cacert.pem` sudah tersedia di root repository)
 
 ### Langkah Instalasi
-1. **Clone Repository**:
+1. **Clone Repository & Checkout Branch**:
    ```bash
    git clone https://github.com/<org-name>/RuangAman.git
    cd RuangAman
+   git checkout develop
    ```
 
-2. **Setup File Environment**:
+2. **Setup File Environment (.env)**:
+   Salin `.env.example` ke `.env`:
    ```bash
    copy .env.example .env
    ```
-   Sesuaikan konfigurasi database (`DB_DATABASE=ruangaman`, `DB_USERNAME`, `DB_PASSWORD`) dan driver email di `.env`.
+   Isi konfigurasi database dengan kredensial TiDB Cloud (yang telah dibagikan di grup WhatsApp):
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=gateway01.ap-southeast-1.prod.aws.tidbcloud.com
+   DB_PORT=4000
+   DB_DATABASE=ruangaman
+   DB_USERNAME=n5FPq1gszYzvgNw.root
+   DB_PASSWORD=<ISI_PASSWORD_DARI_GRUP_WA>
+   MYSQL_ATTR_SSL_CA=cacert.pem
+   ```
+   > [!IMPORTANT]
+   > Berkas sertifikat SSL `cacert.pem` sudah tersedia di root repository. Pastikan baris `MYSQL_ATTR_SSL_CA=cacert.pem` ada di `.env` agar koneksi TLS/SSL ke TiDB Cloud berhasil.
 
 3. **Install Dependensi Backend & Frontend**:
    ```bash
@@ -169,25 +182,37 @@ Basis data RuangAman dirancang dengan prinsip **independensi modul**: *setiap PB
    php artisan key:generate
    ```
 
-5. **Migrasi Database & Seeding Data Awal**:
+5. **Sinkronisasi Database**:
+   > [!WARNING]
+   > **JANGAN jalankan `php artisan migrate:fresh`!** TiDB Cloud merupakan shared database yang dipakai bersama oleh seluruh anggota tim. Menjalankan `fresh` akan menghapus data tabel rekan lain.
+   > 
+   > Cukup jalankan migrasi biasa jika ada tabel/migrasi baru:
    ```bash
-   php artisan migrate --seed
+   php artisan migrate
    ```
-   *Seeder akan membuat akun default untuk Admin Kasus, Konselor, dan Pelapor contoh beserta data referensi awal.*
 
-6. **Tautkan Storage Berkas**:
+6. **Akun Pengujian Default**:
+   Database TiDB Cloud sudah dilengkapi akun default untuk keperluan testing dan demo:
+   - **Admin Kasus**: `admin@ruangaman.test` (Password: `password`)
+   - **Konselor**: `konselor@ruangaman.test` (Password: `password`)
+   - **Pelapor**: `pelapor@ruangaman.test` (Password: `password`)
+
+7. **Tautkan Storage Berkas**:
    ```bash
    php artisan storage:link
    ```
 
-7. **Jalankan Aplikasi**:
-   Jalankan server aplikasi di satu terminal:
+8. **Build / Jalankan Asset Frontend**:
+   Jalankan kompilasi Vite:
+   ```bash
+   npm run build
+   # atau untuk mode development (hot reload):
+   npm run dev
+   ```
+
+9. **Jalankan Server Lokal**:
    ```bash
    php artisan serve
-   ```
-   Dan jalankan kompilasi asset frontend di terminal lainnya:
-   ```bash
-   npm run dev
    ```
    Buka browser di `http://127.0.0.1:8000`.
 

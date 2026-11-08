@@ -60,7 +60,9 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA')
+                    ? (file_exists(env('MYSQL_ATTR_SSL_CA')) ? env('MYSQL_ATTR_SSL_CA') : base_path(env('MYSQL_ATTR_SSL_CA')))
+                    : (file_exists(base_path('cacert.pem')) ? base_path('cacert.pem') : null),
             ]) : [],
         ],
 
@@ -80,7 +82,9 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA')
+                    ? (file_exists(env('MYSQL_ATTR_SSL_CA')) ? env('MYSQL_ATTR_SSL_CA') : base_path(env('MYSQL_ATTR_SSL_CA')))
+                    : (file_exists(base_path('cacert.pem')) ? base_path('cacert.pem') : null),
             ]) : [],
         ],
 

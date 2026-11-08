@@ -59,4 +59,49 @@ class User extends Authenticatable
     {
         return $this->hasMany(LaporanKasus::class, 'user_id', 'user_id');
     }
+
+    public function penangananKasus(): HasMany
+    {
+        return $this->hasMany(PenangananKasus::class, 'petugas_id', 'user_id');
+    }
+
+    /**
+     * Memeriksa apakah user memiliki role tertentu.
+     *
+     * @param string|array<string> $roles
+     */
+    public function hasRole(string|array $roles): bool
+    {
+        $roleName = $this->role?->nama_role;
+
+        if (! $roleName) {
+            return false;
+        }
+
+        if (is_array($roles)) {
+            return in_array($roleName, $roles, true);
+        }
+
+        return $roleName === $roles;
+    }
+
+    /**
+     * Memeriksa apakah user adalah Admin Kasus.
+     */
+    public function isAdminKasus(): bool
+    {
+        return $this->hasRole('Admin Kasus');
+    }
+
+    /**
+     * Memeriksa apakah user memiliki permission tertentu melalui role miliknya.
+     */
+    public function hasPermission(string $permission): bool
+    {
+        if ($this->isAdminKasus()) {
+            return true;
+        }
+
+        return $this->role?->permissions->contains('nama_permission', $permission) ?? false;
+    }
 }
