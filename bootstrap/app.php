@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'admin.kasus' => \App\Http\Middleware\EnsureAdminKasus::class,
+            'pelapor' => \App\Http\Middleware\EnsurePelapor::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

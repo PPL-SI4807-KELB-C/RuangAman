@@ -32,8 +32,14 @@
                 <a href="{{ url('/') }}" class="hover:text-brand-700">Beranda</a>
                 <a href="{{ route('laporan.create') }}" class="hover:text-brand-700">Pelaporan</a>
                 <a href="{{ route('lacak.form') }}" class="hover:text-brand-700">Pelacakan</a>
-                <a href="#" class="hover:text-brand-700">Edukasi</a>
+                <a href="{{ route('kegiatan.index') }}" class="hover:text-brand-700 {{ request()->routeIs('kegiatan.*') ? 'text-brand-700 font-semibold' : '' }}">Edukasi</a>
                 <a href="#" class="hover:text-brand-700">Bantuan</a>
+
+                @auth
+                    @if (Auth::user()->isPelapor())
+                        <a href="{{ route('pendaftaran-kegiatan.index') }}" class="hover:text-brand-700 {{ request()->routeIs('pendaftaran-kegiatan.*') ? 'text-brand-700 font-semibold underline underline-offset-4' : '' }}">Pendaftaran Saya</a>
+                    @endif
+                @endauth
 
                 @can('admin-kasus')
                     <div class="h-4 w-px bg-slate-300"></div>
@@ -48,6 +54,12 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
                         <span>Penugasan Kasus</span>
+                    </a>
+                    <a href="{{ route('admin.kegiatan-edukasi.index') }}" class="inline-flex items-center gap-1 font-semibold text-brand-700 hover:text-brand-800 {{ request()->routeIs('admin.kegiatan-edukasi.*') ? 'text-brand-800 underline underline-offset-4' : '' }}">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <span>Kegiatan Edukasi</span>
                     </a>
                 @endcan
             </nav>
@@ -78,14 +90,21 @@
                 <a href="{{ url('/') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Beranda</a>
                 <a href="{{ route('laporan.create') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Pelaporan</a>
                 <a href="{{ route('lacak.form') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Pelacakan</a>
-                <a href="#" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Edukasi</a>
+                <a href="{{ route('kegiatan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Edukasi</a>
                 <a href="#" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Bantuan</a>
+
+                @auth
+                    @if (Auth::user()->isPelapor())
+                        <a href="{{ route('pendaftaran-kegiatan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Pendaftaran Saya</a>
+                    @endif
+                @endauth
 
                 @can('admin-kasus')
                     <div class="border-t border-slate-100 pt-2 mt-2">
                         <div class="px-3 py-1 text-xs font-semibold text-slate-400 uppercase tracking-wider">Admin Kasus</div>
                         <a href="{{ route('admin.status-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Status Kasus</a>
                         <a href="{{ route('admin.penanganan-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Penugasan Kasus</a>
+                        <a href="{{ route('admin.kegiatan-edukasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Kegiatan Edukasi</a>
                     </div>
                 @endcan
                 @auth

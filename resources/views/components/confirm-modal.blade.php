@@ -6,6 +6,7 @@
         message: 'Apakah Anda yakin ingin melanjutkan tindakan ini?',
         action: '',
         method: 'POST',
+        payload: {},
         confirmText: 'Konfirmasi',
         confirmVariant: 'danger',
         openModal(detail) {
@@ -13,6 +14,7 @@
             this.message = detail.message || 'Apakah Anda yakin?';
             this.action = detail.action || '';
             this.method = detail.method || 'POST';
+            this.payload = detail.payload || {};
             this.confirmText = detail.confirmText || 'Konfirmasi';
             this.confirmVariant = detail.confirmVariant || 'danger';
             this.isOpen = true;
@@ -61,8 +63,19 @@
             >
                 <div class="sm:flex sm:items-start gap-4">
                     <!-- Icon Peringatan -->
-                    <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0">
-                        <svg class="h-6 w-6 text-safety-rose" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <div
+                        class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full sm:mx-0"
+                        :class="confirmVariant === 'danger' ? 'bg-red-100' : 'bg-brand-100'"
+                    >
+                        <svg
+                            class="h-6 w-6"
+                            :class="confirmVariant === 'danger' ? 'text-safety-rose' : 'text-brand-700'"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="2"
+                            stroke="currentColor"
+                            aria-hidden="true"
+                        >
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                         </svg>
                     </div>
@@ -80,6 +93,9 @@
                 <form :action="action" method="POST" x-ref="confirmForm" class="hidden">
                     @csrf
                     <input type="hidden" name="_method" :value="method">
+                    <template x-for="[key, val] in Object.entries(payload || {})" :key="key">
+                        <input type="hidden" :name="key" :value="val">
+                    </template>
                 </form>
 
                 <!-- Tombol Aksi Modal -->
