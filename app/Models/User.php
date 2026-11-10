@@ -65,6 +65,11 @@ class User extends Authenticatable
         return $this->hasMany(PenangananKasus::class, 'petugas_id', 'user_id');
     }
 
+    public function pendaftaranKegiatan(): HasMany
+    {
+        return $this->hasMany(PendaftaranKegiatan::class, 'user_id', 'user_id');
+    }
+
     /**
      * Memeriksa apakah user memiliki role tertentu.
      *
@@ -91,6 +96,14 @@ class User extends Authenticatable
     public function isAdminKasus(): bool
     {
         return $this->hasRole('Admin Kasus');
+    }
+
+    /**
+     * Memeriksa apakah user adalah Pelapor.
+     */
+    public function isPelapor(): bool
+    {
+        return $this->hasRole('Pelapor');
     }
 
     /**

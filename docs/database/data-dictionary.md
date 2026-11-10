@@ -241,16 +241,16 @@ Ulasan atau umpan balik pengguna terhadap materi edukasi.
 Penyelenggaraan webinar atau lokakarya edukasi anti-kekerasan.
 - `kegiatan_id`: BIGINT UNSIGNED AUTO_INCREMENT **PRIMARY KEY**
 - `judul`: VARCHAR(255) NOT NULL
-- `deskripsi`: TEXT NOT NULL
-- `narasumber`: VARCHAR(200) NOT NULL
+- `deskripsi`: TEXT NULL
+- `narasumber`: VARCHAR(255) NULL
 - `tanggal_mulai`: DATE NOT NULL
 - `waktu_mulai`: TIME NOT NULL
-- `tanggal_selesai`: DATE NOT NULL
-- `waktu_selesai`: TIME NOT NULL
-- `metode`: ENUM('online', 'offline') NOT NULL
-- `lokasi_atau_tautan`: VARCHAR(500) NULL
-- `kuota`: INT UNSIGNED NOT NULL
-- `status`: ENUM('buka', 'tutup', 'selesai', 'dibatalkan') DEFAULT 'buka'
+- `tanggal_selesai`: DATE NULL
+- `waktu_selesai`: TIME NULL
+- `metode`: VARCHAR(20) NOT NULL (`'online'`, `'offline'`)
+- `lokasi_atau_tautan`: TEXT NULL
+- `kuota`: INT UNSIGNED NOT NULL (minimal 1)
+- `status`: VARCHAR(20) NOT NULL DEFAULT `'draft'` (`'draft'`, `'tayang'`, `'selesai'`, `'dibatalkan'`)
 - `created_at`, `updated_at`: TIMESTAMP NULL
 
 #### 22. `pendaftaran_kegiatan` (Pemilik: PBI-05 - Glen Vian Agus Cahya Tarigan)
@@ -258,7 +258,7 @@ Pendaftaran peserta ke dalam agenda kegiatan edukasi.
 - `pendaftaran_id`: BIGINT UNSIGNED AUTO_INCREMENT **PRIMARY KEY**
 - `kegiatan_id`: BIGINT UNSIGNED NOT NULL (FK ke `kegiatan_edukasi.kegiatan_id` ON DELETE CASCADE)
 - `user_id`: BIGINT UNSIGNED NOT NULL (FK ke `users.user_id` ON DELETE CASCADE)
-- `status_pendaftaran`: ENUM('terdaftar', 'hadir', 'batal') DEFAULT 'terdaftar'
+- `status_pendaftaran`: VARCHAR(20) NOT NULL DEFAULT `'aktif'` (`'aktif'`, `'dibatalkan'`, `'hadir'`, `'tidak_hadir'`)
 - `created_at`, `updated_at`: TIMESTAMP NULL
 - *UNIQUE (`kegiatan_id`, `user_id`)*
 
@@ -316,3 +316,4 @@ Keputusan diambil oleh Scrum Master/PM pada **29 Oktober 2026** setelah audit ke
 | 8 | `artikel.slug` | Dipertahankan. | Aditif untuk URL publik artikel, mengikuti pola `halaman_informasi.slug` pada FR-09. |
 | 9 | `jadwal_konseling.user_id` | NULL-able. | Slot dibuat konselor sebelum ada pelapor yang memesan (status `tersedia`). |
 | 10 | Quick Exit (FR-28) | Esc ditekan **dua kali** dalam 1,2 detik + `POST /logout` sebelum redirect. | Sesuai SECURITY.md & system-architecture.md; mencegah Esc tak sengaja menutup modal, dan sesi server benar-benar berakhir. |
+| 11 | Kolom `kegiatan_edukasi` & `pendaftaran_kegiatan` (PBI-05) | Diselaraskan via migrasi `2026_11_11_000029`: `status` (`draft`, `tayang`, `selesai`, `dibatalkan`), `status_pendaftaran` (`aktif`, `dibatalkan`, `hadir`, `tidak_hadir`), serta kolom deskripsi/narasumber/waktu selesai nullable. | Mendukung alur publikasi draft/tayang, pembatasan kehadiran (`hadir`/`tidak_hadir`), dan fleksibilitas kegiatan satu hari tanpa mengedit migrasi awal di TiDB Cloud. |
