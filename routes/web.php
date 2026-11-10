@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\KegiatanEdukasiController as AdminKegiatanEdukasiController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KegiatanEdukasiController;
 use App\Http\Controllers\LaporanKasusController;
 use App\Http\Controllers\PenangananKasusController;
+use App\Http\Controllers\PendaftaranKegiatanController;
 use App\Http\Controllers\StatusKasusController;
 use Illuminate\Support\Facades\Route;
 
@@ -41,4 +44,39 @@ Route::middleware(['auth', 'admin.kasus'])->prefix('admin')->name('admin.')->gro
 
     Route::resource('penanganan-kasus', PenangananKasusController::class)
         ->parameters(['penanganan-kasus' => 'penangananKasus']);
+
+    /*
+    |--------------------------------------------------------------------------
+    | PBI-05: Manajemen Kegiatan/Webinar Edukasi (Admin Kasus)
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('kegiatan-edukasi', AdminKegiatanEdukasiController::class)
+        ->parameters(['kegiatan-edukasi' => 'kegiatan']);
+
+    Route::patch('kegiatan-edukasi/{kegiatan}/nonaktifkan', [AdminKegiatanEdukasiController::class, 'nonaktifkan'])
+        ->name('kegiatan-edukasi.nonaktifkan');
+
+    Route::patch('kegiatan-edukasi/{kegiatan}/pendaftaran/{pendaftaran}/verifikasi', [AdminKegiatanEdukasiController::class, 'verifikasiKehadiran'])
+        ->name('kegiatan-edukasi.verifikasi-kehadiran');
+});
+
+/*
+|--------------------------------------------------------------------------
+| PBI-05: Kegiatan/Webinar Edukasi (Publik & Pelapor)
+|--------------------------------------------------------------------------
+*/
+Route::controller(KegiatanEdukasiController::class)->prefix('edukasi/kegiatan')->name('kegiatan.')->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/{kegiatan}', 'show')->name('show');
+});
+
+Route::middleware(['auth', 'pelapor'])->group(function () {
+    Route::post('/edukasi/kegiatan/{kegiatan}/daftar', [PendaftaranKegiatanController::class, 'store'])
+        ->name('kegiatan.daftar');
+
+    Route::get('/pendaftaran-saya', [PendaftaranKegiatanController::class, 'index'])
+        ->name('pendaftaran-kegiatan.index');
+
+    Route::patch('/pendaftaran-saya/{pendaftaran}/batalkan', [PendaftaranKegiatanController::class, 'cancel'])
+        ->name('pendaftaran-kegiatan.cancel');
 });
