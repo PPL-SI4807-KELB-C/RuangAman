@@ -16,13 +16,11 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/logout', 'logout')->name('logout');
 });
 
-Route::middleware('auth')->controller(LaporanKasusController::class)->group(function () {
+// Pelaporan Kasus (Dapat diakses publik / anonim sesuai mockup Figma)
+Route::controller(LaporanKasusController::class)->group(function () {
     Route::get('/laporan/create', 'create')->name('laporan.create');
     Route::post('/laporan', 'store')->name('laporan.store');
     Route::get('/laporan/sukses', 'success')->name('laporan.success');
-});
-
-Route::controller(LaporanKasusController::class)->group(function () {
     Route::get('/lacak', 'trackForm')->name('lacak.form');
     Route::get('/lacak/hasil', 'trackResult')->name('lacak.hasil');
 });

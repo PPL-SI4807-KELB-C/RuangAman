@@ -20,18 +20,19 @@ class LaporanKasusController extends Controller
 
     public function create(): View
     {
-        $profil = Auth::user()->profilPelapor;
+        $profil = Auth::user()?->profilPelapor;
+        $alias = $profil?->alias ?? (Auth::user()?->nama_tampilan ?? 'Pelapor A');
 
         return view('laporan.create', [
-            'title' => 'Buat Laporan - RuangAman',
-            'alias' => $profil?->alias ?? Auth::user()->nama_tampilan,
+            'title' => 'Buat Laporan — RuangAman',
+            'alias' => $alias,
             'kategoriOptions' => [
-                'Fisik' => 'Kekerasan Fisik',
-                'Psikis' => 'Kekerasan Psikis/Emosional',
-                'Seksual' => 'Kekerasan Seksual',
-                'Ekonomi' => 'Kekerasan Ekonomi',
-                'Siber' => 'Kekerasan Siber/Bullying',
-                'Lainnya' => 'Lainnya',
+                'Siber' => 'Kekerasan digital',
+                'Seksual' => 'Kekerasan seksual',
+                'Psikis' => 'Kekerasan psikis',
+                'Fisik' => 'Kekerasan fisik',
+                'Ekonomi' => 'Kekerasan ekonomi',
+                'Lainnya' => 'Belum yakin / lainnya',
             ],
             'urgensiOptions' => [
                 'rendah' => 'Rendah',
@@ -52,7 +53,8 @@ class LaporanKasusController extends Controller
 
         return redirect()
             ->route('laporan.success')
-            ->with('kode_laporan', $result['kode_laporan']);
+            ->with('kode_laporan', $result['kode_laporan'])
+            ->with('alias', $request->input('alias', 'Pelapor A'));
     }
 
     public function success(): View
@@ -60,37 +62,39 @@ class LaporanKasusController extends Controller
         $kode = session('kode_laporan');
 
         if ($kode === null) {
-            abort(404);
+            return redirect()->route('lacak.form');
         }
 
         return view('laporan.success', [
-            'title' => 'Laporan Terkirim - RuangAman',
+            'title' => 'Laporan Anda telah diterima — RuangAman',
             'kode_laporan' => $kode,
         ]);
     }
 
     public function trackForm(): View
     {
-        return view('laporan.track-form', [
-            'title' => 'Lacak Status Laporan - RuangAman',
+        $dummyLaporan = LaporanKasus::query()->latest('created_at')->first();
+
+        return view('laporan.track-result', [
+            'title' => 'Lacak Laporan — RuangAman',
+            'laporan' => $dummyLaporan,
+            'kode_laporan' => $dummyLaporan?->kode_laporan ?? 'Q7M2K9',
         ]);
     }
 
     public function trackResult(Request $request): View
     {
-        $request->validate([
-            'kode_laporan' => ['required', 'string', 'max:50'],
-        ]);
+        $kode = $request->input('kode_laporan');
 
         $laporan = LaporanKasus::query()
-            ->where('kode_laporan', $request->input('kode_laporan'))
-            ->with('statusKasus')
+            ->where('kode_laporan', $kode)
+            ->with(['statusKasus', 'lampiran'])
             ->first();
 
         return view('laporan.track-result', [
-            'title' => 'Hasil Pelacakan - RuangAman',
+            'title' => 'Lacak Laporan — RuangAman',
             'laporan' => $laporan,
-            'kode_laporan' => $request->input('kode_laporan'),
+            'kode_laporan' => $kode ?? 'Q7M2K9',
         ]);
     }
 }
