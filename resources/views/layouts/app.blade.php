@@ -109,7 +109,7 @@
     </main>
 
     {{-- Footer (Figma Exact) --}}
-    <footer class="w-full border-t border-neutral-200 bg-white py-12 mt-20">
+    <footer class="w-full border-t border-neutral-200 bg-white py-12">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div>
                 <p class="text-base font-bold text-neutral-900">RuangAman</p>
