@@ -39,6 +39,9 @@
                     @if (Auth::user()->isPelapor())
                         <a href="{{ route('pendaftaran-kegiatan.index') }}" class="hover:text-brand-700 {{ request()->routeIs('pendaftaran-kegiatan.*') ? 'text-brand-700 font-semibold underline underline-offset-4' : '' }}">Pendaftaran Saya</a>
                     @endif
+                    @if (Auth::user()->isKonselor())
+                        <a href="{{ route('konselor.profil.edit') }}" class="hover:text-brand-700 {{ request()->routeIs('konselor.profil.*') ? 'text-brand-700 font-semibold underline underline-offset-4' : '' }}">Profil Saya</a>
+                    @endif
                 @endauth
 
                 @can('admin-kasus')
@@ -60,6 +63,12 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         <span>Kegiatan Edukasi</span>
+                    </a>
+                    <a href="{{ route('admin.konselor.index') }}" class="inline-flex items-center gap-1 font-semibold text-brand-700 hover:text-brand-800 {{ request()->routeIs('admin.konselor.*') ? 'text-brand-800 underline underline-offset-4' : '' }}">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <span>Data Konselor</span>
                     </a>
                 @endcan
             </nav>
@@ -97,6 +106,9 @@
                     @if (Auth::user()->isPelapor())
                         <a href="{{ route('pendaftaran-kegiatan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Pendaftaran Saya</a>
                     @endif
+                    @if (Auth::user()->isKonselor())
+                        <a href="{{ route('konselor.profil.edit') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Profil Saya</a>
+                    @endif
                 @endauth
 
                 @can('admin-kasus')
@@ -105,6 +117,7 @@
                         <a href="{{ route('admin.status-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Status Kasus</a>
                         <a href="{{ route('admin.penanganan-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Penugasan Kasus</a>
                         <a href="{{ route('admin.kegiatan-edukasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Kegiatan Edukasi</a>
+                        <a href="{{ route('admin.konselor.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Data Konselor</a>
                     </div>
                 @endcan
                 @auth

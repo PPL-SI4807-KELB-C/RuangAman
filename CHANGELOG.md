@@ -4,6 +4,44 @@ Semua perubahan tercatat dalam format standar changelog.
 
 ---
 
+## [PBI-13] - 2026-11-11
+
+### Ditambahkan (Added)
+- **Model & Relasi**:
+  - `app/Models/Konselor.php`: Model Eloquent tabel `konselor` (PK `konselor_id`) dengan konstanta status `aktif`/`cuti`/`nonaktif`, opsi label status, scope `aktif()`, relasi `user()`, serta helper `isAktif()`, `bisaMenerimaJadwal()`, `statusLabel()`, dan `statusBadgeVariant()`.
+- **Otorisasi & Keamanan**:
+  - `app/Policies/KonselorPolicy.php`: Kebijakan otorisasi `viewAny`, `view`, `create`, `update`, dan `delete` berbasis role/permission `kelola-konselor`, serta `updateProfil` yang hanya mengizinkan konselor mengubah profilnya sendiri.
+  - `app/Http/Middleware/EnsureKonselor.php`: Middleware untuk membatasi rute profil konselor hanya untuk pengguna ber-role *Konselor*.
+- **Form Request & Validasi (Bahasa Indonesia)**:
+  - `app/Http/Requests/KonselorRequest.php`: Aturan dasar validasi biodata konselor (nama, spesialisasi, bio, status) beserta verifikasi role akun calon konselor dan larangan profil ganda.
+  - `app/Http/Requests/StoreKonselorRequest.php` dan `app/Http/Requests/UpdateKonselorRequest.php`: Validasi penambahan (wajib memilih akun ber-role Konselor yang belum memiliki profil) dan pembaruan (akun pengguna terkunci).
+  - `app/Http/Requests/UpdateProfilKonselorRequest.php`: Validasi pembaruan profil mandiri oleh konselor (tanpa status ketersediaan dan akun pengguna).
+- **Service Layer**:
+  - `app/Services/KonselorService.php`: Pembuatan profil dalam transaksi, pembaruan biodata/status, pembaruan profil mandiri, penghitungan slot jadwal, proteksi hapus permanen bila sudah memiliki `jadwal_konseling`, serta daftar akun Konselor yang belum memiliki profil.
+- **Controller**:
+  - `app/Http/Controllers/Admin/KonselorController.php`: CRUD data konselor, pencarian nama/spesialisasi, filter status, pagination, dan penghapusan terkendali.
+  - `app/Http/Controllers/KonselorProfilController.php`: Halaman profil mandiri konselor (lihat & perbarui biodata sendiri).
+- **Database Seeder**:
+  - `database/seeders/KonselorSeeder.php`: Seeder idempoten dua profil konselor demo tambahan (aktif dan cuti) untuk kebutuhan demo/jadwal konseling.
+- **Antarmuka Pengguna (Blade Views)**:
+  - `resources/views/admin/konselor/index.blade.php`, `create.blade.php`, `edit.blade.php`, `show.blade.php`, `_form.blade.php`: Halaman manajemen data konselor/psikolog lengkap dengan badge status, jumlah slot jadwal, dan modal konfirmasi hapus.
+  - `resources/views/konselor/profil.blade.php`: Halaman profil mandiri konselor.
+- **Pengujian**:
+  - `tests/Feature/Pbi13ManajemenDataKonselorTest.php`: 16 pengujian akses RBAC, CRUD, validasi role/duplikasi, proteksi hapus, pembatasan status mandiri, dan kebijakan privasi email.
+
+### Diubah (Changed)
+- `app/Models/User.php`: Menambahkan relasi `konselor()` (hasOne) dan helper `isKonselor()`.
+- `app/Providers/AppServiceProvider.php`: Mendaftarkan `KonselorPolicy`, Gate `konselor`, dan Gate `kelola-konselor`.
+- `bootstrap/app.php`: Mendaftarkan middleware alias `'konselor' => EnsureKonselor::class`.
+- `routes/web.php`: Menambahkan resource `admin/konselor` pada grup Admin Kasus dan rute profil konselor (`/konselor/profil`).
+- `resources/views/layouts/app.blade.php`: Menambahkan navigasi "Data Konselor" (Admin Kasus) dan "Profil Saya" (Konselor) pada navbar desktop maupun drawer mobile.
+- `database/seeders/DatabaseSeeder.php`: Memanggil `KonselorSeeder::class` setelah pembuatan akun demo.
+
+### Catatan Skema
+- Tidak ada migrasi baru. Struktur tabel `konselor` telah tersedia pada `2026_10_29_000012_create_konselor_table.php` dan sesuai kamus data (Bagian 3, tabel 12).
+
+---
+
 ## [PBI-04] - 2026-11-08
 
 ### Ditambahkan (Added)
