@@ -49,11 +49,36 @@
                 </div>
             </nav>
 
-            {{-- Right Quick Exit Button (Figma Exact) --}}
-            <div class="flex items-center gap-3">
-                <button type="button" @click="quickExit()" class="inline-flex items-center gap-1.5 rounded bg-[#f2f2f2] hover:bg-neutral-200 text-neutral-800 text-sm font-medium px-3.5 py-1.5 transition-colors border border-neutral-300/70" title="Keluar seketika (shortcut: tombol Esc)">
-                    <span>Keluar</span>
-                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            {{-- Right Actions: Auth Status & Quick Exit Button --}}
+            <div class="flex items-center gap-4">
+                @auth
+                    <div class="hidden sm:flex items-center gap-3 text-xs text-neutral-700">
+                        <span class="inline-flex items-center gap-1.5 font-medium">
+                            <span class="h-2 w-2 rounded-full bg-green-500"></span>
+                            {{ Auth::user()->nama_tampilan }} ({{ Auth::user()->role?->nama_role ?? 'User' }})
+                        </span>
+                        <form method="POST" action="{{ route('logout') }}" class="inline">
+                            @csrf
+                            <button type="submit" class="text-neutral-500 hover:text-red-600 transition-colors">
+                                Keluar Akun
+                            </button>
+                        </form>
+                    </div>
+                @else
+                    <div class="hidden sm:flex items-center gap-2 text-xs">
+                        <a href="{{ route('login') }}" class="text-neutral-700 hover:text-neutral-900 font-medium px-2 py-1">
+                            Masuk
+                        </a>
+                        <a href="{{ route('register') }}" class="rounded bg-neutral-900 hover:bg-neutral-800 text-white font-medium px-3 py-1.5 transition-colors">
+                            Daftar
+                        </a>
+                    </div>
+                @endauth
+
+                {{-- Tombol Darurat Keluar Cepat (Figma Exact) --}}
+                <button type="button" @click="quickExit()" class="inline-flex items-center gap-1.5 rounded bg-[#f2f2f2] hover:bg-neutral-200 text-neutral-800 text-xs font-medium px-3.5 py-1.5 transition-colors border border-neutral-300/70" title="Keluar seketika ke Google (shortcut: tombol Esc)">
+                    <span>Keluar Cepat</span>
+                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                         <polyline points="16 17 21 12 16 7" />
                         <line x1="21" y1="12" x2="9" y2="12" />
