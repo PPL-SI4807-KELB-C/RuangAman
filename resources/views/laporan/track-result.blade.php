@@ -25,6 +25,39 @@
         <p class="text-[11px] text-neutral-400">Data contoh · Kode dan seluruh isi laporan di bawah ini bersifat fiktif.</p>
     </form>
 
+    {{-- PERBAIKAN 1: BANNER TAUTKAN LAPORAN KE AKUN / BOOKING KONSELING --}}
+    @if ($laporan)
+        @auth
+            @if ($laporan->user_id !== Auth::id())
+                <div class="mb-8 rounded-xl bg-neutral-900 text-white p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div class="space-y-1">
+                        <p class="text-xs font-semibold">Tautkan Laporan ke Akun Anda</p>
+                        <p class="text-[11px] text-neutral-300">Laporan ini dibuat tanpa akun. Anda dapat menautkannya ke akun <strong>{{ Auth::user()->nama_tampilan }}</strong> agar tersimpan permanen di dashboard.</p>
+                    </div>
+                    <form method="POST" action="{{ route('lacak.tautkan') }}" class="shrink-0">
+                        @csrf
+                        <input type="hidden" name="kode_laporan" value="{{ $laporan->kode_laporan }}">
+                        <button type="submit" class="rounded bg-[#10a349] hover:bg-[#0e8e40] text-white text-xs font-medium px-4 py-2 transition-colors">
+                            Tautkan ke Akun
+                        </button>
+                    </form>
+                </div>
+            @endif
+        @else
+            <div class="mb-8 rounded-xl bg-[#f2f2f2] border border-neutral-300/80 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="space-y-1">
+                    <p class="text-xs font-semibold text-neutral-900">Ingin Menjadwalkan Konseling Psikolog?</p>
+                    <p class="text-[11px] text-neutral-600">Buat akun dengan alias untuk mengamankan riwayat laporan ini dan memesan sesi konseling terjadwal.</p>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <a href="{{ route('register') }}" class="rounded bg-neutral-900 hover:bg-neutral-800 text-white text-xs font-medium px-4 py-2 transition-colors">
+                        Daftar Akun Pelapor
+                    </a>
+                </div>
+            </div>
+        @endauth
+    @endif
+
     <div class="border-t border-neutral-100 pt-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             
@@ -34,16 +67,41 @@
                     <h2 class="text-2xl font-bold text-neutral-900 tracking-tight">
                         Laporan {{ $laporan->kode_laporan ?? ($kode_laporan ?? 'Q7M2K9') }}
                     </h2>
+                    
+                    @php
+                        $statusName = $laporan->statusKasus?->nama_status ?? 'Pending';
+                    @endphp
+
+                    {{-- PERBAIKAN 3: STATUS BADGE & PENJELASAN RAMAH (TRAUMA-INFORMED) --}}
                     <div class="flex items-center gap-2 mt-2">
-                        <span class="h-2 w-2 rounded-full bg-amber-500"></span>
-                        <span class="text-xs font-medium text-neutral-800">
-                            {{ $laporan->statusKasus?->nama_status === 'Pending' ? 'Menunggu peninjauan' : ($laporan->statusKasus?->nama_status ?? 'Menunggu peninjauan') }}
-                        </span>
+                        @if ($statusName === 'Pending')
+                            <span class="h-2 w-2 rounded-full bg-amber-500"></span>
+                            <span class="text-xs font-medium text-neutral-800">Menunggu peninjauan</span>
+                        @elseif ($statusName === 'Proses')
+                            <span class="h-2 w-2 rounded-full bg-blue-500"></span>
+                            <span class="text-xs font-medium text-neutral-800">Sedang ditangani konselor pendamping</span>
+                        @elseif ($statusName === 'Selesai')
+                            <span class="h-2 w-2 rounded-full bg-[#10a349]"></span>
+                            <span class="text-xs font-medium text-neutral-800">Penanganan kasus selesai</span>
+                        @elseif ($statusName === 'Ditolak')
+                            <span class="h-2 w-2 rounded-full bg-neutral-400"></span>
+                            <span class="text-xs font-medium text-neutral-800">Dialihkan / Tidak dapat diproses sistem</span>
+                        @endif
                     </div>
                     <p class="text-[11px] text-neutral-400 mt-1">
                         Diterima pada {{ ($laporan->created_at ?? now())->translatedFormat('d F Y') }}, pukul {{ ($laporan->created_at ?? now())->format('H.i') }} WIB
                     </p>
                 </div>
+
+                {{-- Kotak Alasan Khusus Jika Kasus Ditolak / Dialihkan --}}
+                @if ($statusName === 'Ditolak')
+                    <div class="rounded-xl bg-[#f2f2f2] p-5 border border-neutral-300 text-xs space-y-2">
+                        <p class="font-semibold text-neutral-900">Catatan Pengalihan / Peninjauan:</p>
+                        <p class="text-neutral-700 leading-relaxed">
+                            {{ $laporan->penangananKasus?->catatan ?? 'Laporan ini berada di luar ruang lingkup penanganan kekerasan berbasis gender. Jika Anda membutuhkan bantuan darurat atau hukum perdata, Anda dapat menghubungi lembaga rujukan pada direktori bantuan kami.' }}
+                        </p>
+                    </div>
+                @endif
 
                 {{-- Metadata Grid --}}
                 <div class="grid grid-cols-2 gap-6 pt-4 border-t border-neutral-100 text-xs">
@@ -67,30 +125,57 @@
                     </p>
                 </div>
 
-                {{-- Lampiran --}}
+                {{-- Lampiran & Retensi Privasi --}}
                 <div class="space-y-1 pt-4 border-t border-neutral-100">
                     <p class="text-[11px] text-neutral-400">Lampiran pendukung</p>
                     <p class="text-xs text-neutral-600">
                         @if ($laporan && $laporan->lampiran->count() > 0)
-                            {{ $laporan->lampiran->count() }} berkas terlampir (tersimpan privat).
+                            {{ $laporan->lampiran->count() }} berkas terlampir (tersimpan di private storage terisolasi).
                         @else
                             Belum ada lampiran.
                         @endif
                     </p>
+                    <p class="text-[10px] text-neutral-400">Berkas bukti dilindungi UU PDP dan hanya dapat dilihat konselor berwenang.</p>
                 </div>
 
-                {{-- Pesan dari tim pendamping (Figma Exact) --}}
-                <div class="rounded-xl border border-neutral-200/80 bg-white p-6 space-y-3">
+                {{-- PERBAIKAN 2: PESAN DARI TIM PENDAMPING DUA ARAH (FIGMA EXACT + CHAT FEED) --}}
+                <div class="rounded-xl border border-neutral-200/80 bg-white p-6 space-y-4">
                     <div class="flex items-center gap-2 text-neutral-800 font-semibold text-xs">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                         </svg>
                         <span>Pesan dari tim pendamping</span>
                     </div>
-                    <p class="text-xs font-medium text-neutral-900">Belum ada pesan</p>
-                    <p class="text-xs text-neutral-600 leading-relaxed">
-                        Laporan Anda menunggu peninjauan. Anda tidak perlu mengirim laporan baru untuk kejadian yang sama.
-                    </p>
+
+                    @if ($laporan && $laporan->penangananKasus?->catatan)
+                        <div class="rounded-lg bg-[#f2f2f2] p-4 text-xs text-neutral-800 space-y-1">
+                            <p class="font-semibold text-neutral-900">Catatan Konselor:</p>
+                            <p class="leading-relaxed">{{ $laporan->penangananKasus->catatan }}</p>
+                        </div>
+                    @else
+                        <div>
+                            <p class="text-xs font-medium text-neutral-900">Belum ada pesan</p>
+                            <p class="text-xs text-neutral-600 leading-relaxed mt-1">
+                                Laporan Anda menunggu peninjauan. Anda tidak perlu mengirim laporan baru untuk kejadian yang sama.
+                            </p>
+                        </div>
+                    @endif
+
+                    {{-- Form Balasan Pesan Aman Dua Arah --}}
+                    @if ($laporan)
+                        <form method="POST" action="{{ route('lacak.pesan') }}" class="pt-3 border-t border-neutral-100 space-y-2">
+                            @csrf
+                            <input type="hidden" name="kode_laporan" value="{{ $laporan->kode_laporan }}">
+                            <label class="block text-[11px] font-semibold text-neutral-700">Kirim balasan atau pertanyaan ke tim pendamping:</label>
+                            <textarea name="pesan" rows="2" placeholder="Tuliskan pesan tanpa menyebutkan nama asli..." required class="w-full rounded bg-[#f2f2f2] border-0 text-xs p-3 text-neutral-800 focus:ring-1 focus:ring-neutral-400 leading-relaxed"></textarea>
+                            <div class="flex justify-end">
+                                <button type="submit" class="rounded bg-[#10a349] hover:bg-[#0e8e40] text-white text-xs font-medium px-4 py-1.5 transition-colors">
+                                    Kirim Pesan Aman
+                                </button>
+                            </div>
+                        </form>
+                    @endif
+
                     <p class="text-[11px] text-neutral-400 pt-2 border-t border-neutral-100">
                         Periksa kembali melalui kode laporan ini saat Anda merasa aman.
                     </p>
@@ -117,19 +202,23 @@
 
                         {{-- Step 2: Peninjauan tim --}}
                         <div class="flex items-start gap-3">
-                            <span class="mt-1 h-2 w-2 rounded-full bg-neutral-300 shrink-0"></span>
+                            <span class="mt-1 h-2 w-2 rounded-full {{ in_array($statusName, ['Proses', 'Selesai']) ? 'bg-neutral-900' : 'bg-neutral-300' }} shrink-0"></span>
                             <div>
-                                <p class="font-semibold text-neutral-400">Peninjauan tim</p>
-                                <p class="text-[11px] text-neutral-400 mt-0.5">Belum dimulai</p>
+                                <p class="font-semibold {{ in_array($statusName, ['Proses', 'Selesai']) ? 'text-neutral-900' : 'text-neutral-400' }}">Peninjauan tim</p>
+                                <p class="text-[11px] text-neutral-400 mt-0.5">
+                                    {{ in_array($statusName, ['Proses', 'Selesai']) ? 'Sedang berlangsung' : 'Belum dimulai' }}
+                                </p>
                             </div>
                         </div>
 
                         {{-- Step 3: Pendampingan --}}
                         <div class="flex items-start gap-3">
-                            <span class="mt-1 h-2 w-2 rounded-full bg-neutral-300 shrink-0"></span>
+                            <span class="mt-1 h-2 w-2 rounded-full {{ $statusName === 'Selesai' ? 'bg-[#10a349]' : 'bg-neutral-300' }} shrink-0"></span>
                             <div>
-                                <p class="font-semibold text-neutral-400">Pendampingan</p>
-                                <p class="text-[11px] text-neutral-400 mt-0.5">Sesuai kebutuhan dan persetujuan</p>
+                                <p class="font-semibold {{ $statusName === 'Selesai' ? 'text-neutral-900' : 'text-neutral-400' }}">Pendampingan & Pemulihan</p>
+                                <p class="text-[11px] text-neutral-400 mt-0.5">
+                                    {{ $statusName === 'Selesai' ? 'Telah selesai' : 'Sesuai kebutuhan dan persetujuan' }}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -139,7 +228,15 @@
                 <div class="space-y-2 pt-6 border-t border-neutral-100 text-xs text-neutral-600">
                     <h4 class="font-semibold text-neutral-900">Tentang status laporan</h4>
                     <p class="leading-relaxed text-[11px]">
-                        Menunggu peninjauan berarti laporan telah tercatat, tetapi belum ditinjau oleh tim.
+                        @if ($statusName === 'Pending')
+                            Menunggu peninjauan berarti laporan telah tercatat, tetapi belum ditinjau oleh tim admin.
+                        @elseif ($statusName === 'Proses')
+                            Kasus telah diverifikasi dan konselor pendamping telah ditugaskan untuk membantu Anda.
+                        @elseif ($statusName === 'Selesai')
+                            Seluruh tahapan penanganan dan pendampingan telah diselesaikan secara aman.
+                        @else
+                            Status laporan Anda telah ditinjau dan diarahkan sesuai kebijakan penanganan.
+                        @endif
                     </p>
                 </div>
 

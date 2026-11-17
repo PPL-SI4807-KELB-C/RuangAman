@@ -47,4 +47,10 @@ class LaporanKasus extends Model
     {
         return $this->hasMany(LampiranLaporan::class, 'laporan_id', 'laporan_id');
     }
+
+    public function penangananKasus()
+    {
+        return ->hasOne(PenangananKasus::class, 'laporan_id', 'laporan_id');
+    }
+
 }

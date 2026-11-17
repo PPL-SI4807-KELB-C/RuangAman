@@ -14,6 +14,8 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('/register', 'showRegister')->name('register');
     Route::post('/register', 'register');
     Route::post('/logout', 'logout')->name('logout');
+    Route::post('/lacak/pesan', 'kirimPesan')->name('lacak.pesan');
+    Route::post('/lacak/tautkan', 'tautkanAkun')->name('lacak.tautkan');
 });
 
 // Pelaporan Kasus (Dapat diakses publik / anonim sesuai mockup Figma)
