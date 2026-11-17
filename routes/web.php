@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\KegiatanEdukasiController as AdminKegiatanEdukasiController;
+use App\Http\Controllers\Admin\KonselorController as AdminKonselorController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KegiatanEdukasiController;
+use App\Http\Controllers\KonselorProfilController;
 use App\Http\Controllers\LaporanKasusController;
 use App\Http\Controllers\PenangananKasusController;
 use App\Http\Controllers\PendaftaranKegiatanController;
@@ -58,6 +60,24 @@ Route::middleware(['auth', 'admin.kasus'])->prefix('admin')->name('admin.')->gro
 
     Route::patch('kegiatan-edukasi/{kegiatan}/pendaftaran/{pendaftaran}/verifikasi', [AdminKegiatanEdukasiController::class, 'verifikasiKehadiran'])
         ->name('kegiatan-edukasi.verifikasi-kehadiran');
+
+    /*
+    |--------------------------------------------------------------------------
+    | PBI-13: Manajemen Data Konselor/Psikolog (Admin Kasus)
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('konselor', AdminKonselorController::class)
+        ->parameters(['konselor' => 'konselor']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| PBI-13: Profil Konselor/Psikolog (Konselor)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'konselor'])->prefix('konselor')->name('konselor.')->group(function () {
+    Route::get('/profil', [KonselorProfilController::class, 'edit'])->name('profil.edit');
+    Route::put('/profil', [KonselorProfilController::class, 'update'])->name('profil.update');
 });
 
 /*
