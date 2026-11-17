@@ -20,4 +20,12 @@ class StatusKasus extends Model
     {
         return $this->hasMany(LaporanKasus::class, 'status_id', 'status_id');
     }
+
+    /**
+     * Memeriksa apakah status kasus ini sedang digunakan oleh laporan kasus.
+     */
+    public function isUsedByLaporan(): bool
+    {
+        return $this->laporanKasus()->exists();
+    }
 }
