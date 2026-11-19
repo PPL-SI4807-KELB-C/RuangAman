@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\KegiatanEdukasiController as AdminKegiatanEdukasi
 use App\Http\Controllers\Admin\KonselorController as AdminKonselorController;
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\InstansiBantuanController;
 use App\Http\Controllers\KegiatanEdukasiController;
 use App\Http\Controllers\KonselorProfilController;
 use App\Http\Controllers\LaporanKasusController;
@@ -38,7 +39,30 @@ Route::controller(LaporanKasusController::class)->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| PBI-04: Modul Manajemen Status dan Penugasan Kasus (Admin Kasus)
+| PBI-07: Direktori Instansi Bantuan Publik (Dapat diakses tanpa login)
+|--------------------------------------------------------------------------
+*/
+Route::get('/instansi-bantuan', [InstansiBantuanController::class, 'publicDirectory'])->name('instansi.publik');
+
+/*
+|--------------------------------------------------------------------------
+| PBI-07: Manajemen Instansi Bantuan (CRUD Lengkap)
+|--------------------------------------------------------------------------
+| Tersedia via /instansi dan /admin/instansi untuk kompatibilitas penuh.
+*/
+Route::middleware('auth')->controller(InstansiBantuanController::class)->group(function () {
+    Route::get('/instansi', 'index')->name('instansi.index');
+    Route::get('/instansi/create', 'create')->name('instansi.create');
+    Route::post('/instansi', 'store')->name('instansi.store');
+    Route::get('/instansi/{instansi}', 'show')->name('instansi.show');
+    Route::get('/instansi/{instansi}/edit', 'edit')->name('instansi.edit');
+    Route::put('/instansi/{instansi}', 'update')->name('instansi.update');
+    Route::delete('/instansi/{instansi}', 'destroy')->name('instansi.destroy');
+});
+
+/*
+|--------------------------------------------------------------------------
+| PBI-04, PBI-05, PBI-07, PBI-13: Modul Admin Kasus
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'admin.kasus'])->prefix('admin')->name('admin.')->group(function () {
@@ -77,6 +101,14 @@ Route::middleware(['auth', 'admin.kasus'])->prefix('admin')->name('admin.')->gro
     */
     Route::resource('konselor', AdminKonselorController::class)
         ->parameters(['konselor' => 'konselor']);
+
+    /*
+    |--------------------------------------------------------------------------
+    | PBI-07: Manajemen Instansi Bantuan (Admin Kasus Prefix)
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('instansi', InstansiBantuanController::class)
+        ->parameters(['instansi' => 'instansi']);
 });
 
 /*

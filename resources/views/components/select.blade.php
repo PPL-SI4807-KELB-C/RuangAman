@@ -39,6 +39,7 @@ $hasError = $error !== null && $error !== '';
         @foreach ($options as $optionValue => $optionLabel)
             <option value="{{ $optionValue }}" @selected(old($name, $value) == $optionValue)>{{ $optionLabel }}</option>
         @endforeach
+        {{ $slot }}
     </select>
 
     @if ($helper && ! $hasError)
