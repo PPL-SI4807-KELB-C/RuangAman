@@ -28,6 +28,7 @@ jobs:
       DB_DATABASE: ruangaman_testing
       DB_USERNAME: root
       DB_PASSWORD: password
+      MYSQL_ATTR_SSL_CA: ""
 
     steps:
     - name: Checkout Code
