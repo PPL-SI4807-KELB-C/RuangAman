@@ -1,3 +1,4 @@
+@props(['title' => null])
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
 <head>
@@ -5,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'RuangAman — Layanan Pelaporan Kekerasan Berbasis Gender')</title>
+    <title>{{ $title ?? $__env->yieldContent('title', 'RuangAman — Layanan Pelaporan Kekerasan Berbasis Gender') }}</title>
     <meta name="description" content="RuangAman — Layanan pelaporan, konseling, dan penanganan kekerasan berbasis gender dengan aman dan terjaga.">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -45,6 +46,7 @@
                 <a href="{{ route('lacak.form') }}" class="hover:text-neutral-900 transition-colors {{ request()->routeIs('lacak.*') ? 'text-neutral-900 font-semibold' : '' }}">Lacak laporan</a>
                 <a href="{{ route('artikel.index') }}" class="hover:text-neutral-900 transition-colors {{ request()->routeIs('artikel.*') ? 'text-neutral-900 font-semibold' : '' }}">Artikel</a>
                 <a href="{{ route('kegiatan.index') }}" class="hover:text-neutral-900 transition-colors {{ request()->routeIs('kegiatan.*') ? 'text-neutral-900 font-semibold' : '' }}">Kegiatan</a>
+                <a href="{{ route('instansi.publik') }}" class="hover:text-neutral-900 transition-colors {{ request()->routeIs('instansi.publik') ? 'text-neutral-900 font-semibold' : '' }}">Instansi bantuan</a>
 
                 @auth
                     @if (Auth::user()->isPelapor())
@@ -86,6 +88,12 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                         <span>Data Konselor</span>
+                    </a>
+                    <a href="{{ route('instansi.index') }}" class="inline-flex items-center gap-1 font-semibold text-neutral-900 hover:text-neutral-700 {{ request()->routeIs('instansi.*') && !request()->routeIs('instansi.publik') || request()->routeIs('admin.instansi.*') ? 'underline underline-offset-4' : '' }}">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                        <span>Instansi Bantuan</span>
                     </a>
                 @endcan
             </nav>
@@ -145,6 +153,7 @@
                 <a href="{{ route('lacak.form') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Lacak laporan</a>
                 <a href="{{ route('artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Artikel</a>
                 <a href="{{ route('kegiatan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Kegiatan</a>
+                <a href="{{ route('instansi.publik') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Instansi bantuan</a>
 
                 @auth
                     @if (Auth::user()->isPelapor())
@@ -163,6 +172,7 @@
                         <a href="{{ route('admin.kegiatan-edukasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Kegiatan Edukasi</a>
                         <a href="{{ route('admin.artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Artikel Edukasi</a>
                         <a href="{{ route('admin.konselor.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Data Konselor</a>
+                        <a href="{{ route('instansi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Instansi Bantuan</a>
                     </div>
                 @endcan
 
@@ -199,6 +209,7 @@
         @endif
 
         @yield('content')
+        {{ $slot ?? '' }}
     </main>
 
     {{-- Footer (Figma Exact) --}}
