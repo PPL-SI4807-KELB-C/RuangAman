@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\ArtikelController as AdminArtikelController;
 use App\Http\Controllers\Admin\KegiatanEdukasiController as AdminKegiatanEdukasiController;
 use App\Http\Controllers\Admin\KonselorController as AdminKonselorController;
+use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InstansiBantuanController;
 use App\Http\Controllers\KegiatanEdukasiController;
@@ -73,6 +75,13 @@ Route::middleware(['auth', 'admin.kasus'])->prefix('admin')->name('admin.')->gro
 
     /*
     |--------------------------------------------------------------------------
+    | PBI-10: Manajemen Artikel Edukasi - Niky (Admin Kasus)
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('artikel', AdminArtikelController::class);
+
+    /*
+    |--------------------------------------------------------------------------
     | PBI-05: Manajemen Kegiatan/Webinar Edukasi (Admin Kasus)
     |--------------------------------------------------------------------------
     */
@@ -110,6 +119,16 @@ Route::middleware(['auth', 'admin.kasus'])->prefix('admin')->name('admin.')->gro
 Route::middleware(['auth', 'konselor'])->prefix('konselor')->name('konselor.')->group(function () {
     Route::get('/profil', [KonselorProfilController::class, 'edit'])->name('profil.edit');
     Route::put('/profil', [KonselorProfilController::class, 'update'])->name('profil.update');
+});
+
+/*
+|--------------------------------------------------------------------------
+| PBI-10: Artikel Edukasi - Niky (Publik & Pelapor)
+|--------------------------------------------------------------------------
+*/
+Route::controller(ArtikelController::class)->prefix('edukasi/artikel')->name('artikel.')->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/{artikel}', 'show')->name('show');
 });
 
 /*
