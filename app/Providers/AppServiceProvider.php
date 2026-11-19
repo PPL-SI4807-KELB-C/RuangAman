@@ -2,12 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\Artikel;
 use App\Models\KegiatanEdukasi;
 use App\Models\Konselor;
 use App\Models\PenangananKasus;
 use App\Models\PendaftaranKegiatan;
 use App\Models\StatusKasus;
 use App\Models\User;
+use App\Policies\ArtikelPolicy;
 use App\Policies\KegiatanEdukasiPolicy;
 use App\Policies\KonselorPolicy;
 use App\Policies\PenangananKasusPolicy;
@@ -34,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useTailwind();
 
+        Gate::policy(Artikel::class, ArtikelPolicy::class);
         Gate::policy(StatusKasus::class, StatusKasusPolicy::class);
         Gate::policy(PenangananKasus::class, PenangananKasusPolicy::class);
         Gate::policy(KegiatanEdukasi::class, KegiatanEdukasiPolicy::class);
@@ -46,6 +49,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('kelola-penugasan-kasus', fn (User $user) => $user->isAdminKasus() || $user->hasPermission('kelola-penugasan-kasus'));
         Gate::define('kelola-kegiatan', fn (User $user) => $user->isAdminKasus() || $user->hasPermission('kelola-kegiatan'));
         Gate::define('kelola-konselor', fn (User $user) => $user->isAdminKasus() || $user->hasPermission('kelola-konselor'));
+        Gate::define('kelola-artikel', fn (User $user) => $user->isAdminKasus() || $user->hasPermission('kelola-artikel'));
         Gate::define('daftar-kegiatan', fn (User $user) => $user->isPelapor() && $user->hasPermission('daftar-kegiatan'));
     }
 }
