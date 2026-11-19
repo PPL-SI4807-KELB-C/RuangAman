@@ -1,0 +1,7 @@
+Summary,Issue Type,Epic Name,Priority,Labels,Description
+"Fondasi & Autentikasi",Epic,"Fondasi & Auth",Highest,"fondasi,sprint-1","Auth alias+email, RBAC roles/permissions, layout utama, Quick Exit. Tabel users/roles/permissions/role_permissions."
+"Pelaporan & Penanganan Kasus",Epic,"Pelaporan & Penanganan",Highest,"pelaporan,sprint-1","Laporan kasus, lampiran privat, mode anonim, status & penugasan, log penanganan. Tabel laporan_kasus/lampiran_laporan/profil_pelapor/status_kasus/penanganan_kasus/log_penanganan."
+"Layanan Konseling",Epic,"Konseling",High,"konseling","Data konselor, jadwal konseling, sesi konseling. Tabel konselor/jadwal_konseling/sesi_konseling."
+"Edukasi & Konten",Epic,"Edukasi & Konten",Medium,"edukasi","Halaman statis, glosarium, pengumuman, artikel, kategori, feedback, kegiatan/webinar. Tabel halaman_informasi/glosarium_kbg/pengumuman/artikel/kategori_artikel/feedback_artikel/kegiatan_edukasi/pendaftaran_kegiatan."
+"Pusat Bantuan",Epic,"Bantuan & FAQ",Medium,"bantuan","Instansi bantuan, layanan & kontak darurat, FAQ. Tabel instansi_bantuan/layanan_bantuan/kontak_bantuan/faq."
+"Integrasi, UAT & Deployment",Epic,"Integrasi & UAT",High,"integrasi,sprint-2","Dashboard 3 peran, pelacakan publik, alur status terpusat, notifikasi, UAT, deployment & demo."
