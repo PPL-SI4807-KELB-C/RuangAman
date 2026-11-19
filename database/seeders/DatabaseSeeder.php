@@ -100,6 +100,7 @@ class DatabaseSeeder extends Seeder
         $this->seedAkunDemo($roles);
         $this->call(KonselorSeeder::class);
         $this->call(KegiatanEdukasiSeeder::class);
+        $this->call(ArtikelSeeder::class);
     }
 
     /**

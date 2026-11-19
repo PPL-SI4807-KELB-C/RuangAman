@@ -43,7 +43,8 @@
                 <a href="{{ url('/#layanan') }}" class="hover:text-neutral-900 transition-colors">Layanan</a>
                 <a href="{{ route('laporan.create') }}" class="hover:text-neutral-900 transition-colors">Pelaporan</a>
                 <a href="{{ route('lacak.form') }}" class="hover:text-neutral-900 transition-colors {{ request()->routeIs('lacak.*') ? 'text-neutral-900 font-semibold' : '' }}">Lacak laporan</a>
-                <a href="{{ route('kegiatan.index') }}" class="hover:text-neutral-900 transition-colors {{ request()->routeIs('kegiatan.*') ? 'text-neutral-900 font-semibold' : '' }}">Edukasi</a>
+                <a href="{{ route('artikel.index') }}" class="hover:text-neutral-900 transition-colors {{ request()->routeIs('artikel.*') ? 'text-neutral-900 font-semibold' : '' }}">Artikel</a>
+                <a href="{{ route('kegiatan.index') }}" class="hover:text-neutral-900 transition-colors {{ request()->routeIs('kegiatan.*') ? 'text-neutral-900 font-semibold' : '' }}">Kegiatan</a>
 
                 @auth
                     @if (Auth::user()->isPelapor())
@@ -73,6 +74,12 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         <span>Kegiatan Edukasi</span>
+                    </a>
+                    <a href="{{ route('admin.artikel.index') }}" class="inline-flex items-center gap-1 font-semibold text-neutral-900 hover:text-neutral-700 {{ request()->routeIs('admin.artikel.*') ? 'underline underline-offset-4' : '' }}">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2" />
+                        </svg>
+                        <span>Artikel Edukasi</span>
                     </a>
                     <a href="{{ route('admin.konselor.index') }}" class="inline-flex items-center gap-1 font-semibold text-neutral-900 hover:text-neutral-700 {{ request()->routeIs('admin.konselor.*') ? 'underline underline-offset-4' : '' }}">
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -136,7 +143,8 @@
                 <a href="{{ url('/#layanan') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Layanan</a>
                 <a href="{{ route('laporan.create') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Pelaporan</a>
                 <a href="{{ route('lacak.form') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Lacak laporan</a>
-                <a href="{{ route('kegiatan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Edukasi</a>
+                <a href="{{ route('artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Artikel</a>
+                <a href="{{ route('kegiatan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Kegiatan</a>
 
                 @auth
                     @if (Auth::user()->isPelapor())
@@ -153,6 +161,7 @@
                         <a href="{{ route('admin.status-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Status Kasus</a>
                         <a href="{{ route('admin.penanganan-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Penugasan Kasus</a>
                         <a href="{{ route('admin.kegiatan-edukasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Kegiatan Edukasi</a>
+                        <a href="{{ route('admin.artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Artikel Edukasi</a>
                         <a href="{{ route('admin.konselor.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Data Konselor</a>
                     </div>
                 @endcan
