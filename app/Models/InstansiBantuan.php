@@ -36,7 +36,15 @@ class InstansiBantuan extends Model
      *
      * @var string
      */
-    protected $keyType = 'bigInt';
+    protected $keyType = 'int';
+
+    /**
+     * Get the route key for the model.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'instansi_id';
+    }
 
     /**
      * The attributes that are mass assignable.
