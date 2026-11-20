@@ -37,13 +37,13 @@
                 <input type="hidden" name="waktu_kejadian" value="{{ now()->format('Y-m-d H:i:s') }}">
                 <input type="hidden" name="mode_anonim" value="1">
 
-                {{-- Field 1: Alias --}}
+                {{-- Field 1: Alias (dibawa dari profil Pelapor, FR-17) --}}
                 <div class="space-y-1.5">
                     <label class="block text-xs font-semibold text-neutral-800">
-                        Alias *
+                        Alias Anda
                     </label>
-                    <input type="text" name="alias" value="{{ old('alias', request('alias', 'Pelapor A')) }}" required class="w-full rounded bg-[#f2f2f2] border-0 text-xs px-3.5 py-2.5 text-neutral-800 focus:ring-1 focus:ring-neutral-400">
-                    <p class="text-[11px] text-neutral-400">Konselor hanya melihat alias. Jangan gunakan nama asli.</p>
+                    <p class="rounded bg-[#f2f2f2] px-3.5 py-2.5 text-xs text-neutral-800">{{ $alias }}</p>
+                    <p class="text-[11px] text-neutral-400">Konselor hanya melihat alias ini, bukan nama asli atau email Anda.</p>
                 </div>
 
                 {{-- Field 2: Kategori Kejadian (Radio Pill Grid - Figma Exact) --}}

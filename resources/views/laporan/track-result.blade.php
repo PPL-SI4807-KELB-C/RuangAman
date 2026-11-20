@@ -22,17 +22,26 @@
                 Periksa status
             </button>
         </div>
-        <p class="text-[11px] text-neutral-400">Data contoh · Kode dan seluruh isi laporan di bawah ini bersifat fiktif.</p>
+        <p class="text-[11px] text-neutral-400">{{ $laporan ? 'Laporan resmi · Jangan bagikan kode ini kepada orang lain.' : 'Data contoh · Kode dan seluruh isi laporan di bawah ini bersifat fiktif.' }}</p>
     </form>
+
+    @if ($tidakDitemukan ?? false)
+        <div class="mb-8 flex items-start gap-2.5 rounded-lg border border-neutral-200/70 bg-[#f2f2f2] p-4">
+            <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-safety-rose" aria-hidden="true"></span>
+            <p class="text-xs leading-relaxed text-neutral-700">
+                Kode <span class="font-mono text-neutral-900">{{ $kode_laporan }}</span> tidak ditemukan. Periksa kembali huruf dan angkanya, atau simpan ulang kode yang tampil saat laporan Anda dibuat.
+            </p>
+        </div>
+    @endif
 
     {{-- PERBAIKAN 1: BANNER TAUTKAN LAPORAN KE AKUN / BOOKING KONSELING --}}
     @if ($laporan)
         @auth
-            @if ($laporan->user_id !== Auth::id())
+            @if ($laporan->bisaDitautkan())
                 <div class="mb-8 rounded-xl bg-neutral-900 text-white p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div class="space-y-1">
                         <p class="text-xs font-semibold">Tautkan Laporan ke Akun Anda</p>
-                        <p class="text-[11px] text-neutral-300">Laporan ini dibuat tanpa akun. Anda dapat menautkannya ke akun <strong>{{ Auth::user()->nama_tampilan }}</strong> agar tersimpan permanen di dashboard.</p>
+                        <p class="text-[11px] text-neutral-300">Laporan ini masih tercatat pada akun anonim bersama. Anda dapat menautkannya ke akun <strong>{{ Auth::user()->nama_tampilan }}</strong> agar tersimpan permanen di dashboard.</p>
                     </div>
                     <form method="POST" action="{{ route('lacak.tautkan') }}" class="shrink-0">
                         @csrf
@@ -107,7 +116,7 @@
                 <div class="grid grid-cols-2 gap-6 pt-4 border-t border-neutral-100 text-xs">
                     <div>
                         <p class="text-neutral-400 text-[11px]">Alias</p>
-                        <p class="font-medium text-neutral-800 mt-0.5">{{ $laporan?->profilPelapor?->alias ?? 'Pelapor A' }}</p>
+                        <p class="font-medium text-neutral-800 mt-0.5">{{ $laporan?->user?->profilPelapor?->alias ?? 'Pelapor A' }}</p>
                     </div>
                     <div>
                         <p class="text-neutral-400 text-[11px]">Kategori</p>
