@@ -19,45 +19,49 @@
     <x-confirm-modal />
 
     <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
-        <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-            <a href="{{ url('/') }}" class="flex items-center gap-2 text-brand-700 hover:text-brand-800" aria-label="RuangAman Beranda">
-                <svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                    <path d="M12 3l7 4v6c0 5.55-3.84 10.74-9 12-5.16-1.26-9-6.45-9-12V7l7-4z" />
-                    <path d="M9 12l2 2 4-4" />
-                </svg>
-                <span class="text-lg font-bold tracking-tight">RuangAman</span>
-            </a>
+        <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 md:grid md:grid-cols-12 md:gap-2 lg:px-8">
+            {{-- Kolom Kiri: Logo (2 kolom) --}}
+            <div class="flex items-center md:col-span-2">
+                <a href="{{ url('/') }}" class="flex items-center gap-2 text-brand-700 hover:text-brand-800" aria-label="RuangAman Beranda">
+                    <svg class="h-8 w-8 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M12 3l7 4v6c0 5.55-3.84 10.74-9 12-5.16-1.26-9-6.45-9-12V7l7-4z" />
+                        <path d="M9 12l2 2 4-4" />
+                    </svg>
+                    <span class="text-lg font-bold tracking-tight">RuangAman</span>
+                </a>
+            </div>
 
-            <nav class="hidden items-center gap-6 text-sm font-medium text-slate-600 md:flex" aria-label="Navigasi utama">
-                <a href="{{ url('/') }}" class="hover:text-brand-700">Beranda</a>
-                <a href="{{ route('laporan.create') }}" class="hover:text-brand-700">Pelaporan</a>
-                <a href="{{ route('lacak.form') }}" class="hover:text-brand-700">Pelacakan</a>
-                <a href="{{ route('kegiatan.index') }}" class="hover:text-brand-700 {{ request()->routeIs('kegiatan.*') ? 'text-brand-700 font-semibold' : '' }}">Edukasi</a>
-                <a href="#" class="hover:text-brand-700">Bantuan</a>
+            {{-- Kolom Tengah: Navigasi Utama Terkunci Mati di Tengah (8 kolom) --}}
+            <nav class="hidden items-center justify-center gap-5 text-sm font-medium text-slate-600 md:col-span-8 md:flex lg:gap-6" aria-label="Navigasi utama">
+                <a href="{{ url('/') }}" class="whitespace-nowrap hover:text-brand-700">Beranda</a>
+                <a href="{{ route('laporan.create') }}" class="whitespace-nowrap hover:text-brand-700">Pelaporan</a>
+                <a href="{{ route('lacak.form') }}" class="whitespace-nowrap hover:text-brand-700">Pelacakan</a>
+                <a href="{{ route('kegiatan.index') }}" class="whitespace-nowrap hover:text-brand-700 {{ request()->routeIs('kegiatan.*') ? 'text-brand-700 font-semibold' : '' }}">Edukasi</a>
+                <a href="#" class="whitespace-nowrap hover:text-brand-700">Bantuan</a>
 
                 @auth
                     @if (Auth::user()->isPelapor())
-                        <a href="{{ route('laporan.index') }}" class="hover:text-brand-700 {{ request()->routeIs('laporan.index', 'laporan.show', 'laporan.edit') ? 'text-brand-700 font-semibold underline underline-offset-4' : '' }}">Laporan Saya</a>
-                        <a href="{{ route('pendaftaran-kegiatan.index') }}" class="hover:text-brand-700 {{ request()->routeIs('pendaftaran-kegiatan.*') ? 'text-brand-700 font-semibold underline underline-offset-4' : '' }}">Pendaftaran Saya</a>
-                        <a href="{{ route('profil-pelapor.edit') }}" class="hover:text-brand-700 {{ request()->routeIs('profil-pelapor.*') ? 'text-brand-700 font-semibold underline underline-offset-4' : '' }}">Profil</a>
+                        <a href="{{ route('laporan.index') }}" class="whitespace-nowrap hover:text-brand-700 {{ request()->routeIs('laporan.index', 'laporan.show', 'laporan.edit') ? 'text-brand-700 font-semibold underline underline-offset-4' : '' }}">Laporan Saya</a>
+                        <a href="{{ route('pendaftaran-kegiatan.index') }}" class="whitespace-nowrap hover:text-brand-700 {{ request()->routeIs('pendaftaran-kegiatan.*') ? 'text-brand-700 font-semibold underline underline-offset-4' : '' }}">Pendaftaran Saya</a>
+                        <a href="{{ route('profil-pelapor.edit') }}" class="whitespace-nowrap hover:text-brand-700 {{ request()->routeIs('profil-pelapor.*') ? 'text-brand-700 font-semibold underline underline-offset-4' : '' }}">Profil</a>
                     @endif
                 @endauth
 
                 @can('admin-kasus')
                     <div class="h-4 w-px bg-slate-300"></div>
-                    <a href="{{ route('admin.status-kasus.index') }}" class="inline-flex items-center gap-1 font-semibold text-brand-700 hover:text-brand-800 {{ request()->routeIs('admin.status-kasus.*') ? 'text-brand-800 underline underline-offset-4' : '' }}">
+                    <a href="{{ route('admin.status-kasus.index') }}" class="inline-flex items-center gap-1 whitespace-nowrap font-semibold text-brand-700 hover:text-brand-800 {{ request()->routeIs('admin.status-kasus.*') ? 'text-brand-800 underline underline-offset-4' : '' }}">
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                         </svg>
                         <span>Status Kasus</span>
                     </a>
-                    <a href="{{ route('admin.penanganan-kasus.index') }}" class="inline-flex items-center gap-1 font-semibold text-brand-700 hover:text-brand-800 {{ request()->routeIs('admin.penanganan-kasus.*') ? 'text-brand-800 underline underline-offset-4' : '' }}">
+                    <a href="{{ route('admin.penanganan-kasus.index') }}" class="inline-flex items-center gap-1 whitespace-nowrap font-semibold text-brand-700 hover:text-brand-800 {{ request()->routeIs('admin.penanganan-kasus.*') ? 'text-brand-800 underline underline-offset-4' : '' }}">
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
                         <span>Penugasan Kasus</span>
                     </a>
-                    <a href="{{ route('admin.kegiatan-edukasi.index') }}" class="inline-flex items-center gap-1 font-semibold text-brand-700 hover:text-brand-800 {{ request()->routeIs('admin.kegiatan-edukasi.*') ? 'text-brand-800 underline underline-offset-4' : '' }}">
+                    <a href="{{ route('admin.kegiatan-edukasi.index') }}" class="inline-flex items-center gap-1 whitespace-nowrap font-semibold text-brand-700 hover:text-brand-800 {{ request()->routeIs('admin.kegiatan-edukasi.*') ? 'text-brand-800 underline underline-offset-4' : '' }}">
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
@@ -66,16 +70,26 @@
                 @endcan
             </nav>
 
-            <div class="hidden items-center gap-3 md:flex">
+            {{-- Kolom Kanan: Nama Alias/Anonim & Tombol Keluar (2 kolom) --}}
+            <div class="hidden items-center justify-end gap-3 md:col-span-2 md:flex">
                 @auth
                     @if (Auth::user()->isPelapor())
-                        <a href="{{ route('profil-pelapor.edit') }}" title="Kelola Profil Alias & Mode Anonim" class="text-sm font-medium text-slate-600 hover:text-brand-700 hover:underline transition">
-                            {{ Auth::user()->nama_tampilan }}
+                        @php
+                            $profilPelapor = Auth::user()->profilPelapor;
+                            $isAnonim = $profilPelapor?->preferensi_anonim ?? false;
+                            $realName = $profilPelapor?->alias ?? Auth::user()->nama_tampilan;
+                        @endphp
+                        <a href="{{ route('profil-pelapor.edit') }}"
+                           id="navbar-user-name"
+                           data-real-name="{{ $realName }}"
+                           title="Kelola Profil Alias & Mode Anonim"
+                           class="inline-block w-28 truncate text-right text-sm font-medium text-slate-600 transition hover:text-brand-700 hover:underline">
+                            {{ $isAnonim ? 'Anonim' : $realName }}
                         </a>
                     @else
-                        <span class="text-sm text-slate-500">{{ Auth::user()->nama_tampilan }}</span>
+                        <span class="truncate text-sm text-slate-500">{{ Auth::user()->nama_tampilan }}</span>
                     @endif
-                    <form method="POST" action="{{ route('logout') }}">
+                    <form method="POST" action="{{ route('logout') }}" class="shrink-0">
                         @csrf
                         <x-button type="submit" variant="secondary" size="sm">Keluar</x-button>
                     </form>
