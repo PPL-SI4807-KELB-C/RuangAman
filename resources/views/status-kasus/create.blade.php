@@ -3,37 +3,33 @@
 @section('title', $title)
 
 @section('content')
-<div class="mx-auto max-w-2xl space-y-6">
-    <div class="flex items-center justify-between">
-        <div>
-            <div class="flex items-center gap-2 text-sm text-slate-500">
-                <a href="{{ route('admin.status-kasus.index') }}" class="hover:text-brand-600">Status Kasus</a>
-                <span>/</span>
-                <span class="text-slate-700">Tambah Baru</span>
-            </div>
-            <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-900">Tambah Status Kasus</h1>
-        </div>
-        <x-button href="{{ route('admin.status-kasus.index') }}" variant="secondary" size="sm">
-            Kembali
-        </x-button>
+<div class="mx-auto max-w-6xl px-4 sm:px-6 py-10 space-y-8">
+    <div>
+        <a href="{{ route('admin.status-kasus.index') }}" class="inline-flex items-center gap-1.5 text-xs text-neutral-600 transition-colors hover:text-neutral-900">
+            <span aria-hidden="true">&larr;</span>
+            <span>Kembali ke daftar</span>
+        </a>
+        <h1 class="mt-5 text-2xl font-extrabold tracking-tight text-neutral-900">Tambah Status Kasus</h1>
+        <p class="mt-1.5 text-xs text-neutral-500 leading-relaxed">
+            Tambahkan opsi status kasus baru untuk alur penanganan laporan.
+        </p>
     </div>
 
-    <x-card>
-        <form method="POST" action="{{ route('admin.status-kasus.store') }}">
+    <x-card class="lg:max-w-2xl">
+        <form method="POST" action="{{ route('admin.status-kasus.store') }}" class="space-y-6">
             @csrf
 
             @include('status-kasus._form')
 
-            <div class="mt-6 flex items-center justify-end gap-3 border-t border-slate-100 pt-5">
-                <x-button href="{{ route('admin.status-kasus.index') }}" variant="secondary" size="md">
-                    Batal
-                </x-button>
+            <div class="flex flex-wrap items-center gap-5 border-t border-neutral-300/60 pt-5">
                 <x-button type="submit" variant="primary" size="md">
                     Simpan Status
+                </x-button>
+                <x-button href="{{ route('admin.status-kasus.index') }}" variant="ghost" size="md">
+                    Batal
                 </x-button>
             </div>
         </form>
     </x-card>
 </div>
 @endsection
-

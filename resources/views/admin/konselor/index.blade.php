@@ -3,20 +3,20 @@
 @section('title', $title)
 
 @section('content')
-<div class="space-y-6">
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+<div class="mx-auto max-w-6xl px-4 sm:px-6 py-10 space-y-8">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-            <h1 class="text-2xl font-bold tracking-tight text-slate-900">Manajemen Data Konselor / Psikolog</h1>
-            <p class="mt-1 text-sm text-slate-500">Kelola biodata, spesialisasi/kualifikasi, dan status ketersediaan tenaga pendamping profesional.</p>
+            <h1 class="text-2xl font-extrabold tracking-tight text-neutral-900">Manajemen Data Konselor / Psikolog</h1>
+            <p class="mt-1.5 text-xs text-neutral-500 leading-relaxed max-w-2xl">
+                Kelola biodata, spesialisasi/kualifikasi, dan status ketersediaan tenaga pendamping profesional.
+            </p>
         </div>
-        <div>
-            <x-button href="{{ route('admin.konselor.create') }}" variant="primary" size="md">
-                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                <span>Tambah Konselor</span>
-            </x-button>
-        </div>
+        <x-button href="{{ route('admin.konselor.create') }}" variant="primary" size="md" class="shrink-0">
+            <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            <span>Tambah Konselor</span>
+        </x-button>
     </div>
 
     <!-- Filter & Pencarian -->
@@ -26,7 +26,7 @@
                 <label for="search" class="sr-only">Cari konselor</label>
                 <div class="relative">
                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                        <svg class="h-4 w-4 text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <svg class="h-4 w-4 text-neutral-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                         </svg>
                     </div>
@@ -36,7 +36,7 @@
                         name="search"
                         value="{{ $search }}"
                         placeholder="Cari nama konselor atau spesialisasi..."
-                        class="block w-full rounded-lg border border-slate-300 py-2.5 pl-9 pr-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                        class="block w-full rounded bg-white py-2.5 pl-9 pr-3 text-sm text-neutral-900 ring-1 ring-inset ring-neutral-300/70 placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400"
                     />
                 </div>
             </div>
@@ -46,7 +46,7 @@
                 <select
                     id="status"
                     name="status"
-                    class="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                    class="block w-full rounded bg-white px-3 py-2.5 text-sm text-neutral-900 ring-1 ring-inset ring-neutral-300/70 focus:outline-none focus:ring-1 focus:ring-neutral-400"
                 >
                     <option value="">Semua Status</option>
                     @foreach ($statusOptions as $val => $label)
@@ -55,12 +55,12 @@
                 </select>
             </div>
 
-            <div class="flex gap-2 md:col-span-2">
-                <x-button type="submit" variant="secondary" size="md" class="flex-1">
+            <div class="flex gap-3 md:col-span-2">
+                <x-button type="submit" variant="secondary" size="sm" class="flex-1">
                     Filter
                 </x-button>
                 @if ($search !== '' || $selectedStatus !== '')
-                    <x-button href="{{ route('admin.konselor.index') }}" variant="ghost" size="md">
+                    <x-button href="{{ route('admin.konselor.index') }}" variant="ghost" size="sm">
                         Reset
                     </x-button>
                 @endif
@@ -69,35 +69,35 @@
     </x-card>
 
     <!-- Daftar Konselor -->
-    <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+    <div class="overflow-hidden rounded-xl border border-neutral-200/70 bg-white">
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm text-slate-600">
-                <thead class="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
+            <table class="w-full text-left text-sm text-neutral-600">
+                <thead class="border-b border-neutral-200 bg-[#f2f2f2] text-[11px] uppercase tracking-wider text-neutral-500">
                     <tr>
-                        <th scope="col" class="px-6 py-3.5">Konselor & Spesialisasi</th>
-                        <th scope="col" class="px-6 py-3.5">Akun Pengguna</th>
-                        <th scope="col" class="px-6 py-3.5 text-center">Slot Jadwal</th>
-                        <th scope="col" class="px-6 py-3.5 text-center">Status</th>
-                        <th scope="col" class="px-6 py-3.5 text-right">Aksi</th>
+                        <th scope="col" class="px-6 py-3.5 font-medium">Konselor &amp; Spesialisasi</th>
+                        <th scope="col" class="px-6 py-3.5 font-medium">Akun Pengguna</th>
+                        <th scope="col" class="px-6 py-3.5 text-center font-medium">Slot Jadwal</th>
+                        <th scope="col" class="px-6 py-3.5 text-center font-medium">Status</th>
+                        <th scope="col" class="px-6 py-3.5 text-right font-medium">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
+                <tbody class="divide-y divide-neutral-200/70">
                     @forelse ($konselorList as $item)
-                        <tr class="hover:bg-slate-50/75 transition">
+                        <tr class="transition-colors hover:bg-[#f2f2f2]/70">
                             <td class="px-6 py-4">
-                                <a href="{{ route('admin.konselor.show', $item) }}" class="font-semibold text-slate-900 hover:text-brand-700">
+                                <a href="{{ route('admin.konselor.show', $item) }}" class="font-semibold text-neutral-900 hover:underline">
                                     {{ $item->nama }}
                                 </a>
-                                <p class="mt-0.5 text-xs text-slate-500">{{ $item->spesialisasi }}</p>
+                                <p class="mt-0.5 text-[11px] text-neutral-500">{{ $item->spesialisasi }}</p>
                             </td>
-                            <td class="px-6 py-4 text-xs text-slate-600">
-                                <div class="font-medium text-slate-800">
+                            <td class="px-6 py-4 text-xs text-neutral-600">
+                                <div class="font-medium text-neutral-900">
                                     {{ $item->user?->nama_tampilan ?? 'Akun tidak ditemukan' }}
                                 </div>
-                                <div class="mt-0.5 text-slate-500">Akun #{{ $item->user_id }}</div>
+                                <div class="mt-0.5 text-[11px] text-neutral-500">Akun #{{ $item->user_id }}</div>
                             </td>
                             <td class="whitespace-nowrap px-6 py-4 text-center">
-                                <span class="font-semibold text-slate-800">{{ (int) $item->jadwal_count }}</span>
+                                <span class="font-semibold text-neutral-900">{{ (int) $item->jadwal_count }}</span>
                             </td>
                             <td class="whitespace-nowrap px-6 py-4 text-center">
                                 <x-badge :variant="$item->statusBadgeVariant()">
@@ -105,41 +105,38 @@
                                 </x-badge>
                             </td>
                             <td class="whitespace-nowrap px-6 py-4 text-right">
-                                <div class="inline-flex items-center gap-1.5">
+                                <div class="flex items-center justify-end gap-3 text-xs font-medium">
                                     <a
                                         href="{{ route('admin.konselor.show', $item) }}"
-                                        class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 shadow-sm hover:bg-slate-50"
+                                        class="text-neutral-700 hover:text-neutral-900 hover:underline"
                                     >
                                         Detail
                                     </a>
                                     <a
                                         href="{{ route('admin.konselor.edit', $item) }}"
-                                        class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 shadow-sm hover:bg-slate-50"
+                                        class="text-neutral-700 hover:text-neutral-900 hover:underline"
                                     >
                                         Ubah
                                     </a>
-
-                                    @if ((int) $item->jadwal_count > 0)
-                                        <button
-                                            type="button"
-                                            disabled
+                                    @if ($item->jadwal_count > 0)
+                                        <span
                                             title="Tidak dapat dihapus karena sudah memiliki slot jadwal konseling. Ubah status menjadi Nonaktif."
-                                            class="inline-flex items-center rounded-lg border border-slate-200 bg-slate-100 px-2.5 py-1.5 text-xs font-medium text-slate-400 cursor-not-allowed"
+                                            class="cursor-not-allowed text-neutral-400"
                                         >
                                             Hapus
-                                        </button>
+                                        </span>
                                     @else
                                         <button
                                             type="button"
                                             @click="$dispatch('open-confirm-modal', {{ Js::from([
                                                 'title' => 'Hapus Data Konselor',
-                                                'message' => 'Apakah Anda yakin ingin menghapus permanen profil konselor \"' . $item->nama . '\"? Profil akun penggunanya tetap ada.',
+                                                'message' => 'Apakah Anda yakin ingin menghapus profil konselor \"' . $item->nama . '\"? Data akun penggunanya tetap ada.',
                                                 'action' => route('admin.konselor.destroy', $item),
                                                 'method' => 'DELETE',
                                                 'confirmText' => 'Ya, Hapus Permanen',
                                                 'confirmVariant' => 'danger',
                                             ]) }})"
-                                            class="inline-flex items-center rounded-lg border border-red-200 bg-red-50 px-2.5 py-1.5 text-xs font-medium text-safety-rose hover:bg-red-100"
+                                            class="text-safety-rose hover:underline"
                                         >
                                             Hapus
                                         </button>
@@ -149,7 +146,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-10 text-center text-sm text-slate-500">
+                            <td colspan="5" class="px-6 py-10 text-center text-sm text-neutral-500">
                                 Belum ada data konselor yang sesuai dengan pencarian atau filter.
                             </td>
                         </tr>
@@ -159,7 +156,7 @@
         </div>
 
         @if ($konselorList->hasPages())
-            <div class="border-t border-slate-200 bg-slate-50/50 px-6 py-4">
+            <div class="border-t border-neutral-200/70 bg-[#f2f2f2]/40 px-6 py-4">
                 {{ $konselorList->links() }}
             </div>
         @endif

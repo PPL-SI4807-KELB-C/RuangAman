@@ -85,7 +85,7 @@
 
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
-            <label for="metode" class="block text-sm font-medium text-slate-700 mb-1">
+            <label for="metode" class="mb-1.5 block text-xs font-semibold text-neutral-800">
                 Metode Pelaksanaan <span class="text-safety-rose" aria-hidden="true">*</span>
             </label>
             <select
@@ -93,14 +93,14 @@
                 id="metode"
                 x-model="metode"
                 required
-                class="block w-full rounded-lg border shadow-sm text-sm transition bg-white px-3 py-2.5 {{ $errors->has('metode') ? 'border-safety-rose focus:ring-safety-rose focus:border-safety-rose' : 'border-slate-300 focus:ring-brand-500 focus:border-brand-500' }}"
+                class="block w-full rounded bg-white px-3.5 py-2.5 text-sm text-neutral-900 ring-1 ring-inset ring-neutral-300/70 focus:outline-none focus:ring-1 focus:ring-neutral-400 {{ $errors->has('metode') ? 'ring-safety-rose focus:ring-safety-rose' : '' }}"
             >
                 @foreach ($metodeOptions as $val => $label)
                     <option value="{{ $val }}" @selected($selectedMetode === $val)>{{ $label }}</option>
                 @endforeach
             </select>
             @error('metode')
-                <p class="mt-1 text-xs text-safety-rose">{{ $message }}</p>
+                <p class="mt-1.5 text-[11px] text-safety-rose">{{ $message }}</p>
             @enderror
         </div>
 
@@ -115,7 +115,7 @@
     </div>
 
     <div>
-        <label for="lokasi_atau_tautan" class="block text-sm font-medium text-slate-700 mb-1">
+        <label for="lokasi_atau_tautan" class="mb-1.5 block text-xs font-semibold text-neutral-800">
             <span x-text="metode === 'online' ? 'Tautan Meeting / Webinar' : 'Alamat Lokasi Pelaksanaan'"></span>
         </label>
         <input
@@ -124,15 +124,14 @@
             id="lokasi_atau_tautan"
             value="{{ old('lokasi_atau_tautan', $kegiatan->lokasi_atau_tautan) }}"
             :placeholder="metode === 'online' ? 'Contoh: https://zoom.us/j/123456789' : 'Contoh: Aula Serbaguna Gedung C, Bandung'"
-            class="block w-full rounded-lg border shadow-sm text-sm transition px-3 py-2.5 {{ $errors->has('lokasi_atau_tautan') ? 'border-safety-rose text-safety-rose focus:ring-safety-rose focus:border-safety-rose' : 'border-slate-300 focus:ring-brand-500 focus:border-brand-500' }}"
+            class="block w-full rounded bg-white px-3.5 py-2.5 text-sm text-neutral-900 ring-1 ring-inset ring-neutral-300/70 placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 {{ $errors->has('lokasi_atau_tautan') ? 'ring-safety-rose text-safety-rose focus:ring-safety-rose' : '' }}"
         />
-        <p class="mt-1 text-xs text-slate-500">
+        <p class="mt-1.5 text-[11px] leading-relaxed text-neutral-500">
             <span x-show="metode === 'online'">Tautan meeting hanya akan ditampilkan kepada peserta yang sudah terdaftar aktif.</span>
             <span x-show="metode === 'offline'" x-cloak>Cantumkan alamat lengkap ruangan/gedung tempat kegiatan berlangsung.</span>
         </p>
         @error('lokasi_atau_tautan')
-            <p class="mt-1 text-xs text-safety-rose">{{ $message }}</p>
+            <p class="mt-1.5 text-[11px] text-safety-rose">{{ $message }}</p>
         @enderror
     </div>
 </div>
-

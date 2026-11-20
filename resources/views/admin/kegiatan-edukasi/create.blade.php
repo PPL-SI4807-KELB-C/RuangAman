@@ -3,35 +3,33 @@
 @section('title', $title)
 
 @section('content')
-<div class="mx-auto max-w-3xl space-y-6">
-    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-            <h1 class="text-2xl font-bold tracking-tight text-slate-900">Tambah Kegiatan Edukasi</h1>
-            <p class="mt-1 text-sm text-slate-500">Buat jadwal webinar atau lokakarya edukasi baru untuk pengguna RuangAman.</p>
-        </div>
-        <div>
-            <x-button href="{{ route('admin.kegiatan-edukasi.index') }}" variant="secondary" size="sm">
-                &larr; Kembali ke Daftar
-            </x-button>
-        </div>
+<div class="mx-auto max-w-6xl px-4 sm:px-6 py-10 space-y-8">
+    <div>
+        <a href="{{ route('admin.kegiatan-edukasi.index') }}" class="inline-flex items-center gap-1.5 text-xs text-neutral-600 transition-colors hover:text-neutral-900">
+            <span aria-hidden="true">&larr;</span>
+            <span>Kembali ke daftar</span>
+        </a>
+        <h1 class="mt-5 text-2xl font-extrabold tracking-tight text-neutral-900">Tambah Kegiatan Edukasi</h1>
+        <p class="mt-1.5 text-xs text-neutral-500 leading-relaxed">
+            Buat jadwal webinar atau lokakarya edukasi baru untuk pengguna RuangAman.
+        </p>
     </div>
 
-    <x-card>
+    <x-card class="lg:max-w-3xl">
         <form method="POST" action="{{ route('admin.kegiatan-edukasi.store') }}" class="space-y-6">
             @csrf
 
             @include('admin.kegiatan-edukasi._form')
 
-            <div class="flex flex-col-reverse gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:justify-end">
-                <x-button href="{{ route('admin.kegiatan-edukasi.index') }}" variant="secondary" size="md">
-                    Batal
-                </x-button>
+            <div class="flex flex-wrap items-center gap-5 border-t border-neutral-300/60 pt-5">
                 <x-button type="submit" variant="primary" size="md">
                     Simpan Kegiatan
+                </x-button>
+                <x-button href="{{ route('admin.kegiatan-edukasi.index') }}" variant="ghost" size="md">
+                    Batal
                 </x-button>
             </div>
         </form>
     </x-card>
 </div>
 @endsection
-
