@@ -410,7 +410,7 @@ Gunakan skala 4px: 4 · 8 · 12 · 16 · 24 · 32 · 48 · 64.
 - [ ] Input `text-base sm:text-sm` (cegah auto-zoom iOS)
 - [ ] `submitGuard` + teks "Mengirim…" di semua form, terutama `laporan/create`
 - [ ] `x-button` md `min-h-11`; checkbox/radio `h-5 w-5`
-- [ ] Modul Artikel: `slate` → `neutral`, input → komponen, hapus shadow kartu, pakai `x-empty-state`
+- [x] Modul Artikel: `slate` → `neutral`, input → komponen, hapus shadow kartu, pakai `x-empty-state`
 
 ### Prioritas sedang
 - [ ] `x-page-header` dipakai di semua halaman (prop `size="lg"` untuk publik)
