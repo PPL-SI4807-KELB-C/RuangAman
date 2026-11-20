@@ -1,10 +1,13 @@
 @props([
     'variant' => 'info',
+    'type' => null,
+    'message' => null,
     'title' => null,
     'dismissible' => false,
 ])
 
 @php
+$variant = $type ?? $variant;
 $variants = [
     'info' => 'bg-blue-50 border-blue-400 text-blue-800',
     'success' => 'bg-green-50 border-green-400 text-green-800',
@@ -23,7 +26,7 @@ $classes = 'rounded-lg border-l-4 p-4 ' . ($variants[$variant] ?? $variants['inf
                 <h3 class="text-sm font-semibold">{{ $title }}</h3>
             @endif
             <div class="text-sm {{ $title ? 'mt-1' : '' }}">
-                {{ $slot }}
+                {{ $message ?? $slot }}
             </div>
         </div>
         @if ($dismissible)

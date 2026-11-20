@@ -39,6 +39,11 @@ class PenangananKasus extends Model
         return $this->belongsTo(LaporanKasus::class, 'laporan_id', 'laporan_id');
     }
 
+    public function laporan(): BelongsTo
+    {
+        return $this->laporanKasus();
+    }
+
     /**
      * Relasi ke User sebagai petugas/konselor pendamping.
      */
@@ -55,4 +60,3 @@ class PenangananKasus extends Model
         return $this->hasMany(LogPenanganan::class, 'penanganan_id', 'penanganan_id');
     }
 }
-
