@@ -13,7 +13,7 @@ Sistem RuangAman dirancang menggunakan arsitektur **Monolit Modular Berpola MVC 
 |                         LAPISAN KLIEN (Client)                          |
 |  - Web Browser Desktop & Mobile (Responsive min. 360px)                 |
 |  - Blade Templates + Tailwind CSS + Alpine.js (Reaktivitas UI)          |
-|  - Chart.js (Visualisasi Statistik Dashboard)                           |
+|  - Bar chart CSS murni (Visualisasi Statistik Dashboard, deviasi #14)   |
 |  - Emergency Action: Tombol "Keluar Cepat" (Quick Exit)                 |
 +-------------------------------------------------------------------------+
                                      |

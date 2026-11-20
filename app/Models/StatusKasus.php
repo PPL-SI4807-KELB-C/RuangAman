@@ -28,4 +28,17 @@ class StatusKasus extends Model
     {
         return $this->laporanKasus()->exists();
     }
+
+    /**
+     * Titik status mengikuti bahasa desain: Pending kuning, Proses biru, Selesai hijau, Ditolak merah.
+     */
+    public function statusBadgeVariant(): string
+    {
+        return match ($this->nama_status) {
+            'Proses' => 'info',
+            'Selesai' => 'success',
+            'Ditolak' => 'danger',
+            default => 'warning',
+        };
+    }
 }

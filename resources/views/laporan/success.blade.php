@@ -45,7 +45,7 @@
         <div class="space-y-2 max-w-xl pt-2">
             <h2 class="text-sm font-semibold text-neutral-900">Catat kode ini di tempat yang aman.</h2>
             <p class="text-xs text-neutral-600 leading-relaxed">
-                Kode memberi akses ke laporan Anda. Jangan bagikan kepada orang lain. Tanpa akun, kode yang hilang tidak dapat dipulihkan lewat nama.
+                Kode memberi akses ke laporan Anda di halaman lacak. Jangan bagikan kepada orang lain. Jika kode hilang, riwayat laporan tetap tampil di dashboard akun Anda.
             </p>
         </div>
 

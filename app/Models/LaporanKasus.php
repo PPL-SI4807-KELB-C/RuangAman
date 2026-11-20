@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class LaporanKasus extends Model
 {
+    /** Email akun anonim bersama peninggal laporan yang dulu dibuat tanpa login. */
+    public const AKUN_ANONIM_BERSAMA = 'tamu@ruangaman.test';
+
     protected $table = 'laporan_kasus';
 
     protected $primaryKey = 'laporan_id';
@@ -52,5 +55,13 @@ class LaporanKasus extends Model
     public function penangananKasus(): HasOne
     {
         return $this->hasOne(PenangananKasus::class, 'laporan_id', 'laporan_id');
+    }
+
+    /**
+     * Hanya laporan peninggal alur tanpa akun yang boleh diklaim; laporan milik Pelapor lain tidak bisa direbut.
+     */
+    public function bisaDitautkan(): bool
+    {
+        return $this->user?->email === self::AKUN_ANONIM_BERSAMA;
     }
 }

@@ -21,8 +21,8 @@ class LaporanKasusController extends Controller
 
     public function create(): View
     {
-        $profil = Auth::user()?->profilPelapor;
-        $alias = $profil?->alias ?? (Auth::user()?->nama_tampilan ?? 'Pelapor A');
+        $user = Auth::user();
+        $alias = $user->profilPelapor?->alias ?? $user->nama_tampilan;
 
         return view('laporan.create', [
             'title' => 'Buat Laporan — RuangAman',
@@ -46,8 +46,10 @@ class LaporanKasusController extends Controller
 
     public function store(StoreLaporanKasusRequest $request): RedirectResponse
     {
+        $user = $request->user();
+
         $result = $this->submissionService->submit(
-            Auth::user(),
+            $user,
             $request->validated(),
             $request->file('lampiran', [])
         );
@@ -55,7 +57,7 @@ class LaporanKasusController extends Controller
         return redirect()
             ->route('laporan.success')
             ->with('kode_laporan', $result['kode_laporan'])
-            ->with('alias', $request->input('alias', 'Pelapor A'));
+            ->with('alias', $user->profilPelapor?->alias ?? $user->nama_tampilan);
     }
 
     public function success(): View
@@ -74,17 +76,19 @@ class LaporanKasusController extends Controller
 
     public function trackForm(): View
     {
-        $dummyLaporan = LaporanKasus::query()->latest('created_at')->first();
-
         return view('laporan.track-result', [
             'title' => 'Lacak Laporan — RuangAman',
-            'laporan' => $dummyLaporan,
-            'kode_laporan' => $dummyLaporan?->kode_laporan ?? 'Q7M2K9',
+            'laporan' => null,
+            'kode_laporan' => 'Q7M2K9',
         ]);
     }
 
     public function trackResult(Request $request): View
     {
+        $request->validate([
+            'kode_laporan' => ['required', 'string', 'max:50'],
+        ]);
+
         $kode = $request->input('kode_laporan');
 
         $laporan = LaporanKasus::query()
@@ -95,7 +99,8 @@ class LaporanKasusController extends Controller
         return view('laporan.track-result', [
             'title' => 'Lacak Laporan — RuangAman',
             'laporan' => $laporan,
-            'kode_laporan' => $kode ?? 'Q7M2K9',
+            'kode_laporan' => $kode,
+            'tidakDitemukan' => $laporan === null,
         ]);
     }
 
@@ -132,7 +137,17 @@ class LaporanKasusController extends Controller
             return redirect()->route('login')->with('error', 'Silakan masuk atau daftar terlebih dahulu untuk menautkan laporan ini.');
         }
 
+        if (! Auth::user()->isPelapor()) {
+            abort(403, 'Hanya Pelapor yang dapat menautkan laporan ke akunnya.');
+        }
+
         $laporan = LaporanKasus::query()->where('kode_laporan', $request->input('kode_laporan'))->firstOrFail();
+
+        if (! $laporan->bisaDitautkan()) {
+            return redirect()->route('lacak.hasil', ['kode_laporan' => $laporan->kode_laporan])
+                ->with('error', 'Laporan ini sudah terhubung dengan akun lain sehingga tidak dapat ditautkan ulang.');
+        }
+
         $laporan->update(['user_id' => Auth::id()]);
 
         return redirect()->route('lacak.hasil', ['kode_laporan' => $laporan->kode_laporan])
