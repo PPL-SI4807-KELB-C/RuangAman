@@ -1,4 +1,6 @@
-<x-layouts.app :title="$title">
+@extends('layouts.app')
+@section('title', $title)
+@section('content')
     <div class="w-full bg-[#FAF9F7] min-h-[calc(100vh-160px)]" x-data="{
         deleteModalOpen: false,
         openDeleteModal() {
@@ -176,4 +178,4 @@
             </div>
         </div>
     </div>
-</x-layouts.app>
+@endsection
