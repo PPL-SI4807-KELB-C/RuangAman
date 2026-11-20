@@ -1,63 +1,29 @@
 <div class="space-y-5">
     <!-- Pilihan Laporan Kasus -->
-    <div>
-        <label for="laporan_id" class="block text-sm font-medium text-slate-700 mb-1">
-            Laporan Kasus <span class="text-safety-rose" aria-hidden="true">*</span>
-        </label>
-        <select
-            name="laporan_id"
-            id="laporan_id"
-            required
-            class="block w-full rounded-lg border shadow-sm text-sm transition bg-white px-3 py-2.5 {{ $errors->has('laporan_id') ? 'border-safety-rose focus:ring-safety-rose focus:border-safety-rose' : 'border-slate-300 focus:ring-brand-500 focus:border-brand-500' }}"
-        >
-            <option value="" disabled {{ old('laporan_id', $penanganan->laporan_id) ? '' : 'selected' }}>
-                -- Pilih Laporan Kasus --
-            </option>
-            @foreach ($laporanList as $lap)
-                <option
-                    value="{{ $lap->laporan_id }}"
-                    {{ old('laporan_id', $penanganan->laporan_id) == $lap->laporan_id ? 'selected' : '' }}
-                >
-                    [{{ $lap->kode_laporan }}] {{ Str::limit($lap->judul, 60) }} &bull; Status: {{ $lap->statusKasus?->nama_status ?? 'N/A' }}
-                </option>
-            @endforeach
-        </select>
-        @if ($errors->has('laporan_id'))
-            <p class="mt-1 text-xs text-safety-rose">{{ $errors->first('laporan_id') }}</p>
-        @else
-            <p class="mt-1 text-xs text-slate-500">Satu laporan kasus hanya dapat memiliki satu penugasan aktif (laporan_id unik).</p>
-        @endif
-    </div>
+    <x-select
+        name="laporan_id"
+        id="laporan_id"
+        label="Laporan Kasus"
+        :options="$laporanList->mapWithKeys(fn($lap) => [$lap->laporan_id => '[' . $lap->kode_laporan . '] ' . \Illuminate\Support\Str::limit($lap->judul, 60) . ' • Status: ' . ($lap->statusKasus?->nama_status ?? 'N/A')])->all()"
+        :value="old('laporan_id', $penanganan->laporan_id)"
+        placeholder="-- Pilih Laporan Kasus --"
+        helper="Satu laporan kasus hanya dapat memiliki satu penugasan aktif (laporan_id unik)."
+        :error="$errors->first('laporan_id')"
+        required
+    />
 
     <!-- Pilihan Petugas / Konselor -->
-    <div>
-        <label for="petugas_id" class="block text-sm font-medium text-slate-700 mb-1">
-            Petugas / Konselor Pendamping <span class="text-safety-rose" aria-hidden="true">*</span>
-        </label>
-        <select
-            name="petugas_id"
-            id="petugas_id"
-            required
-            class="block w-full rounded-lg border shadow-sm text-sm transition bg-white px-3 py-2.5 {{ $errors->has('petugas_id') ? 'border-safety-rose focus:ring-safety-rose focus:border-safety-rose' : 'border-slate-300 focus:ring-brand-500 focus:border-brand-500' }}"
-        >
-            <option value="" disabled {{ old('petugas_id', $penanganan->petugas_id) ? '' : 'selected' }}>
-                -- Pilih Petugas / Konselor --
-            </option>
-            @foreach ($daftarPetugas as $p)
-                <option
-                    value="{{ $p->user_id }}"
-                    {{ old('petugas_id', $penanganan->petugas_id) == $p->user_id ? 'selected' : '' }}
-                >
-                    {{ $p->nama_tampilan }} ({{ $p->email }}) &bull; Role: {{ $p->role?->nama_role }}
-                </option>
-            @endforeach
-        </select>
-        @if ($errors->has('petugas_id'))
-            <p class="mt-1 text-xs text-safety-rose">{{ $errors->first('petugas_id') }}</p>
-        @else
-            <p class="mt-1 text-xs text-slate-500">Pilih tenaga pendamping atau Admin Kasus yang akan menangani kasus ini.</p>
-        @endif
-    </div>
+    <x-select
+        name="petugas_id"
+        id="petugas_id"
+        label="Petugas / Konselor Pendamping"
+        :options="$daftarPetugas->mapWithKeys(fn($p) => [$p->user_id => $p->nama_tampilan . ' (' . $p->email . ') • Role: ' . ($p->role?->nama_role ?? '-')])->all()"
+        :value="old('petugas_id', $penanganan->petugas_id)"
+        placeholder="-- Pilih Petugas / Konselor --"
+        helper="Pilih tenaga pendamping atau Admin Kasus yang akan menangani kasus ini."
+        :error="$errors->first('petugas_id')"
+        required
+    />
 
     <!-- Tanggal Mulai & Tanggal Selesai -->
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -96,4 +62,3 @@
         helper="Catatan internal yang dapat dibaca oleh konselor/petugas yang ditugaskan."
     />
 </div>
-
