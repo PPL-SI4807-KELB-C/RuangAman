@@ -1,135 +1,118 @@
-<!DOCTYPE html>
+@extends('layouts.app')
 
-<html lang="id">
+@section('title', 'Detail Laporan ' . $laporan->kode_laporan . ' - RuangAman')
 
-<head>
+@section('content')
+<div class="mx-auto max-w-4xl py-6">
+    {{-- Header Kode Pelacakan & Status --}}
+    @php
+        $statusName = $laporan->status->nama_status ?? 'Pending';
+        $isPending = strtolower($statusName) === 'pending';
+    @endphp
 
-    <meta charset="UTF-8">
+    <div class="mb-6 flex flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:flex-row sm:items-center">
+        <div>
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Kode Pelacakan</span>
+            <h1 class="mt-1 font-mono text-2xl font-bold tracking-tight text-brand-700 sm:text-3xl">
+                {{ $laporan->kode_laporan }}
+            </h1>
+            @if ($laporan->judul)
+                <p class="mt-1 text-sm font-medium text-slate-700">{{ $laporan->judul }}</p>
+            @endif
+        </div>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Detail Laporan {{ $laporan->kode_laporan }} - RuangAman</title>
-
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-</head>
-
-<body class="bg-slate-50 text-slate-800 min-h-screen">
-
-    <nav class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center">
-
-        <a href="{{ route('laporan.index') }}" class="font-bold text-xl text-blue-900">RuangAman</a>
-
-        <a href="https://www.google.com" class="px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700">Keluar Cepat (Esc)</a>
-
-    </nav>
-
-
-
-    <main class="max-w-3xl mx-auto py-8 px-4 space-y-6">
-
-        <div class="flex justify-between items-center">
-
-            <div>
-
-                <span class="text-xs font-mono text-slate-500">KODE PELACAKAN</span>
-
-                <h1 class="text-2xl font-bold text-blue-900 font-mono">{{ $laporan->kode_laporan }}</h1>
-
-            </div>
-
-            <span class="px-3 py-1 rounded-full text-sm font-semibold bg-amber-100 text-amber-800">
-
-                {{ $laporan->status->nama_status ?? 'Pending' }}
-
+        <div class="flex items-center gap-3">
+            <span class="inline-flex items-center rounded-full px-3.5 py-1.5 text-xs font-semibold {{ $isPending ? 'bg-amber-100 text-amber-800' : 'bg-brand-100 text-brand-800' }}">
+                {{ $statusName }}
             </span>
-
         </div>
+    </div>
 
-
-
-        @if(session('success'))
-
-            <div class="p-4 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-sm">{{ session('success') }}</div>
-
-        @endif
-
-
-
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4 text-sm">
-
-            <div class="grid grid-cols-2 gap-4">
-
-                <div><span class="text-slate-500 block">Kategori Kekerasan</span><strong>{{ $laporan->kategori_kekerasan }}</strong></div>
-
-                <div><span class="text-slate-500 block">Tingkat Urgensi</span><strong>{{ ucfirst($laporan->tingkat_urgensi) }}</strong></div>
-
-                <div><span class="text-slate-500 block">Waktu Kejadian</span><strong>{{ $laporan->waktu_kejadian }}</strong></div>
-
-                <div><span class="text-slate-500 block">Mode Privasi</span><strong>{{ $laporan->mode_anonim ? 'Anonim' : 'Alias Terlihat' }}</strong></div>
-
-            </div>
-
-            <div>
-
-                <span class="text-slate-500 block">Lokasi Kejadian</span>
-
-                <p class="font-medium">{{ $laporan->lokasi_kejadian }}</p>
-
-            </div>
-
-            <div>
-
-                <span class="text-slate-500 block">Kronologi</span>
-
-                <p class="whitespace-pre-line text-slate-700 mt-1">{{ $laporan->kronologi }}</p>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-
-            <h2 class="text-base font-semibold text-slate-900 mb-3">Lampiran Bukti Privat ({{ $laporan->lampirans->count() }})</h2>
-
-            @forelse($laporan->lampirans as $file)
-
-                <div class="py-2 flex justify-between items-center border-b last:border-0 border-slate-100 text-sm">
-
-                    <span>{{ $file->nama_file }} ({{ number_format($file->ukuran_file / 1024, 1) }} KB)</span>
-
-                    <a href="{{ route('laporan.lampiran.download', $file) }}" class="text-blue-700 font-semibold hover:underline">Unduh / Lihat</a>
-
+    {{-- Kartu Detail Informasi Laporan --}}
+    <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="p-6 sm:p-8">
+            <div class="grid gap-6 sm:grid-cols-2">
+                <div>
+                    <span class="block text-xs font-medium text-slate-500">Kategori Kekerasan</span>
+                    <p class="mt-1 text-sm font-semibold text-slate-900">{{ $laporan->kategori_kekerasan }}</p>
                 </div>
 
-            @empty
+                <div>
+                    <span class="block text-xs font-medium text-slate-500">Tingkat Urgensi</span>
+                    <p class="mt-1 text-sm font-semibold capitalize text-slate-900">{{ $laporan->tingkat_urgensi }}</p>
+                </div>
 
-                <p class="text-sm text-slate-500">Tidak ada lampiran bukti.</p>
+                <div>
+                    <span class="block text-xs font-medium text-slate-500">Waktu Kejadian</span>
+                    <p class="mt-1 text-sm font-semibold text-slate-900">
+                        {{ $laporan->waktu_kejadian?->format('Y-m-d H:i:s') ?? '-' }}
+                    </p>
+                </div>
 
-            @endforelse
+                <div>
+                    <span class="block text-xs font-medium text-slate-500">Mode Privasi</span>
+                    <div class="mt-1">
+                        @if ($laporan->mode_anonim)
+                            <span class="inline-flex items-center rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-semibold text-brand-700">
+                                Anonim
+                            </span>
+                        @else
+                            <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700">
+                                Teridentifikasi
+                            </span>
+                        @endif
+                    </div>
+                </div>
 
+                <div class="sm:col-span-2">
+                    <span class="block text-xs font-medium text-slate-500">Lokasi Kejadian</span>
+                    <p class="mt-1 text-sm font-semibold text-slate-900">{{ $laporan->lokasi_kejadian }}</p>
+                </div>
+            </div>
+
+            <hr class="my-6 border-slate-200">
+
+            {{-- Kronologi Kejadian --}}
+            <div>
+                <span class="block text-xs font-medium text-slate-500">Kronologi Kejadian</span>
+                <div class="mt-2 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-relaxed text-slate-800 whitespace-pre-wrap">{{ $laporan->kronologi }}</div>
+            </div>
+
+            {{-- Lampiran Bukti Privat --}}
+            <div class="mt-6">
+                <span class="block text-xs font-medium text-slate-500">Lampiran Bukti</span>
+
+                @if ($laporan->lampirans && $laporan->lampirans->isNotEmpty())
+                    <ul class="mt-2 divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white">
+                        @foreach ($laporan->lampirans as $lampiran)
+                            <li class="flex items-center justify-between gap-4 px-4 py-3 text-sm">
+                                <div class="min-w-0 flex-1">
+                                    <p class="truncate font-medium text-slate-900">{{ $lampiran->nama_file }}</p>
+                                    @if ($lampiran->ukuran_byte)
+                                        <p class="text-xs text-slate-500">{{ number_format($lampiran->ukuran_byte / 1024, 1) }} KB</p>
+                                    @endif
+                                </div>
+
+                                <a href="{{ route('laporan.lampiran.download', $lampiran) }}"
+                                   class="inline-flex shrink-0 items-center rounded-lg bg-brand-50 px-3 py-1.5 text-xs font-semibold text-brand-700 transition hover:bg-brand-100">
+                                    Unduh Bukti
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <p class="mt-1.5 text-sm text-slate-500">Tidak ada lampiran bukti yang diunggah.</p>
+                @endif
+            </div>
         </div>
 
-
-
-        <div class="flex justify-between">
-
-            <a href="{{ route('laporan.index') }}" class="px-4 py-2 border border-slate-300 rounded-lg text-sm font-medium">Kembali ke Daftar</a>
-
-            @if(($laporan->status->nama_status ?? '') === 'Pending')
-
-                <a href="{{ route('laporan.edit', $laporan) }}" class="px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-semibold hover:bg-amber-700">Edit Laporan</a>
-
-            @endif
-
+        {{-- Footer Aksi: Hanya Tombol Kembali --}}
+        <div class="flex items-center justify-end border-t border-slate-200 bg-slate-50 px-6 py-4">
+            <a href="{{ route('laporan.index') }}"
+               class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50">
+                Kembali
+            </a>
         </div>
-
-    </main>
-
-    <script>document.addEventListener('keydown', e => { if (e.key === 'Escape') window.location.replace('https://www.google.com'); });</script>
-
-</body>
-
-</html>
+    </div>
+</div>
+@endsection

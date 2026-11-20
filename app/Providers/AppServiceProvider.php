@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 use App\Models\KegiatanEdukasi;
+use App\Models\LaporanKasus;
 use App\Models\PenangananKasus;
 use App\Models\PendaftaranKegiatan;
 use App\Models\StatusKasus;
 use App\Models\User;
 use App\Policies\KegiatanEdukasiPolicy;
+use App\Policies\LaporanKasusPolicy;
 use App\Policies\PenangananKasusPolicy;
 use App\Policies\PendaftaranKegiatanPolicy;
 use App\Policies\StatusKasusPolicy;
@@ -32,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useTailwind();
 
+        Gate::policy(LaporanKasus::class, LaporanKasusPolicy::class);
         Gate::policy(StatusKasus::class, StatusKasusPolicy::class);
         Gate::policy(PenangananKasus::class, PenangananKasusPolicy::class);
         Gate::policy(KegiatanEdukasi::class, KegiatanEdukasiPolicy::class);
