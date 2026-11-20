@@ -9,7 +9,7 @@
     <section class="w-full bg-white pt-14 pb-10 sm:pt-16">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             <div class="lg:col-span-8 space-y-3">
-                <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">
+                <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">
                     Ruang Admin &middot; Penanganan Kasus
                 </p>
                 <h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight leading-[1.15]">
@@ -33,13 +33,13 @@
     </section>
 
     {{-- Statistik & laporan terbaru --}}
-    <section class="w-full bg-[#f2f2f2] border-t border-neutral-200/70 py-14 sm:py-16">
+    <section class="w-full bg-surface border-t border-neutral-200/70 py-14 sm:py-16">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 space-y-12">
 
             {{-- FR-04: jumlah laporan per status --}}
             <div>
                 <div class="flex items-baseline justify-between gap-6">
-                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Jumlah laporan per status</p>
+                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Jumlah laporan per status</p>
                     <p class="text-xs text-neutral-600">{{ $totalLaporan }} laporan total</p>
                 </div>
 
@@ -48,7 +48,7 @@
                         <div class="rounded-xl border border-neutral-200/60 bg-white p-6">
                             <x-badge :variant="$status->statusBadgeVariant()">{{ $status->nama_status }}</x-badge>
                             <p class="mt-5 text-3xl font-extrabold tracking-tight text-neutral-900">{{ $status->laporan_kasus_count }}</p>
-                            <p class="mt-1 text-xs text-neutral-500">
+                            <p class="mt-1 text-xs text-neutral-600">
                                 {{ $totalLaporan > 0 ? round($status->laporan_kasus_count / $totalLaporan * 100) : 0 }}% dari seluruh laporan
                             </p>
                         </div>
@@ -66,7 +66,7 @@
             {{-- FR-04: grafik konseling per bulan --}}
             <div class="rounded-xl border border-neutral-200/60 bg-white p-6 sm:p-8">
                 <div class="flex items-baseline justify-between gap-6">
-                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Aktivitas konseling per bulan</p>
+                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Aktivitas konseling per bulan</p>
                     <p class="text-xs text-neutral-600">{{ $konselingPerBulan->sum('jumlah') }} sesi 6 bulan terakhir</p>
                 </div>
 
@@ -83,12 +83,12 @@
                                     aria-label="{{ $bulan['jumlah'] }} sesi pada {{ $bulan['label'] }}"
                                 ></div>
                             </div>
-                            <span class="text-[11px] text-neutral-500">{{ $bulan['label'] }}</span>
+                            <span class="text-[11px] text-neutral-600">{{ $bulan['label'] }}</span>
                         </div>
                     @endforeach
                 </div>
 
-                <p class="mt-6 border-t border-neutral-300/60 pt-4 text-[11px] leading-relaxed text-neutral-500">
+                <p class="mt-6 border-t border-neutral-300/60 pt-4 text-[11px] leading-relaxed text-neutral-600">
                     Grafik dihitung dari tabel sesi konseling. Modul jadwal &amp; sesi konseling belum diimplementasikan,
                     sehingga angka akan muncul setelah modul tersebut beroperasi.
                 </p>
@@ -96,12 +96,12 @@
 
             {{-- FR-04: laporan terbaru --}}
             <div>
-                <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Laporan terbaru</p>
+                <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Laporan terbaru</p>
 
                 <div class="mt-5 overflow-hidden rounded-xl border border-neutral-200/70 bg-white">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-sm text-neutral-600">
-                            <thead class="border-b border-neutral-200 bg-[#f2f2f2] text-[11px] uppercase tracking-wider text-neutral-500">
+                            <thead class="border-b border-neutral-200 bg-surface text-[11px] uppercase tracking-wider text-neutral-600">
                                 <tr>
                                     <th scope="col" class="px-6 py-3.5 font-medium">Laporan</th>
                                     <th scope="col" class="px-6 py-3.5 font-medium">Status</th>
@@ -112,10 +112,10 @@
                             </thead>
                             <tbody class="divide-y divide-neutral-200/70">
                                 @forelse ($laporanTerbaru as $laporan)
-                                    <tr class="transition-colors hover:bg-[#f2f2f2]/70">
+                                    <tr class="transition-colors hover:bg-surface/70">
                                         <td class="px-6 py-4">
                                             <div class="font-semibold text-neutral-900">{{ $laporan->judul }}</div>
-                                            <p class="mt-0.5 text-[11px] text-neutral-500">
+                                            <p class="mt-0.5 text-[11px] text-neutral-600">
                                                 {{ $laporan->kategori_kekerasan }} &bull; Kode {{ $laporan->kode_laporan }}
                                             </p>
                                         </td>
@@ -144,7 +144,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="px-6 py-12 text-center text-xs text-neutral-500">
+                                        <td colspan="5" class="px-6 py-12 text-center text-xs text-neutral-600">
                                             Belum ada laporan masuk.
                                         </td>
                                     </tr>

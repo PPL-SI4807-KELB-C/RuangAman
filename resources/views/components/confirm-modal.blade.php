@@ -103,7 +103,7 @@
                     <button
                         type="button"
                         @click="closeModal()"
-                        class="inline-flex w-full sm:w-auto items-center justify-center rounded border border-neutral-300/70 bg-white px-5 py-2.5 text-xs font-medium text-neutral-800 transition-colors hover:bg-neutral-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+                        class="inline-flex w-full sm:w-auto items-center justify-center rounded border border-neutral-300/70 bg-white px-5 py-2.5 text-xs font-medium text-neutral-800 transition-colors hover:bg-neutral-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
                     >
                         Batal
                     </button>
@@ -111,7 +111,7 @@
                         type="button"
                         x-ref="confirmButton"
                         @click="$refs.confirmForm.submit()"
-                        class="inline-flex w-full sm:w-auto items-center justify-center rounded px-5 py-2.5 text-xs font-medium text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+                        class="inline-flex w-full sm:w-auto items-center justify-center rounded px-5 py-2.5 text-xs font-medium text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
                         :class="confirmVariant === 'danger' ? 'bg-safety-rose hover:bg-safety-alert' : 'bg-brand-600 hover:bg-brand-700'"
                         x-text="confirmText"
                     ></button>

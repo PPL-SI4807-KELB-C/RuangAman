@@ -13,8 +13,8 @@
 @php
 $id ??= $name;
 $hasError = $error !== null && $error !== '';
-$field = 'block w-full rounded bg-white px-3.5 py-2.5 text-sm text-neutral-900 ring-1 ring-inset transition focus:outline-none focus:ring-1 '
-    . ($hasError ? 'ring-safety-rose focus:ring-safety-rose' : 'ring-neutral-300/70 focus:ring-neutral-400');
+$field = 'block w-full rounded bg-white px-3.5 py-2.5 text-sm text-neutral-900 ring-1 ring-inset transition focus:outline-none focus-visible:ring-2 '
+    . ($hasError ? 'ring-safety-rose focus-visible:ring-2 focus-visible:ring-safety-rose' : 'ring-line-strong focus-visible:ring-2 focus-visible:ring-neutral-900');
 @endphp
 
 <div {{ $attributes->only('class') }}>
@@ -45,7 +45,7 @@ $field = 'block w-full rounded bg-white px-3.5 py-2.5 text-sm text-neutral-900 r
     </select>
 
     @if ($helper && ! $hasError)
-        <p class="mt-1.5 text-[11px] leading-relaxed text-neutral-500">{{ $helper }}</p>
+        <p class="mt-1.5 text-[11px] leading-relaxed text-neutral-600">{{ $helper }}</p>
     @endif
 
     @if ($hasError)

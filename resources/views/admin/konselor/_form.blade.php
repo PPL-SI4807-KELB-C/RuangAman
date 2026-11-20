@@ -5,14 +5,14 @@
 <div class="space-y-5">
     @if ($isEdit)
         <div class="rounded bg-white p-4 ring-1 ring-inset ring-neutral-300/70">
-            <p class="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">Akun Pengguna Terhubung</p>
+            <p class="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Akun Pengguna Terhubung</p>
             <p class="mt-1 text-sm font-semibold text-neutral-900">
                 {{ $konselor->user?->nama_tampilan ?? 'Akun tidak ditemukan' }}
             </p>
-            <p class="mt-0.5 text-xs text-neutral-500">
+            <p class="mt-0.5 text-xs text-neutral-600">
                 Akun #{{ $konselor->user_id }} &middot; Role Konselor
             </p>
-            <p class="mt-2 text-[11px] text-neutral-500">
+            <p class="mt-2 text-[11px] text-neutral-600">
                 Akun pengguna tidak dapat diubah setelah profil dibuat agar relasi jadwal konseling tetap konsisten.
             </p>
         </div>

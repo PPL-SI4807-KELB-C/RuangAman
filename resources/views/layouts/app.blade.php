@@ -14,16 +14,8 @@
 
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-neutral-900 focus:px-4 focus:py-2 focus:text-xs focus:font-medium focus:text-white">Lompat ke konten utama</a>
 
-    {{-- Top Emergency Banner (Figma Exact) --}}
-    <div class="w-full bg-[#f2f2f2] border-b border-neutral-200 text-neutral-700 text-xs py-2 px-4 sm:px-6">
-        <div class="mx-auto max-w-6xl flex items-center justify-center gap-2 text-center">
-            <svg class="h-3.5 w-3.5 shrink-0 text-neutral-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-            </svg>
-            <span>Utamakan keselamatan. Gunakan perangkat yang aman; keluar cepat tidak menghapus riwayat peramban.</span>
-        </div>
-    </div>
+    {{-- Banner keselamatan + kontak darurat --}}
+    <x-safety-banner />
 
     {{-- Modal konfirmasi global: dipakai semua tombol hapus/nonaktifkan di aplikasi --}}
     <x-confirm-modal />
@@ -64,14 +56,14 @@
                         </button>
                         <div x-show="adminMenuOpen" x-cloak x-transition
                             class="absolute right-0 z-50 mt-2 w-64 rounded-xl border border-neutral-200/70 bg-white p-1.5 shadow-lg">
-                            <p class="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">Penanganan Kasus</p>
+                            <p class="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Penanganan Kasus</p>
                             <a href="{{ route('admin.status-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.status-kasus.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Status Kasus</a>
                             <a href="{{ route('admin.penanganan-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.penanganan-kasus.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Penugasan Kasus</a>
                             <a href="{{ route('admin.kegiatan-edukasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.kegiatan-edukasi.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Kegiatan Edukasi</a>
                             <a href="{{ route('admin.konselor.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.konselor.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Data Konselor</a>
                             <a href="{{ route('instansi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('instansi.*') && !request()->routeIs('instansi.publik') || request()->routeIs('admin.instansi.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Instansi Bantuan</a>
                             <div class="my-1.5 border-t border-neutral-200/70"></div>
-                            <p class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">Tata Kelola Konten</p>
+                            <p class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Tata Kelola Konten</p>
                             <a href="{{ route('admin.artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.artikel.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Artikel Edukasi</a>
                             <a href="{{ route('admin.halaman-informasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.halaman-informasi.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Halaman Informasi</a>
                             <a href="{{ route('admin.glosarium.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.glosarium.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Glosarium KBG</a>
@@ -96,7 +88,7 @@
                         <div x-show="akunMenuOpen" x-cloak x-transition
                             class="absolute right-0 z-50 mt-2 w-60 rounded-xl border border-neutral-200/70 bg-white p-1.5 shadow-lg">
                             <p class="truncate px-3 pb-1 pt-2 text-sm font-semibold text-neutral-900">{{ Auth::user()->nama_tampilan }}</p>
-                            <p class="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">{{ Auth::user()->role?->nama_role ?? 'User' }}</p>
+                            <p class="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-600">{{ Auth::user()->role?->nama_role ?? 'User' }}</p>
                             <a href="{{ route('dashboard') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('dashboard') ? 'bg-neutral-50 text-neutral-900' : '' }}">Dashboard Saya</a>
                             @if (Auth::user()->isPelapor())
                                 <a href="{{ route('pendaftaran-kegiatan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Pendaftaran Saya</a>
@@ -159,13 +151,13 @@
 
                 @can('admin-kasus')
                     <div class="mt-2 border-t border-neutral-200/70 pt-2">
-                        <p class="px-3 pb-1 pt-1 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">Penanganan Kasus</p>
+                        <p class="px-3 pb-1 pt-1 text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Penanganan Kasus</p>
                         <a href="{{ route('admin.status-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Status Kasus</a>
                         <a href="{{ route('admin.penanganan-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Penugasan Kasus</a>
                         <a href="{{ route('admin.kegiatan-edukasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Kegiatan Edukasi</a>
                         <a href="{{ route('admin.konselor.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Data Konselor</a>
                         <a href="{{ route('instansi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Instansi Bantuan</a>
-                        <p class="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">Tata Kelola Konten</p>
+                        <p class="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Tata Kelola Konten</p>
                         <a href="{{ route('admin.artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Artikel Edukasi</a>
                         <a href="{{ route('admin.halaman-informasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Halaman Informasi</a>
                         <a href="{{ route('admin.glosarium.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Glosarium KBG</a>
@@ -210,7 +202,7 @@
         <div class="mx-auto max-w-6xl px-4 sm:px-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div>
                 <p class="text-base font-bold text-neutral-900">RuangAman</p>
-                <p class="text-xs text-neutral-500 mt-1">Pelaporan dan pendampingan kekerasan berbasis gender.</p>
+                <p class="text-xs text-neutral-600 mt-1">Pelaporan dan pendampingan kekerasan berbasis gender.</p>
             </div>
             <nav class="flex flex-wrap gap-x-5 gap-y-2 text-xs text-neutral-600" aria-label="Tautan informasi">
                 <a href="{{ route('halaman.show', 'tentang-ruangaman') }}" class="hover:text-neutral-900 hover:underline">Tentang</a>

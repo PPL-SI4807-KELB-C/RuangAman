@@ -10,7 +10,7 @@
             <span>Kembali ke daftar</span>
         </a>
         <h1 class="mt-5 text-2xl font-extrabold tracking-tight text-neutral-900">Penugasan Kasus Baru</h1>
-        <p class="mt-1.5 text-xs text-neutral-500 leading-relaxed">
+        <p class="mt-1.5 text-xs text-neutral-600 leading-relaxed">
             Pilih laporan kasus dan petugas pendamping atau Admin Kasus yang akan menanganinya.
         </p>
     </div>

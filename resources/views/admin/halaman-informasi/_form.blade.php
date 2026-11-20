@@ -1,9 +1,9 @@
 <div class="space-y-5">
     @if ($halaman->exists)
         <div class="rounded-lg border border-neutral-200/70 bg-white px-4 py-3">
-            <p class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Slug Halaman</p>
+            <p class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Slug Halaman</p>
             <p class="mt-1.5 text-sm font-semibold text-neutral-900">{{ $halaman->slug }}</p>
-            <p class="mt-1.5 text-[11px] leading-relaxed text-neutral-500">
+            <p class="mt-1.5 text-[11px] leading-relaxed text-neutral-600">
                 Slug dibangkitkan otomatis dari judul dan hanya berubah bila judul diubah.
             </p>
         </div>

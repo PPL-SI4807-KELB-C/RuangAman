@@ -1,6 +1,6 @@
 @if ($paginator->hasPages())
     <nav role="navigation" aria-label="Navigasi halaman" class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-        <p class="text-[11px] text-neutral-500">
+        <p class="text-[11px] text-neutral-600">
             Menampilkan
             <span class="font-medium text-neutral-700">{{ $paginator->firstItem() }}</span>
             &ndash;

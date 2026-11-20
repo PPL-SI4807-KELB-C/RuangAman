@@ -9,7 +9,7 @@
         <div>
             <div class="flex flex-wrap items-center gap-4">
                 <x-badge :variant="$halaman->statusBadgeVariant()">{{ $halaman->statusLabel() }}</x-badge>
-                <span class="text-[11px] text-neutral-500">/halaman/{{ $halaman->slug }}</span>
+                <span class="text-[11px] text-neutral-600">/halaman/{{ $halaman->slug }}</span>
             </div>
             <h1 class="mt-3 text-2xl font-extrabold tracking-tight text-neutral-900">{{ $halaman->judul }}</h1>
         </div>
@@ -26,7 +26,7 @@
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
         <div class="lg:col-span-8">
             <x-card>
-                <p class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Isi Halaman</p>
+                <p class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Isi Halaman</p>
                 <div class="mt-4 whitespace-pre-line text-sm leading-relaxed text-neutral-700">{{ $halaman->isi }}</div>
             </x-card>
         </div>
@@ -35,17 +35,17 @@
             <x-card header="Informasi Publikasi">
                 <dl class="space-y-4 text-sm">
                     <div>
-                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Status</dt>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Status</dt>
                         <dd class="mt-1.5">
                             <x-badge :variant="$halaman->statusBadgeVariant()">{{ $halaman->statusLabel() }}</x-badge>
                         </dd>
                     </div>
                     <div>
-                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Dibuat</dt>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Dibuat</dt>
                         <dd class="mt-1.5 font-medium text-neutral-800">{{ $halaman->created_at->translatedFormat('d M Y, H:i') }} WIB</dd>
                     </div>
                     <div>
-                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Terakhir Diubah</dt>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Terakhir Diubah</dt>
                         <dd class="mt-1.5 font-medium text-neutral-800">{{ $halaman->updated_at->translatedFormat('d M Y, H:i') }} WIB</dd>
                     </div>
                 </dl>
@@ -56,7 +56,7 @@
                     <a href="{{ $tautanPublik }}" class="break-all text-xs font-medium text-neutral-800 hover:text-brand-700 hover:underline">
                         {{ $tautanPublik }}
                     </a>
-                    <p class="mt-2 text-[11px] leading-relaxed text-neutral-500">
+                    <p class="mt-2 text-[11px] leading-relaxed text-neutral-600">
                         Halaman ini dapat dibuka pengunjung tanpa login.
                     </p>
                 @else

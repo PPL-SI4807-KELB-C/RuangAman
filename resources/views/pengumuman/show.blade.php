@@ -17,7 +17,7 @@
                 {{ $pengumuman->judul }}
             </h1>
 
-            <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] text-neutral-500">
+            <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] text-neutral-600">
                 <span class="inline-flex items-center gap-1.5">
                     <span class="h-2 w-2 shrink-0 rounded-full bg-amber-500" aria-hidden="true"></span>
                     Tayang {{ $pengumuman->mulai_tayang->translatedFormat('d F Y') }}
@@ -34,7 +34,7 @@
                 {{ $pengumuman->isi }}
             </div>
 
-            <p class="mt-10 border-t border-neutral-200 pt-6 text-xs text-neutral-500 leading-relaxed max-w-2xl">
+            <p class="mt-10 border-t border-neutral-200 pt-6 text-xs text-neutral-600 leading-relaxed max-w-2xl">
                 Pengumuman ini bersifat informasi layanan. Jika Anda atau orang terdekat membutuhkan bantuan, gunakan jalur pelaporan resmi RuangAman.
             </p>
           </div>
@@ -42,7 +42,7 @@
     </article>
 
     {{-- Aksi lanjutan --}}
-    <section class="w-full bg-[#f2f2f2] border-t border-neutral-200/70 py-10">
+    <section class="w-full bg-surface border-t border-neutral-200/70 py-10">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <p class="text-xs text-neutral-600 leading-relaxed max-w-sm">
                 Butuh bantuan sekarang? Sampaikan laporan lewat akun alias Anda, tanpa nama asli.

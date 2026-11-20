@@ -9,7 +9,7 @@
     <section class="w-full bg-white pt-14 pb-10 sm:pt-16">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             <div class="lg:col-span-8 space-y-3">
-                <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">
+                <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">
                     Ruang Pelapor &middot; Akun alias
                 </p>
                 <h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight leading-[1.15]">
@@ -33,37 +33,37 @@
     </section>
 
     {{-- Ringkasan & daftar milik sendiri --}}
-    <section class="w-full bg-[#f2f2f2] border-t border-neutral-200/70 py-14 sm:py-16">
+    <section class="w-full bg-surface border-t border-neutral-200/70 py-14 sm:py-16">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 space-y-12">
 
             {{-- FR-06: kartu ringkasan --}}
             <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                 <div class="rounded-xl border border-neutral-200/60 bg-white p-6">
-                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Laporan saya</p>
+                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Laporan saya</p>
                     <p class="mt-5 text-3xl font-extrabold tracking-tight text-neutral-900">{{ $totalLaporan }}</p>
-                    <p class="mt-1 text-xs text-neutral-500">Hanya laporan milik akun ini</p>
+                    <p class="mt-1 text-xs text-neutral-600">Hanya laporan milik akun ini</p>
                 </div>
                 <div class="rounded-xl border border-neutral-200/60 bg-white p-6">
-                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Sedang diproses</p>
+                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Sedang diproses</p>
                     <p class="mt-5 text-3xl font-extrabold tracking-tight text-neutral-900">{{ $totalProses }}</p>
-                    <p class="mt-1 text-xs text-neutral-500">Konselor Anda sudah ditugaskan</p>
+                    <p class="mt-1 text-xs text-neutral-600">Konselor Anda sudah ditugaskan</p>
                 </div>
                 <div class="rounded-xl border border-neutral-200/60 bg-white p-6">
-                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Jadwal konseling</p>
+                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Jadwal konseling</p>
                     <p class="mt-5 text-3xl font-extrabold tracking-tight text-neutral-900">{{ $totalJadwal }}</p>
-                    <p class="mt-1 text-xs text-neutral-500">Sesi mendatang yang belum dibatalkan</p>
+                    <p class="mt-1 text-xs text-neutral-600">Sesi mendatang yang belum dibatalkan</p>
                 </div>
                 <div class="rounded-xl border border-neutral-200/60 bg-white p-6">
-                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Belum dibaca</p>
+                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Belum dibaca</p>
                     <p class="mt-5 text-3xl font-extrabold tracking-tight text-neutral-900">{{ $belumDibaca }}</p>
-                    <p class="mt-1 text-xs text-neutral-500">Pemberitahuan perubahan status</p>
+                    <p class="mt-1 text-xs text-neutral-600">Pemberitahuan perubahan status</p>
                 </div>
             </div>
 
             {{-- FR-06: status laporan --}}
             <div>
                 <div class="flex items-baseline justify-between gap-6">
-                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Status laporan saya</p>
+                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Status laporan saya</p>
                     <a href="{{ route('lacak.form') }}" class="text-sm font-medium text-neutral-800 hover:text-neutral-900 hover:underline">
                         Lacak lewat kode &rarr;
                     </a>
@@ -82,7 +82,7 @@
                     <div class="mt-5 overflow-hidden rounded-xl border border-neutral-200/70 bg-white">
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-sm text-neutral-600">
-                                <thead class="border-b border-neutral-200 bg-[#f2f2f2] text-[11px] uppercase tracking-wider text-neutral-500">
+                                <thead class="border-b border-neutral-200 bg-surface text-[11px] uppercase tracking-wider text-neutral-600">
                                     <tr>
                                         <th scope="col" class="px-6 py-3.5 font-medium">Laporan</th>
                                         <th scope="col" class="px-6 py-3.5 font-medium">Status</th>
@@ -93,10 +93,10 @@
                                 </thead>
                                 <tbody class="divide-y divide-neutral-200/70">
                                     @foreach ($laporanSaya as $laporan)
-                                        <tr class="transition-colors hover:bg-[#f2f2f2]/70">
+                                        <tr class="transition-colors hover:bg-surface/70">
                                             <td class="px-6 py-4">
                                                 <div class="font-semibold text-neutral-900">{{ $laporan->judul }}</div>
-                                                <p class="mt-0.5 text-[11px] text-neutral-500">
+                                                <p class="mt-0.5 text-[11px] text-neutral-600">
                                                     {{ $laporan->kategori_kekerasan }}
                                                     &bull; {{ $laporan->mode_anonim ? 'Mode anonim aktif' : 'Identitas alias terlihat konselor' }}
                                                 </p>
@@ -133,7 +133,7 @@
             {{-- FR-06: jadwal konseling & pemberitahuan --}}
             <div class="grid grid-cols-1 gap-10 lg:grid-cols-12">
                 <div class="lg:col-span-6">
-                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Jadwal konseling saya</p>
+                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Jadwal konseling saya</p>
 
                     <div class="mt-5 overflow-hidden rounded-xl border border-neutral-200/70 bg-white">
                         <ul class="divide-y divide-neutral-200/70">
@@ -150,7 +150,7 @@
                                     </p>
                                 </li>
                             @empty
-                                <li class="px-6 py-10 text-center text-xs text-neutral-500">
+                                <li class="px-6 py-10 text-center text-xs text-neutral-600">
                                     Belum ada jadwal konseling. Pemesanan sesi dibuka setelah modul konseling tersedia.
                                 </li>
                             @endforelse
@@ -159,7 +159,7 @@
                 </div>
 
                 <div class="lg:col-span-6">
-                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Pemberitahuan perubahan status</p>
+                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Pemberitahuan perubahan status</p>
 
                     <div class="mt-5 overflow-hidden rounded-xl border border-neutral-200/70 bg-white">
                         <ul class="divide-y divide-neutral-200/70">
@@ -167,7 +167,7 @@
                                 <li class="px-6 py-4">
                                     <div class="flex items-baseline justify-between gap-4">
                                         <span class="text-sm font-semibold text-neutral-900">{{ $item->judul }}</span>
-                                        <span class="shrink-0 text-[11px] text-neutral-500">
+                                        <span class="shrink-0 text-[11px] text-neutral-600">
                                             {{ \Illuminate\Support\Carbon::parse($item->created_at)->translatedFormat('d M Y') }}
                                         </span>
                                     </div>
@@ -180,7 +180,7 @@
                                     @endif
                                 </li>
                             @empty
-                                <li class="px-6 py-10 text-center text-xs text-neutral-500">
+                                <li class="px-6 py-10 text-center text-xs text-neutral-600">
                                     Belum ada pemberitahuan. Notifikasi hanya dikirim untuk kejadian penting, bukan pengumuman rutin.
                                 </li>
                             @endforelse

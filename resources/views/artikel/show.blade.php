@@ -50,7 +50,7 @@
                         @foreach ($artikelTerkait as $item)
                             <div class="border-b border-slate-100 pb-4 last:border-0 last:pb-0">
                                 <a href="{{ route('artikel.show', $item) }}" class="text-sm font-semibold leading-snug text-slate-800 hover:text-brand-700">{{ $item->judul }}</a>
-                                <p class="mt-1 text-xs text-slate-400">{{ $item->updated_at?->translatedFormat('d M Y') }}</p>
+                                <p class="mt-1 text-xs text-neutral-600">{{ $item->updated_at?->translatedFormat('d M Y') }}</p>
                             </div>
                         @endforeach
                     </div>

@@ -17,7 +17,7 @@
         @endif
 
         @if ($eyebrow)
-            <p class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">{{ $eyebrow }}</p>
+            <p class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">{{ $eyebrow }}</p>
         @endif
 
         <h1 class="{{ $eyebrow ? 'mt-1.5' : '' }} text-2xl font-extrabold tracking-tight text-neutral-900">{{ $title }}</h1>
