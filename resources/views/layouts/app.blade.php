@@ -97,7 +97,9 @@
                             <p class="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-600">{{ Auth::user()->role?->nama_role ?? 'User' }}</p>
                             <a href="{{ route('dashboard') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('dashboard') ? 'bg-neutral-50 text-neutral-900' : '' }}">Dashboard Saya</a>
                             @if (Auth::user()->isPelapor())
+                                <a href="{{ route('laporan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('laporan.index', 'laporan.show', 'laporan.edit') ? 'bg-neutral-50 text-neutral-900' : '' }}">Laporan Saya</a>
                                 <a href="{{ route('pendaftaran-kegiatan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Pendaftaran Saya</a>
+                                <a href="{{ route('profil-pelapor.edit') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('profil-pelapor.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Profil &amp; mode anonim</a>
                             @endif
                             @if (Auth::user()->isKonselor())
                                 <a href="{{ route('konselor.profil.edit') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Profil Saya</a>
@@ -148,7 +150,9 @@
                     <a href="{{ route('dashboard') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Dashboard Saya</a>
                     @if (Auth::user()->isPelapor())
                         <a href="{{ route('laporan.create') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Pelaporan</a>
+                        <a href="{{ route('laporan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Laporan Saya</a>
                         <a href="{{ route('pendaftaran-kegiatan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Pendaftaran Saya</a>
+                        <a href="{{ route('profil-pelapor.edit') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Profil &amp; mode anonim</a>
                     @endif
                     @if (Auth::user()->isKonselor())
                         <a href="{{ route('konselor.profil.edit') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Profil Saya</a>
@@ -196,6 +200,11 @@
         @if (session('error'))
             <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-6">
                 <x-alert variant="danger">{{ session('error') }}</x-alert>
+            </div>
+        @endif
+        @if (session('status'))
+            <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-6">
+                <x-alert variant="info" role="status">{{ session('status') }}</x-alert>
             </div>
         @endif
 
