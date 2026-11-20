@@ -17,7 +17,7 @@ class ProfilPelaporController extends Controller
             [
                 'alias' => $user->nama_tampilan,
                 'kontak_opsional' => null,
-                'preferensi_anonim' => false,
+                'preferensi_anonim' => true,
             ]
         );
 

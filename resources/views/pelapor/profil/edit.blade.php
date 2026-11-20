@@ -1,65 +1,107 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Alias & Privasi - RuangAman</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-slate-50 text-slate-800 min-h-screen">
-    <nav class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center gap-6">
-            <a href="{{ route('welcome') }}" class="font-bold text-xl text-blue-900">RuangAman</a>
-            <a href="{{ route('laporan.index') }}" class="text-sm font-medium text-slate-600 hover:text-blue-900">Laporan Saya</a>
-            <a href="{{ route('profil-pelapor.edit') }}" class="text-sm font-semibold text-blue-900">Profil Anonim</a>
+@extends('layouts.app')
+
+@section('title', 'Pengaturan Profil & Mode Anonim - RuangAman')
+
+@section('content')
+<div class="mx-auto max-w-2xl py-6">
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+
+        <div class="mb-6 border-b border-slate-100 pb-5">
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700">
+                <span class="h-1.5 w-1.5 rounded-full bg-brand-600"></span>
+                Privasi & Anonimitas Pelapor
+            </span>
+            <h1 class="mt-3 text-2xl font-bold tracking-tight text-slate-900">
+                Pengaturan Profil & Mode Anonim
+            </h1>
+            <p class="mt-1 text-sm text-slate-500">
+                Atur nama samaran (alias) dan preferensi anonimitas bawaan saat Anda membuat laporan kasus.
+            </p>
         </div>
-        <a href="https://www.google.com" class="px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700">Keluar Cepat (Esc)</a>
-    </nav>
 
-    <main class="max-w-2xl mx-auto py-8 px-4">
-        <h1 class="text-2xl font-bold text-slate-900 mb-1">Profil Alias & Mode Anonim</h1>
-        <p class="text-sm text-slate-600 mb-6">Identitas aslimu tidak ditampilkan ke publik. Atur alias dan preferensi anonim di sini.</p>
-
-        @if(session('success'))
-            <div class="mb-4 p-4 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-sm">{{ session('success') }}</div>
+        {{-- Notifikasi Error Validasi --}}
+        @if ($errors->any())
+            <div class="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                <ul class="list-disc space-y-1 pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
         @endif
 
-        <form action="{{ route('profil-pelapor.update') }}" method="POST" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-5">
+        <form method="POST" action="{{ route('profil-pelapor.update') }}" class="space-y-6">
             @csrf
             @method('PUT')
 
+            {{-- Input Nama Alias --}}
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Alias / Nama Samaran *</label>
-                <input type="text" name="alias" value="{{ old('alias', $profil->alias) }}" required
-                    class="w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-600 focus:ring-blue-600">
-                @error('alias') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
+                <label for="alias" class="mb-1.5 block text-sm font-semibold text-slate-700">
+                    Alias / Nama Samaran <span class="text-red-500">*</span>
+                </label>
+                <input type="text"
+                       id="alias"
+                       name="alias"
+                       value="{{ old('alias', $profil->alias ?? $user->nama_tampilan) }}"
+                       required
+                       minlength="3"
+                       maxlength="50"
+                       placeholder="Contoh: Bintang Laut"
+                       class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200">
+                <p class="mt-1.5 text-xs text-slate-500">
+                    Nama samaran ini ditampilkan di bilah navigasi dan digunakan untuk melindungi identitas asli Anda.
+                </p>
             </div>
 
+            {{-- Input Kontak Opsional --}}
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Kontak Tambahan (Opsional)</label>
-                <input type="text" name="kontak_opsional" value="{{ old('kontak_opsional', $profil->kontak_opsional) }}"
-                    placeholder="Contoh: Telegram / No. HP alternatif yang aman dihubungi"
-                    class="w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-600 focus:ring-blue-600">
-                @error('kontak_opsional') <p class="text-red-600 text-xs mt-1">{{ $message }}</p> @enderror
+                <label for="kontak_opsional" class="mb-1.5 block text-sm font-semibold text-slate-700">
+                    Kontak Tambahan (Opsional)
+                </label>
+                <input type="text"
+                       id="kontak_opsional"
+                       name="kontak_opsional"
+                       value="{{ old('kontak_opsional', $profil->kontak_opsional) }}"
+                       maxlength="100"
+                       placeholder="Contoh: Telegram / No. HP alternatif yang aman dihubungi"
+                       class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-200">
+                <p class="mt-1.5 text-xs text-slate-500">
+                    Hanya dapat diakses oleh konselor atau petugas berwenang apabila Anda memerlukan pendampingan lanjutan.
+                </p>
             </div>
 
-            <div class="flex items-start gap-3 p-4 bg-blue-50/60 rounded-lg border border-blue-100">
-                <input type="checkbox" id="preferensi_anonim" name="preferensi_anonim" value="1"
-                    {{ old('preferensi_anonim', $profil->preferensi_anonim) ? 'checked' : '' }}
-                    class="mt-1 rounded text-blue-900 focus:ring-blue-600">
-                <label for="preferensi_anonim" class="text-sm text-slate-700">
-                    <span class="font-semibold text-slate-900 block">Aktifkan Mode Anonim Bawaan</span>
-                    Jika dicentang, setiap kali kamu membuat laporan baru, opsi sembunyikan identitas dari konselor akan aktif secara otomatis.
+            {{-- Checkbox Preferensi Mode Anonim Bawaan --}}
+            <div class="rounded-xl border border-brand-200 bg-brand-50/60 p-4">
+                <label class="flex cursor-pointer items-start gap-3">
+                    <input type="hidden" name="preferensi_anonim" value="0">
+                    <input type="checkbox"
+                           name="preferensi_anonim"
+                           value="1"
+                           {{ old('preferensi_anonim', $profil->preferensi_anonim) ? 'checked' : '' }}
+                           class="mt-1 h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500">
+                    <div>
+                        <span class="block text-sm font-semibold text-slate-900">
+                            Aktifkan Mode Anonim Bawaan
+                        </span>
+                        <span class="mt-0.5 block text-xs leading-relaxed text-slate-600">
+                            Jika dicentang, setiap kali Anda membuat laporan baru, opsi sembunyikan identitas dari konselor akan aktif secara otomatis.
+                        </span>
+                    </div>
                 </label>
             </div>
 
-            <div class="flex justify-end">
-                <button type="submit" class="px-5 py-2.5 bg-blue-900 text-white text-sm font-semibold rounded-lg hover:bg-blue-800">
+            {{-- Tombol Aksi --}}
+            <div class="flex items-center justify-end gap-3 border-t border-slate-100 pt-5">
+                <a href="{{ route('laporan.index') }}"
+                   class="rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900">
+                    Kembali ke Laporan
+                </a>
+                <button type="submit"
+                        class="rounded-xl bg-brand-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">
                     Simpan Pengaturan
                 </button>
             </div>
         </form>
-    </main>
-    <script>document.addEventListener('keydown', e => { if (e.key === 'Escape') window.location.replace('https://www.google.com'); });</script>
-</body>
-</html>
+    </div>
+</div>
+@endsection
