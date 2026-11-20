@@ -72,9 +72,10 @@
 
             {{-- Checkbox Preferensi Mode Anonim Bawaan --}}
             <div class="rounded-xl border border-brand-200 bg-brand-50/60 p-4">
-                <label class="flex cursor-pointer items-start gap-3">
+                <label for="preferensi_anonim" class="flex cursor-pointer items-start gap-3">
                     <input type="hidden" name="preferensi_anonim" value="0">
                     <input type="checkbox"
+                           id="preferensi_anonim"
                            name="preferensi_anonim"
                            value="1"
                            {{ old('preferensi_anonim', $profil->preferensi_anonim) ? 'checked' : '' }}
@@ -104,4 +105,28 @@
         </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkboxAnonim = document.getElementById('preferensi_anonim');
+        const navbarName = document.getElementById('navbar-user-name');
+        const aliasInput = document.getElementById('alias');
+
+        if (!checkboxAnonim || !navbarName) return;
+
+        function syncNavbarName() {
+            const currentAlias = aliasInput && aliasInput.value.trim() !== ''
+                ? aliasInput.value.trim()
+                : navbarName.dataset.realName;
+
+            navbarName.textContent = checkboxAnonim.checked ? 'Anonim' : currentAlias;
+        }
+
+        syncNavbarName();
+        checkboxAnonim.addEventListener('change', syncNavbarName);
+        if (aliasInput) {
+            aliasInput.addEventListener('input', syncNavbarName);
+        }
+    });
+</script>
 @endsection
