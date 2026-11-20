@@ -99,13 +99,14 @@ Route::middleware(['auth', 'admin.kasus'])->prefix('admin')->name('admin.')->gro
         ->parameters(['penanganan-kasus' => 'penangananKasus']);
 
     Route::resource('kegiatan-edukasi', AdminKegiatanEdukasiController::class)
-        ->parameters(['kegiatan-edukasi' => 'kegiatanEdukasi']);
+        ->parameters(['kegiatan-edukasi' => 'kegiatan']);
 
-    Route::patch('kegiatan-edukasi/{kegiatanEdukasi}/nonaktifkan', [AdminKegiatanEdukasiController::class, 'nonaktifkan'])
+    Route::patch('kegiatan-edukasi/{kegiatan}/nonaktifkan', [AdminKegiatanEdukasiController::class, 'nonaktifkan'])
         ->name('kegiatan-edukasi.nonaktifkan');
 
-    Route::patch('kegiatan-edukasi/{kegiatanEdukasi}/pendaftaran/{pendaftaran}/kehadiran', [AdminKegiatanEdukasiController::class, 'verifikasiKehadiran'])
+    Route::patch('kegiatan-edukasi/{kegiatan}/pendaftaran/{pendaftaran}/kehadiran', [AdminKegiatanEdukasiController::class, 'verifikasiKehadiran'])
         ->name('kegiatan-edukasi.verifikasi-kehadiran');
+    Route::patch('kegiatan-edukasi/{kegiatan}/pendaftaran/{pendaftaran}/verifikasi', [AdminKegiatanEdukasiController::class, 'verifikasiKehadiran']);
 
     Route::resource('konselor', AdminKonselorController::class)
         ->parameters(['konselor' => 'konselor']);
