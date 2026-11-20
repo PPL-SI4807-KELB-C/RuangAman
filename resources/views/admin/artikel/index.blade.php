@@ -7,8 +7,8 @@
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <p class="text-xs font-semibold uppercase tracking-wider text-brand-700">PBI-10 · Niky</p>
-            <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-900">Manajemen Artikel Edukasi</h1>
-            <p class="mt-1 text-sm text-slate-500">Kelola artikel, kategori referensi, dan status publikasi konten edukasi KBG.</p>
+            <h1 class="mt-1 text-2xl font-extrabold tracking-tight text-neutral-900">Manajemen Artikel Edukasi</h1>
+            <p class="mt-1 text-sm text-neutral-600">Kelola artikel, kategori referensi, dan status publikasi konten edukasi KBG.</p>
         </div>
         <div class="flex flex-wrap gap-2">
             <x-button href="{{ route('artikel.index') }}" variant="secondary" size="md">Lihat Halaman Publik</x-button>
@@ -54,10 +54,10 @@
         </form>
     </x-card>
 
-    <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+    <div class="overflow-hidden rounded-xl border border-neutral-200/70 bg-white">
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm text-slate-600">
-                <thead class="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
+            <table class="w-full text-left text-sm text-neutral-600">
+                <thead class="border-b border-neutral-200/70 bg-surface text-xs uppercase tracking-wider text-neutral-600">
                     <tr>
                         <th scope="col" class="px-6 py-3.5">Artikel</th>
                         <th scope="col" class="px-6 py-3.5">Kategori</th>
@@ -67,12 +67,12 @@
                         <th scope="col" class="px-6 py-3.5 text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
+                <tbody class="divide-y divide-neutral-200/70">
                     @forelse ($artikelList as $item)
-                        <tr class="transition hover:bg-slate-50/75">
+                        <tr class="transition hover:bg-neutral-50">
                             <td class="max-w-md px-6 py-4">
-                                <a href="{{ route('admin.artikel.show', $item) }}" class="font-semibold text-slate-900 hover:text-brand-700">{{ $item->judul }}</a>
-                                <p class="mt-1 text-xs text-slate-500 line-clamp-2">{{ $item->ringkasan(110) }}</p>
+                                <a href="{{ route('admin.artikel.show', $item) }}" class="font-semibold text-neutral-900 hover:text-brand-700">{{ $item->judul }}</a>
+                                <p class="mt-1 text-xs text-neutral-600 line-clamp-2">{{ $item->ringkasan(110) }}</p>
                             </td>
                             <td class="whitespace-nowrap px-6 py-4">{{ $item->kategori?->nama_kategori ?? 'Tanpa kategori' }}</td>
                             <td class="whitespace-nowrap px-6 py-4">{{ $item->penulis?->nama_tampilan ?? 'Tidak diketahui' }}</td>
@@ -82,8 +82,8 @@
                             <td class="whitespace-nowrap px-6 py-4 text-xs">{{ $item->updated_at?->translatedFormat('d M Y, H:i') }}</td>
                             <td class="whitespace-nowrap px-6 py-4 text-right">
                                 <div class="inline-flex items-center gap-1.5">
-                                    <a href="{{ route('admin.artikel.show', $item) }}" class="rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 shadow-sm hover:bg-slate-50">Detail</a>
-                                    <a href="{{ route('admin.artikel.edit', $item) }}" class="rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 shadow-sm hover:bg-slate-50">Ubah</a>
+                                    <a href="{{ route('admin.artikel.show', $item) }}" class="rounded-lg border border-neutral-300 bg-white px-2.5 py-1.5 text-xs font-medium text-neutral-700 hover:bg-surface">Detail</a>
+                                    <a href="{{ route('admin.artikel.edit', $item) }}" class="rounded-lg border border-neutral-300 bg-white px-2.5 py-1.5 text-xs font-medium text-neutral-700 hover:bg-surface">Ubah</a>
                                     <button type="button" @click="$dispatch('open-confirm-modal', {{ Js::from([
                                         'title' => 'Hapus Artikel Edukasi',
                                         'message' => 'Hapus artikel “' . $item->judul . '”? Feedback yang terkait juga akan terhapus. Tindakan ini tidak dapat dibatalkan.',
@@ -97,14 +97,14 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-12 text-center text-sm text-slate-500">Belum ada artikel yang sesuai dengan pencarian atau filter.</td>
+                            <td colspan="6" class="px-6 py-12 text-center text-sm text-neutral-600">Belum ada artikel yang sesuai dengan pencarian atau filter.</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
         @if ($artikelList->hasPages())
-            <div class="border-t border-slate-200 bg-slate-50/50 px-6 py-4">{{ $artikelList->links() }}</div>
+            <div class="border-t border-neutral-200/70 bg-surface px-6 py-4">{{ $artikelList->links() }}</div>
         @endif
     </div>
 </div>

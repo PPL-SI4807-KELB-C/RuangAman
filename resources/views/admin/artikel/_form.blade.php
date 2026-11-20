@@ -4,10 +4,10 @@
 
 <div class="space-y-5">
     @if ($isEdit)
-        <div class="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
+        <div class="rounded-lg border border-neutral-200/70 bg-surface px-4 py-3">
             <p class="text-xs font-semibold uppercase tracking-wider text-neutral-600">Penulis</p>
-            <p class="mt-1 text-sm font-semibold text-slate-900">{{ $artikel->penulis?->nama_tampilan ?? 'Pengguna tidak ditemukan' }}</p>
-            <p class="mt-1 text-xs text-slate-500">Slug saat ini: <span class="font-mono">{{ $artikel->slug }}</span>. Slug diperbarui otomatis ketika judul berubah.</p>
+            <p class="mt-1 text-sm font-semibold text-neutral-900">{{ $artikel->penulis?->nama_tampilan ?? 'Pengguna tidak ditemukan' }}</p>
+            <p class="mt-1 text-xs text-neutral-600">Slug saat ini: <span class="font-mono">{{ $artikel->slug }}</span>. Slug diperbarui otomatis ketika judul berubah.</p>
         </div>
     @else
         <div class="rounded-lg border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-900">

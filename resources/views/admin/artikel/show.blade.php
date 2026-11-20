@@ -11,8 +11,8 @@
                 <x-badge :variant="$artikel->statusBadgeVariant()">{{ $artikel->statusLabel() }}</x-badge>
                 <x-badge variant="brand">{{ $artikel->kategori?->nama_kategori ?? 'Tanpa kategori' }}</x-badge>
             </div>
-            <h1 class="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{{ $artikel->judul }}</h1>
-            <p class="mt-2 text-sm text-slate-500">Ditulis oleh {{ $artikel->penulis?->nama_tampilan ?? 'Pengguna tidak ditemukan' }}</p>
+            <h1 class="mt-3 text-2xl font-extrabold tracking-tight text-neutral-900 sm:text-3xl">{{ $artikel->judul }}</h1>
+            <p class="mt-2 text-sm text-neutral-600">Ditulis oleh {{ $artikel->penulis?->nama_tampilan ?? 'Pengguna tidak ditemukan' }}</p>
         </div>
         <div class="flex flex-wrap gap-2">
             <x-button href="{{ route('artikel.show', $artikel) }}" variant="ghost" size="sm">Pratinjau Artikel</x-button>
@@ -31,31 +31,31 @@
 
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-4">
         <x-card class="lg:col-span-3">
-            <article class="whitespace-pre-line text-sm leading-7 text-slate-700 sm:text-base sm:leading-8">{{ $artikel->isi }}</article>
+            <article class="whitespace-pre-line text-sm leading-7 text-neutral-700 sm:text-base sm:leading-8">{{ $artikel->isi }}</article>
         </x-card>
 
         <div class="space-y-6">
             <x-card>
-                <h2 class="text-base font-semibold text-slate-900">Informasi Publikasi</h2>
+                <h2 class="text-base font-semibold text-neutral-900">Informasi Publikasi</h2>
                 <dl class="mt-4 space-y-4 text-sm">
                     <div>
                         <dt class="text-xs font-medium uppercase tracking-wider text-neutral-600">Slug</dt>
-                        <dd class="mt-1 break-all font-mono text-xs text-slate-700">{{ $artikel->slug }}</dd>
+                        <dd class="mt-1 break-all font-mono text-xs text-neutral-700">{{ $artikel->slug }}</dd>
                     </div>
                     <div>
                         <dt class="text-xs font-medium uppercase tracking-wider text-neutral-600">Kategori</dt>
-                        <dd class="mt-1 text-slate-700">{{ $artikel->kategori?->nama_kategori ?? 'Tanpa kategori' }}</dd>
+                        <dd class="mt-1 text-neutral-700">{{ $artikel->kategori?->nama_kategori ?? 'Tanpa kategori' }}</dd>
                         @if ($artikel->kategori?->deskripsi)
-                            <dd class="mt-1 text-xs text-slate-500">{{ $artikel->kategori->deskripsi }}</dd>
+                            <dd class="mt-1 text-xs text-neutral-600">{{ $artikel->kategori->deskripsi }}</dd>
                         @endif
                     </div>
                     <div>
                         <dt class="text-xs font-medium uppercase tracking-wider text-neutral-600">Dibuat</dt>
-                        <dd class="mt-1 text-slate-700">{{ $artikel->created_at?->translatedFormat('d F Y, H:i') }}</dd>
+                        <dd class="mt-1 text-neutral-700">{{ $artikel->created_at?->translatedFormat('d F Y, H:i') }}</dd>
                     </div>
                     <div>
                         <dt class="text-xs font-medium uppercase tracking-wider text-neutral-600">Terakhir Diperbarui</dt>
-                        <dd class="mt-1 text-slate-700">{{ $artikel->updated_at?->translatedFormat('d F Y, H:i') }}</dd>
+                        <dd class="mt-1 text-neutral-700">{{ $artikel->updated_at?->translatedFormat('d F Y, H:i') }}</dd>
                     </div>
                 </dl>
             </x-card>
