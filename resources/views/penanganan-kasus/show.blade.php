@@ -45,7 +45,7 @@
 
                 <dl class="space-y-4 text-xs">
                     <div>
-                        <dt class="font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Status Penanganan</dt>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Status Penanganan</dt>
                         <dd class="mt-1">
                             @if ($penanganan->tanggal_selesai)
                                 <x-badge variant="success">Selesai Ditangani</x-badge>
@@ -56,7 +56,7 @@
                     </div>
 
                     <div>
-                        <dt class="font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Petugas / Konselor Pendamping</dt>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Petugas / Konselor Pendamping</dt>
                         <dd class="mt-1 font-medium text-neutral-900">
                             {{ $penanganan->petugas?->nama_tampilan ?? 'User terhapus' }}
                         </dd>
@@ -71,28 +71,28 @@
                     </div>
 
                     <div>
-                        <dt class="font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Tanggal Mulai</dt>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Tanggal Mulai</dt>
                         <dd class="mt-1 text-neutral-800 font-medium">
                             {{ $penanganan->tanggal_mulai ? $penanganan->tanggal_mulai->translatedFormat('d F Y') : '-' }}
                         </dd>
                     </div>
 
                     <div>
-                        <dt class="font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Tanggal Selesai</dt>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Tanggal Selesai</dt>
                         <dd class="mt-1 text-neutral-800 font-medium">
                             {{ $penanganan->tanggal_selesai ? $penanganan->tanggal_selesai->translatedFormat('d F Y') : 'Belum selesai (masih berjalan)' }}
                         </dd>
                     </div>
 
                     <div>
-                        <dt class="font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Catatan Arahan</dt>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Catatan Arahan</dt>
                         <dd class="mt-1 text-neutral-800 whitespace-pre-line bg-white rounded p-3 text-xs ring-1 ring-inset ring-neutral-300/70 leading-relaxed">
                             {{ $penanganan->catatan ?: 'Tidak ada catatan arahan khusus.' }}
                         </dd>
                     </div>
 
                     <div>
-                        <dt class="font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Waktu Penugasan Dibuat</dt>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Waktu Penugasan Dibuat</dt>
                         <dd class="mt-1 text-[11px] text-neutral-500">
                             {{ $penanganan->created_at ? $penanganan->created_at->translatedFormat('d M Y, H:i') : '-' }}
                         </dd>
@@ -125,31 +125,31 @@
                 @if ($penanganan->laporanKasus)
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 text-xs">
                         <div>
-                            <span class="block font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Kode Pelacakan</span>
+                            <span class="block text-[11px] font-medium uppercase tracking-wider text-neutral-500">Kode Pelacakan</span>
                             <span class="font-mono text-sm font-bold text-neutral-900">{{ $penanganan->laporanKasus->kode_laporan }}</span>
                         </div>
 
                         <div>
-                            <span class="block font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Tingkat Urgensi</span>
+                            <span class="block text-[11px] font-medium uppercase tracking-wider text-neutral-500">Tingkat Urgensi</span>
                             <span class="capitalize font-medium text-neutral-800">{{ $penanganan->laporanKasus->tingkat_urgensi }}</span>
                         </div>
 
                         <div class="sm:col-span-2">
-                            <span class="block font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Judul Kasus</span>
+                            <span class="block text-[11px] font-medium uppercase tracking-wider text-neutral-500">Judul Kasus</span>
                             <span class="font-bold text-neutral-900 text-sm">{{ $penanganan->laporanKasus->judul }}</span>
                         </div>
 
                         <div>
-                            <span class="block font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Kategori Kekerasan</span>
+                            <span class="block text-[11px] font-medium uppercase tracking-wider text-neutral-500">Kategori Kekerasan</span>
                             <span class="text-neutral-800">{{ $penanganan->laporanKasus->kategori_kekerasan }}</span>
                         </div>
 
                         <div>
-                            <span class="block font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Identitas Pelapor</span>
+                            <span class="block text-[11px] font-medium uppercase tracking-wider text-neutral-500">Identitas Pelapor</span>
                             <span class="text-neutral-800">
                                 @if ($penanganan->laporanKasus->mode_anonim)
                                     <span class="inline-flex items-center gap-1 text-neutral-700 font-medium">
-                                        <svg class="h-3 w-3 text-neutral-400" viewBox="0 0 20 20" fill="currentColor">
+                                        <svg class="h-3 w-3 text-neutral-500" viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd" d="M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 016 0v2a1 1 0 102 0V7a5 5 0 00-5-5z" clip-rule="evenodd" />
                                         </svg>
                                         Anonim (Alias: {{ $penanganan->laporanKasus->user?->profilPelapor?->alias ?? 'Korban' }})
@@ -161,12 +161,12 @@
                         </div>
 
                         <div class="sm:col-span-2">
-                            <span class="block font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Lokasi Kejadian</span>
+                            <span class="block text-[11px] font-medium uppercase tracking-wider text-neutral-500">Lokasi Kejadian</span>
                             <span class="text-neutral-800">{{ $penanganan->laporanKasus->lokasi_kejadian }}</span>
                         </div>
 
                         <div class="sm:col-span-2">
-                            <span class="block font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Kronologi Singkat</span>
+                            <span class="block text-[11px] font-medium uppercase tracking-wider text-neutral-500">Kronologi Singkat</span>
                             <p class="mt-1 text-neutral-800 text-xs leading-relaxed bg-white p-3 rounded ring-1 ring-inset ring-neutral-300/70 whitespace-pre-line">
                                 {{ $penanganan->laporanKasus->kronologi }}
                             </p>
@@ -186,7 +186,7 @@
                             PBI-06 Integration
                         </span>
                     </div>
-                    <span class="text-[11px] text-neutral-400">penanganan_id: #{{ $penanganan->penanganan_id }}</span>
+                    <span class="text-[11px] text-neutral-500">penanganan_id: #{{ $penanganan->penanganan_id }}</span>
                 </div>
 
                 <div>
@@ -208,9 +208,9 @@
                                                 <div class="flex min-w-0 flex-1 justify-between space-x-4 pt-1">
                                                     <div>
                                                         <p class="text-xs text-neutral-800">{{ $log->aktivitas }}</p>
-                                                        <p class="text-[11px] text-neutral-400 mt-0.5">Oleh: {{ $log->user?->nama_tampilan ?? 'Sistem' }} &bull; Jenis: {{ $log->jenis_log }}</p>
+                                                        <p class="text-[11px] text-neutral-500 mt-0.5">Oleh: {{ $log->user?->nama_tampilan ?? 'Sistem' }} &bull; Jenis: {{ $log->jenis_log }}</p>
                                                     </div>
-                                                    <div class="whitespace-nowrap text-right text-[11px] text-neutral-400">
+                                                    <div class="whitespace-nowrap text-right text-[11px] text-neutral-500">
                                                         <time datetime="{{ $log->waktu }}">{{ $log->waktu ? $log->waktu->translatedFormat('d M H:i') : '' }}</time>
                                                     </div>
                                                 </div>
@@ -223,7 +223,7 @@
                     @else
                         <div class="rounded border border-dashed border-neutral-300 p-6 text-center">
                             <p class="text-xs font-medium text-neutral-600">Belum ada catatan aktivitas penanganan.</p>
-                            <p class="mt-1 text-[11px] text-neutral-400">
+                            <p class="mt-1 text-[11px] text-neutral-500">
                                 Catatan otomatis dan manual akan tercatat pada modul log penanganan.
                             </p>
                         </div>

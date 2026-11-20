@@ -43,7 +43,7 @@
                     type="button"
                     @click="$dispatch('open-confirm-modal', {{ Js::from([
                         'title' => 'Hapus Kegiatan Edukasi',
-                        'message' => 'Apakah Anda yakin ingin menghapus permanen kegiatan \"' . $kegiatan->judul . '\"?',
+                        'message' => 'Apakah Anda yakin ingin menghapus permanen kegiatan “' . $kegiatan->judul . '”?',
                         'action' => route('admin.kegiatan-edukasi.destroy', $kegiatan),
                         'method' => 'DELETE',
                         'confirmText' => 'Ya, Hapus Permanen',
@@ -66,24 +66,24 @@
             <h2 class="text-sm font-semibold text-neutral-900 mb-4">Informasi Pelaksanaan</h2>
             <dl class="grid grid-cols-1 gap-4 text-xs sm:grid-cols-2">
                 <div>
-                    <dt class="font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Tanggal &amp; Waktu Mulai</dt>
+                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Tanggal &amp; Waktu Mulai</dt>
                     <dd class="mt-1 font-medium text-neutral-900">
                         {{ $kegiatan->tanggal_mulai->translatedFormat('l, d F Y') }} &bull; {{ substr((string) $kegiatan->waktu_mulai, 0, 5) }} WIB
                     </dd>
                 </div>
                 <div>
-                    <dt class="font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Tanggal &amp; Waktu Selesai</dt>
+                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Tanggal &amp; Waktu Selesai</dt>
                     <dd class="mt-1 font-medium text-neutral-900">
                         @if ($kegiatan->tanggal_selesai || $kegiatan->waktu_selesai)
                             {{ ($kegiatan->tanggal_selesai ?? $kegiatan->tanggal_mulai)->translatedFormat('d F Y') }}
                             {{ $kegiatan->waktu_selesai ? '• ' . substr((string) $kegiatan->waktu_selesai, 0, 5) . ' WIB' : '' }}
                         @else
-                            <span class="text-neutral-400">Menyesuaikan sesi</span>
+                            <span class="text-neutral-500">Menyesuaikan sesi</span>
                         @endif
                     </dd>
                 </div>
                 <div class="sm:col-span-2">
-                    <dt class="font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">
+                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">
                         {{ $kegiatan->metode === 'online' ? 'Tautan Meeting' : 'Lokasi Pelaksanaan' }}
                     </dt>
                     <dd class="mt-1 text-neutral-800 break-all">
@@ -91,7 +91,7 @@
                     </dd>
                 </div>
                 <div class="sm:col-span-2">
-                    <dt class="font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Deskripsi</dt>
+                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Deskripsi</dt>
                     <dd class="mt-1 text-neutral-700 whitespace-pre-line leading-relaxed">
                         {{ $kegiatan->deskripsi ?: 'Tidak ada deskripsi tambahan.' }}
                     </dd>
@@ -117,15 +117,15 @@
                 <div class="grid grid-cols-3 gap-2 pt-2 text-center text-xs">
                     <div class="rounded bg-white p-2 ring-1 ring-inset ring-neutral-300/70">
                         <div class="font-bold text-neutral-900">{{ $statistik['hadir'] }}</div>
-                        <div class="text-[10px] text-neutral-500">Hadir</div>
+                        <div class="text-[11px] text-neutral-500">Hadir</div>
                     </div>
                     <div class="rounded bg-white p-2 ring-1 ring-inset ring-neutral-300/70">
                         <div class="font-bold text-neutral-900">{{ $statistik['tidak_hadir'] }}</div>
-                        <div class="text-[10px] text-neutral-500">Tdk Hadir</div>
+                        <div class="text-[11px] text-neutral-500">Tdk Hadir</div>
                     </div>
                     <div class="rounded bg-white p-2 ring-1 ring-inset ring-neutral-300/70">
                         <div class="font-bold text-neutral-900">{{ $statistik['dibatalkan'] }}</div>
-                        <div class="text-[10px] text-neutral-500">Batal</div>
+                        <div class="text-[11px] text-neutral-500">Batal</div>
                     </div>
                 </div>
             </div>
@@ -178,11 +178,11 @@
                             </td>
                             <td class="whitespace-nowrap px-6 py-4 text-right">
                                 @if ($pendaftaran->status_pendaftaran === \App\Models\PendaftaranKegiatan::STATUS_DIBATALKAN)
-                                    <span class="text-xs italic text-neutral-400">Dibatalkan peserta</span>
+                                    <span class="text-xs italic text-neutral-500">Dibatalkan peserta</span>
                                 @elseif (! in_array($kegiatan->status, [\App\Models\KegiatanEdukasi::STATUS_TAYANG, \App\Models\KegiatanEdukasi::STATUS_SELESAI], true))
-                                    <span class="text-xs text-neutral-400">Kegiatan nonaktif</span>
+                                    <span class="text-xs text-neutral-500">Kegiatan nonaktif</span>
                                 @elseif (! $sudahDimulai)
-                                    <span class="text-xs text-neutral-400">Menunggu waktu kegiatan</span>
+                                    <span class="text-xs text-neutral-500">Menunggu waktu kegiatan</span>
                                 @else
                                     <div class="flex items-center justify-end gap-3 text-xs font-medium">
                                         @if ($pendaftaran->status_pendaftaran === \App\Models\PendaftaranKegiatan::STATUS_HADIR)

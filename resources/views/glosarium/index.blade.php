@@ -20,14 +20,11 @@
             </p>
 
             <form method="GET" action="{{ route('glosarium.index') }}" class="mt-8 flex max-w-xl flex-col gap-3 sm:flex-row sm:items-center">
-                <label for="search" class="sr-only">Cari istilah</label>
-                <input
-                    type="search"
-                    id="search"
-                    name="search"
-                    value="{{ $search }}"
-                    placeholder="Cari istilah, definisi, atau kategori..."
-                    class="w-full rounded bg-[#f2f2f2] border-0 px-3.5 py-2.5 text-sm text-neutral-800 placeholder:text-neutral-400 focus:ring-1 focus:ring-neutral-400 focus:outline-none"
+                <x-search-input
+                    class="w-full"
+                    :value="$search"
+                    label="Cari istilah"
+                    placeholder="Cari istilah, definisi, atau kategori…"
                 />
                 <div class="flex shrink-0 gap-3">
                     <x-button type="submit" variant="primary" size="md">Cari</x-button>

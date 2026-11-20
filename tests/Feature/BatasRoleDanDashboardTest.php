@@ -205,7 +205,7 @@ class BatasRoleDanDashboardTest extends TestCase
         $response = $this->actingAs($this->pelaporUser)->get(route('laporan.create'))->assertOk();
 
         $this->assertStringNotContainsString('Isian ini menggambarkan laporan fiktif', $response->getContent());
-        $this->assertMatchesRegularExpression('/<textarea name="kronologi"[^>]*>\s*<\/textarea>/', $response->getContent());
+        $this->assertMatchesRegularExpression('/<textarea\s+name="kronologi"[^>]*>\s*<\/textarea>/', $response->getContent());
     }
 
     private function buatLaporan(User $pemilik, string $kode): LaporanKasus

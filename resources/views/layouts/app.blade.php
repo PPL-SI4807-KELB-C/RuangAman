@@ -10,13 +10,9 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-white text-neutral-900 antialiased font-sans selection:bg-neutral-200" x-data="{
-    quickExit() {
-        sessionStorage.clear();
-        localStorage.clear();
-        window.location.replace('https://www.google.com');
-    }
-}" @keydown.escape.window="quickExit()">
+<body class="min-h-screen bg-white text-neutral-900 antialiased font-sans selection:bg-neutral-200" x-data="quickExit('{{ route('logout') }}')" @keydown.escape.window="handleEscape()">
+
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-neutral-900 focus:px-4 focus:py-2 focus:text-xs focus:font-medium focus:text-white">Lompat ke konten utama</a>
 
     {{-- Top Emergency Banner (Figma Exact) --}}
     <div class="w-full bg-[#f2f2f2] border-b border-neutral-200 text-neutral-700 text-xs py-2 px-4 sm:px-6">
@@ -125,15 +121,8 @@
                     </div>
                 @endauth
 
-                {{-- Tombol Darurat Keluar Cepat (Figma Exact) --}}
-                <button type="button" @click="quickExit()" class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded bg-[#f2f2f2] hover:bg-neutral-200 text-neutral-800 text-xs font-medium px-3.5 py-1.5 transition-colors border border-neutral-300/70" title="Keluar seketika ke Google (shortcut: tombol Esc)">
-                    <span>Keluar Cepat</span>
-                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                        <polyline points="16 17 21 12 16 7" />
-                        <line x1="21" y1="12" x2="9" y2="12" />
-                    </svg>
-                </button>
+                {{-- Tombol Darurat Keluar Cepat (FR-28) --}}
+                <x-quick-exit />
 
                 {{-- Mobile Menu Toggle --}}
                 <button type="button" class="rounded-md p-2 text-neutral-600 hover:bg-neutral-100 xl:hidden" @click="mobileMenuOpen = !mobileMenuOpen" :aria-expanded="mobileMenuOpen.toString()" aria-label="Buka menu">
@@ -203,18 +192,12 @@
     <main id="main-content" class="w-full">
         @if (session('success'))
             <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-6">
-                <div class="flex items-start gap-2.5 rounded-lg border border-neutral-200/70 bg-[#f2f2f2] p-4">
-                    <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-brand-600" aria-hidden="true"></span>
-                    <p class="text-xs leading-relaxed text-neutral-700">{{ session('success') }}</p>
-                </div>
+                <x-alert variant="success" role="status">{{ session('success') }}</x-alert>
             </div>
         @endif
         @if (session('error'))
             <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-6">
-                <div class="flex items-start gap-2.5 rounded-lg border border-neutral-200/70 bg-[#f2f2f2] p-4">
-                    <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-safety-rose" aria-hidden="true"></span>
-                    <p class="text-xs leading-relaxed text-neutral-700">{{ session('error') }}</p>
-                </div>
+                <x-alert variant="danger">{{ session('error') }}</x-alert>
             </div>
         @endif
 
@@ -229,13 +212,12 @@
                 <p class="text-base font-bold text-neutral-900">RuangAman</p>
                 <p class="text-xs text-neutral-500 mt-1">Pelaporan dan pendampingan kekerasan berbasis gender.</p>
             </div>
-            <div class="text-left sm:text-right text-xs text-neutral-500 space-y-1">
-                <p>Pratinjau layanan · Data contoh</p>
-                <p class="text-neutral-400">
-                    <a href="#" class="hover:underline">Kebijakan privasi</a> / 
-                    <a href="#" class="hover:underline">Ketentuan layanan</a>
-                </p>
-            </div>
+            <nav class="flex flex-wrap gap-x-5 gap-y-2 text-xs text-neutral-600" aria-label="Tautan informasi">
+                <a href="{{ route('halaman.show', 'tentang-ruangaman') }}" class="hover:text-neutral-900 hover:underline">Tentang</a>
+                <a href="{{ route('halaman.show', 'panduan-menggunakan-layanan') }}" class="hover:text-neutral-900 hover:underline">Panduan</a>
+                <a href="{{ route('halaman.show', 'kebijakan-privasi') }}" class="hover:text-neutral-900 hover:underline">Kebijakan privasi</a>
+                <a href="{{ route('instansi.publik') }}" class="hover:text-neutral-900 hover:underline">Instansi bantuan</a>
+            </nav>
         </div>
     </footer>
 

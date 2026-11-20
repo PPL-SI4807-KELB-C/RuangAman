@@ -27,7 +27,7 @@
                 <label for="search" class="sr-only">Cari istilah</label>
                 <div class="relative">
                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                        <svg class="h-4 w-4 text-neutral-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <svg class="h-4 w-4 text-neutral-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                         </svg>
                     </div>
@@ -99,7 +99,7 @@
                                         type="button"
                                         @click="$dispatch('open-confirm-modal', {{ Js::from([
                                             'title' => 'Hapus Istilah Glosarium',
-                                            'message' => 'Apakah Anda yakin ingin menghapus permanen istilah \"' . $item->istilah . '\" dari glosarium?',
+                                            'message' => 'Apakah Anda yakin ingin menghapus permanen istilah “' . $item->istilah . '” dari glosarium?',
                                             'action' => route('admin.glosarium.destroy', $item),
                                             'method' => 'DELETE',
                                             'confirmText' => 'Ya, Hapus Permanen',

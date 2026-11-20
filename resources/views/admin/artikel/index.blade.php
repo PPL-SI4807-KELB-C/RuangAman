@@ -86,7 +86,7 @@
                                     <a href="{{ route('admin.artikel.edit', $item) }}" class="rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 shadow-sm hover:bg-slate-50">Ubah</a>
                                     <button type="button" @click="$dispatch('open-confirm-modal', {{ Js::from([
                                         'title' => 'Hapus Artikel Edukasi',
-                                        'message' => 'Hapus artikel \"' . $item->judul . '\"? Feedback yang terkait juga akan terhapus. Tindakan ini tidak dapat dibatalkan.',
+                                        'message' => 'Hapus artikel “' . $item->judul . '”? Feedback yang terkait juga akan terhapus. Tindakan ini tidak dapat dibatalkan.',
                                         'action' => route('admin.artikel.destroy', $item),
                                         'method' => 'DELETE',
                                         'confirmText' => 'Ya, Hapus Artikel',
