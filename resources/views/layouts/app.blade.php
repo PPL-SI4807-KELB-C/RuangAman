@@ -37,7 +37,9 @@
 
                 @auth
                     @if (Auth::user()->isPelapor())
+                        <a href="{{ route('laporan.index') }}" class="hover:text-brand-700 {{ request()->routeIs('laporan.index', 'laporan.show', 'laporan.edit') ? 'text-brand-700 font-semibold underline underline-offset-4' : '' }}">Laporan Saya</a>
                         <a href="{{ route('pendaftaran-kegiatan.index') }}" class="hover:text-brand-700 {{ request()->routeIs('pendaftaran-kegiatan.*') ? 'text-brand-700 font-semibold underline underline-offset-4' : '' }}">Pendaftaran Saya</a>
+                        <a href="{{ route('profil-pelapor.edit') }}" class="hover:text-brand-700 {{ request()->routeIs('profil-pelapor.*') ? 'text-brand-700 font-semibold underline underline-offset-4' : '' }}">Profil</a>
                     @endif
                 @endauth
 
@@ -66,7 +68,13 @@
 
             <div class="hidden items-center gap-3 md:flex">
                 @auth
-                    <span class="text-sm text-slate-500">{{ Auth::user()->nama_tampilan }}</span>
+                    @if (Auth::user()->isPelapor())
+                        <a href="{{ route('profil-pelapor.edit') }}" title="Kelola Profil Alias & Mode Anonim" class="text-sm font-medium text-slate-600 hover:text-brand-700 hover:underline transition">
+                            {{ Auth::user()->nama_tampilan }}
+                        </a>
+                    @else
+                        <span class="text-sm text-slate-500">{{ Auth::user()->nama_tampilan }}</span>
+                    @endif
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <x-button type="submit" variant="secondary" size="sm">Keluar</x-button>
@@ -95,7 +103,9 @@
 
                 @auth
                     @if (Auth::user()->isPelapor())
+                        <a href="{{ route('laporan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Laporan Saya</a>
                         <a href="{{ route('pendaftaran-kegiatan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Pendaftaran Saya</a>
+                        <a href="{{ route('profil-pelapor.edit') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Profil</a>
                     @endif
                 @endauth
 
@@ -107,6 +117,7 @@
                         <a href="{{ route('admin.kegiatan-edukasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Kegiatan Edukasi</a>
                     </div>
                 @endcan
+
                 @auth
                     <form method="POST" action="{{ route('logout') }}" class="border-t border-slate-100 pt-2">
                         @csrf
