@@ -7,6 +7,12 @@
 
     <title>@yield('title', 'RuangAman — Masuk / Daftar')</title>
 
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#15803d">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="flex min-h-screen flex-col bg-white text-neutral-900 antialiased font-sans selection:bg-neutral-200" x-data="quickExit('{{ route('logout') }}')" @keydown.escape.window="handleEscape()">
@@ -19,8 +25,8 @@
     {{-- Header ringkas --}}
     <header class="w-full border-b border-neutral-200 bg-white">
         <div class="mx-auto max-w-6xl flex items-center justify-between px-4 sm:px-6 py-4">
-            <a href="{{ url('/') }}" class="text-xl font-bold tracking-tight text-neutral-900 hover:opacity-90">
-                RuangAman
+            <a href="{{ url('/') }}" class="rounded hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2" aria-label="RuangAman — beranda">
+                <x-logo />
             </a>
 
             <div class="flex items-center gap-4">
