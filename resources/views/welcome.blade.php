@@ -22,7 +22,7 @@
                     Sampaikan pengalaman sesuai kesiapan Anda. Gunakan alias, pilih informasi yang ingin dibagikan, dan lacak tindak lanjutnya.
                 </p>
                 <div class="pt-2 flex flex-wrap items-center gap-4">
-                    <a href="{{ route('laporan.create') }}" class="inline-flex items-center justify-center rounded bg-[#10a349] hover:bg-[#0e8e40] text-white font-medium text-sm px-6 py-2.5 transition-colors shadow-xs">
+                    <a href="{{ auth()->user()?->isPelapor() ? route('laporan.create') : (auth()->check() ? route('dashboard') : route('register')) }}" class="inline-flex items-center justify-center rounded bg-[#10a349] hover:bg-[#0e8e40] text-white font-medium text-sm px-6 py-2.5 transition-colors shadow-xs">
                         Buat laporan
                     </a>
                     <a href="{{ route('lacak.form') }}" class="text-sm font-medium text-neutral-800 hover:text-neutral-900 hover:underline px-2 py-1">
@@ -44,7 +44,7 @@
                     
                     <ul class="space-y-2 text-xs text-neutral-700">
                         <li>Tidak perlu nama asli.</li>
-                        <li>Tidak perlu membuat akun.</li>
+                        <li>Akun cukup memakai alias.</li>
                         <li>Lampiran bersifat opsional.</li>
                     </ul>
 
@@ -54,6 +54,33 @@
                 </div>
             </div>
         </div>
+
+        @if ($pengumumanTerbaru->isNotEmpty())
+            {{-- FR-31: pengumuman terbaru tampil di beranda --}}
+            <div class="mx-auto max-w-6xl px-4 sm:px-6 mt-14 sm:mt-16">
+                <div class="border-t border-neutral-300/60 pt-8">
+                    <div class="flex items-baseline justify-between gap-6">
+                        <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Pengumuman terbaru</p>
+                        <a href="{{ route('pengumuman.index') }}" class="text-sm font-medium text-neutral-800 hover:text-neutral-900 hover:underline">
+                            Semua pengumuman
+                        </a>
+                    </div>
+                    <ul class="mt-6 border-y border-neutral-200/70">
+                        @foreach ($pengumumanTerbaru as $item)
+                            <li class="border-t border-neutral-200/70 first:border-t-0">
+                                <a href="{{ route('pengumuman.show', $item) }}" class="group grid grid-cols-1 gap-x-6 gap-y-1 py-4 sm:grid-cols-[8rem_1fr]">
+                                    <span class="text-xs text-neutral-500">{{ $item->mulai_tayang->translatedFormat('d F Y') }}</span>
+                                    <span>
+                                        <span class="block text-sm font-semibold text-neutral-900 group-hover:text-brand-700">{{ $item->judul }}</span>
+                                        <span class="mt-1 line-clamp-1 text-xs leading-relaxed text-neutral-600">{{ $item->isi }}</span>
+                                    </span>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        @endif
     </section>
 
     {{-- SECTION 2: DUKUNGAN SESUAI KEBUTUHAN ANDA (ABU-ABU #f2f2f2 PENUH) --}}
@@ -199,7 +226,7 @@
                 <div class="space-y-1 border-b border-neutral-200 pb-5">
                     <h3 class="text-sm font-semibold text-neutral-900">Apakah saya harus menggunakan nama asli?</h3>
                     <p class="text-xs text-neutral-600 leading-relaxed">
-                        Tidak. Anda dapat menggunakan alias dan membuat laporan tanpa akun.
+                        Tidak. Anda cukup memakai alias. Akun Pelapor tetap diperlukan agar Anda dapat memantau status dan menerima pemberitahuan, sementara mode anonim menyembunyikan identitas Anda dari konselor.
                     </p>
                 </div>
 
@@ -220,7 +247,7 @@
                 <div class="space-y-1">
                     <h3 class="text-sm font-semibold text-neutral-900">Bagaimana jika kode laporan hilang?</h3>
                     <p class="text-xs text-neutral-600 leading-relaxed">
-                        Tanpa akun, akses tidak dapat dipulihkan lewat nama. Simpan kode dengan aman.
+                        Laporan yang Anda buat dari akun tersimpan di dashboard, sehingga tetap dapat dibuka meski kode lupa. Kode dipakai untuk membuka laporan lewat halaman lacak tanpa login, jadi simpan dengan aman.
                     </p>
                 </div>
             </div>
@@ -233,21 +260,21 @@
             <div class="lg:col-span-5 space-y-3">
                 <h2 class="text-2xl font-bold text-neutral-900 tracking-tight">Mulai laporan</h2>
                 <p class="text-xs text-neutral-600 leading-relaxed max-w-sm">
-                    Isi informasi awal, lalu lanjutkan ke formulir laporan lengkap.
+                    Buat akun alias lebih dulu, lalu lanjutkan ke formulir laporan lengkap. Alias dibawa otomatis dari profil Anda.
                 </p>
                 <p class="text-xs text-neutral-500">
-                    Tidak perlu nama asli atau akun.
+                    Tanpa nama asli. Mode anonim menyembunyikan identitas Anda dari konselor.
                 </p>
             </div>
 
             <div class="lg:col-span-7">
-                <form action="{{ route('laporan.create') }}" method="GET" class="rounded-xl border border-neutral-200/80 bg-white p-6 sm:p-7 space-y-4 shadow-xs">
+                <form action="{{ auth()->user()?->isPelapor() ? route('laporan.create') : (auth()->check() ? route('dashboard') : route('register')) }}" method="GET" class="rounded-xl border border-neutral-200/80 bg-white p-6 sm:p-7 space-y-4 shadow-xs">
                     <p class="text-[11px] text-neutral-400">Pratinjau formulir · Data contoh</p>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-medium text-neutral-800 mb-1">Alias</label>
-                            <input type="text" name="alias" value="Pelapor A" placeholder="Contoh: Pelapor A" class="w-full rounded bg-[#f2f2f2] border-0 text-xs px-3.5 py-2.5 text-neutral-800 focus:ring-1 focus:ring-neutral-400">
+                            <p class="rounded bg-[#f2f2f2] px-3.5 py-2.5 text-xs text-neutral-800">Dibawa dari profil Pelapor</p>
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-neutral-800 mb-1">Kategori kejadian</label>
@@ -270,7 +297,7 @@
 
                     <div class="pt-2">
                         <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center rounded bg-[#10a349] hover:bg-[#0e8e40] text-white font-medium text-xs px-6 py-2.5 transition-colors">
-                            Lanjutkan laporan
+                            {{ auth()->check() && ! auth()->user()->isPelapor() ? 'Buka dashboard' : 'Lanjutkan laporan' }}
                         </button>
                         <p class="text-[10px] text-neutral-400 mt-1">Lampiran dapat ditambahkan nanti.</p>
                     </div>
