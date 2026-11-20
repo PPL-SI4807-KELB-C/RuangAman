@@ -1,253 +1,117 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Laporan Saya - RuangAman</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-slate-50 text-slate-800 min-h-screen">
-    <nav class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center gap-6">
-            <a href="{{ route('welcome') }}" class="font-bold text-xl text-blue-900">RuangAman</a>
-            <a href="{{ route('laporan.index') }}" class="text-sm font-semibold text-blue-900">Laporan Saya</a>
-            <a href="{{ route('profil-pelapor.edit') }}" class="text-sm font-medium text-slate-600 hover:text-blue-900">Profil Anonim</a>
-        </div>
-        <a href="https://www.google.com" class="px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700">Keluar Cepat (Esc)</a>
-    </nav>
+@extends('layouts.app')
 
-    <main class="max-w-5xl mx-auto py-8 px-4">
-        <div class="flex justify-between items-center mb-6">
-            <div>
-                <h1 class="text-2xl font-bold text-slate-900">Riwayat Laporan Kasus</h1>
-                <p class="text-sm text-slate-600">Pantau status penanganan dan kelola laporan yang masih berstatus Pending.</p>
-            </div>
-            <a href="{{ route('laporan.create') }}" class="px-4 py-2.5 bg-blue-900 text-white text-sm font-semibold rounded-lg hover:bg-blue-800">
-                + Buat Laporan Baru
-            </a>
+@section('title', 'Riwayat Laporan Kasus - RuangAman')
+
+@section('content')
+<div class="mx-auto max-w-5xl py-6">
+    {{-- Header Halaman --}}
+    <div class="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tight text-slate-900">Riwayat Laporan Kasus</h1>
+            <p class="mt-1 text-sm text-slate-600">
+                Pantau status penanganan dan kelola laporan yang masih berstatus Pending.
+            </p>
         </div>
 
-        @if(session('success'))
-            <div class="mb-4 p-4 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-sm">{{ session('success') }}</div>
-        @endif
-        @if(session('error'))
-            <div class="mb-4 p-4 rounded-lg bg-red-50 text-red-800 border border-red-200 text-sm">{{ session('error') }}</div>
-        @endif
+        <a href="{{ route('laporan.create') }}"
+           class="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">
+            <span class="text-base leading-none">+</span> Buat Laporan Baru
+        </a>
+    </div>
 
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-            <table class="w-full text-left text-sm">
-                <thead class="bg-slate-100 text-slate-700 font-semibold border-b border-slate-200">
+    {{-- Tabel Riwayat Laporan --}}
+    <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
+                <thead class="bg-slate-50 text-xs font-semibold uppercase tracking-wider text-slate-500">
                     <tr>
-                        <th class="px-4 py-3">Kode Pelacakan</th>
-                        <th class="px-4 py-3">Kategori</th>
-                        <th class="px-4 py-3">Urgensi</th>
-                        <th class="px-4 py-3">Mode</th>
-                        <th class="px-4 py-3">Status</th>
-                        <th class="px-4 py-3 text-right">Aksi</th>
+                        <th scope="col" class="px-6 py-4">Kode Pelacakan</th>
+                        <th scope="col" class="px-6 py-4">Kategori</th>
+                        <th scope="col" class="px-6 py-4">Urgensi</th>
+                        <th scope="col" class="px-6 py-4">Mode</th>
+                        <th scope="col" class="px-6 py-4">Status</th>
+                        <th scope="col" class="px-6 py-4 text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-200">
-                    @forelse($laporans as $item)
-                        <tr>
-                            <td class="px-4 py-3 font-mono font-semibold text-blue-900">{{ $item->kode_laporan }}</td>
-                            <td class="px-4 py-3">{{ $item->kategori_kekerasan }}</td>
-                            <td class="px-4 py-3">{{ $item->tingkat_urgensi }}</td>
-                            <td class="px-4 py-3">{{ $item->mode_anonim ? 'Anonim' : 'Alias' }}</td>
-                            <td class="px-4 py-3">
-                                <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
-                                    {{ $item->status->nama_status ?? 'Pending' }}
+                <tbody class="divide-y divide-slate-100 bg-white">
+                    @forelse ($laporans as $laporan)
+                        @php
+                            $statusName = $laporan->status->nama_status ?? 'Pending';
+                            $isPending = strtolower($statusName) === 'pending';
+                        @endphp
+                        <tr class="transition hover:bg-slate-50/80">
+                            <td class="whitespace-nowrap px-6 py-4 font-mono font-semibold text-brand-700">
+                                <a href="{{ route('laporan.show', $laporan) }}" class="hover:underline">
+                                    {{ $laporan->kode_laporan }}
+                                </a>
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4 text-slate-700">
+                                {{ $laporan->kategori_kekerasan }}
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4 capitalize text-slate-700">
+                                {{ $laporan->tingkat_urgensi }}
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4">
+                                @if ($laporan->mode_anonim)
+                                    <span class="inline-flex items-center rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium text-brand-700">
+                                        Anonim
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">
+                                        Teridentifikasi
+                                    </span>
+                                @endif
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4">
+                                <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold {{ $isPending ? 'bg-amber-100 text-amber-800' : 'bg-brand-100 text-brand-800' }}">
+                                    {{ $statusName }}
                                 </span>
                             </td>
-                            <td class="px-4 py-3 text-right space-x-2">
-                                <a href="{{ route('laporan.show', $item) }}" class="text-blue-700 hover:underline font-medium">Detail</a>
-                                @if(($item->status->nama_status ?? '') === 'Pending')
-                                    <a href="{{ route('laporan.edit', $item) }}" class="text-amber-700 hover:underline font-medium">Edit</a>
-                                    <form action="{{ route('laporan.destroy', $item) }}" method="POST" class="inline" onsubmit="return confirm('Batalkan dan hapus laporan ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:underline font-medium">Batalkan</button>
-                                    </form>
-                                @endif
+                            <td class="whitespace-nowrap px-6 py-4 text-right font-medium">
+                                <div class="inline-flex items-center justify-end gap-3">
+                                    <a href="{{ route('laporan.show', $laporan) }}"
+                                       class="text-brand-700 transition hover:text-brand-800 hover:underline">
+                                        Detail
+                                    </a>
+
+                                    @if ($isPending)
+                                        <a href="{{ route('laporan.edit', $laporan) }}"
+                                           class="text-amber-600 transition hover:text-amber-700 hover:underline">
+                                            Edit
+                                        </a>
+
+                                        <form method="POST"
+                                              action="{{ route('laporan.destroy', $laporan) }}"
+                                              onsubmit="return confirm('Yakin ingin membatalkan dan menghapus laporan ini?');"
+                                              class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                    class="text-red-600 transition hover:text-red-700 hover:underline">
+                                                Batalkan
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-4 py-8 text-center text-slate-500">Belum ada laporan yang dibuat.</td>
+                            <td colspan="6" class="px-6 py-12 text-center">
+                                <p class="text-sm font-medium text-slate-700">Belum ada laporan kasus yang dibuat.</p>
+                                <p class="mt-1 text-xs text-slate-500">Klik tombol "+ Buat Laporan Baru" untuk mulai melaporkan kejadian.</p>
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
-        <div class="mt-4">{{ $laporans->links() }}</div>
-    </main>
-    <script>document.addEventListener('keydown', e => { if (e.key === 'Escape') window.location.replace('https://www.google.com'); });</script>
-</body>
-</html><!DOCTYPE html>
 
-<html lang="id">
-
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Daftar Laporan Saya - RuangAman</title>
-
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-</head>
-
-<body class="bg-slate-50 text-slate-800 min-h-screen">
-
-    <nav class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center">
-
-        <div class="flex items-center gap-6">
-
-            <a href="{{ route('welcome') }}" class="font-bold text-xl text-blue-900">RuangAman</a>
-
-            <a href="{{ route('laporan.index') }}" class="text-sm font-semibold text-blue-900">Laporan Saya</a>
-
-            <a href="{{ route('profil-pelapor.edit') }}" class="text-sm font-medium text-slate-600 hover:text-blue-900">Profil Anonim</a>
-
-        </div>
-
-        <a href="https://www.google.com" class="px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700">Keluar Cepat (Esc)</a>
-
-    </nav>
-
-
-
-    <main class="max-w-5xl mx-auto py-8 px-4">
-
-        <div class="flex justify-between items-center mb-6">
-
-            <div>
-
-                <h1 class="text-2xl font-bold text-slate-900">Riwayat Laporan Kasus</h1>
-
-                <p class="text-sm text-slate-600">Pantau status penanganan dan kelola laporan yang masih berstatus Pending.</p>
-
+        @if ($laporans->hasPages())
+            <div class="border-t border-slate-200 bg-slate-50 px-6 py-3">
+                {{ $laporans->links() }}
             </div>
-
-            <a href="{{ route('laporan.create') }}" class="px-4 py-2.5 bg-blue-900 text-white text-sm font-semibold rounded-lg hover:bg-blue-800">
-
-                + Buat Laporan Baru
-
-            </a>
-
-        </div>
-
-
-
-        @if(session('success'))
-
-            <div class="mb-4 p-4 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-sm">{{ session('success') }}</div>
-
         @endif
-
-        @if(session('error'))
-
-            <div class="mb-4 p-4 rounded-lg bg-red-50 text-red-800 border border-red-200 text-sm">{{ session('error') }}</div>
-
-        @endif
-
-
-
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-
-            <table class="w-full text-left text-sm">
-
-                <thead class="bg-slate-100 text-slate-700 font-semibold border-b border-slate-200">
-
-                    <tr>
-
-                        <th class="px-4 py-3">Kode Pelacakan</th>
-
-                        <th class="px-4 py-3">Kategori</th>
-
-                        <th class="px-4 py-3">Urgensi</th>
-
-                        <th class="px-4 py-3">Mode</th>
-
-                        <th class="px-4 py-3">Status</th>
-
-                        <th class="px-4 py-3 text-right">Aksi</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody class="divide-y divide-slate-200">
-
-                    @forelse($laporans as $item)
-
-                        <tr>
-
-                            <td class="px-4 py-3 font-mono font-semibold text-blue-900">{{ $item->kode_laporan }}</td>
-
-                            <td class="px-4 py-3">{{ $item->kategori_kekerasan }}</td>
-
-                            <td class="px-4 py-3">{{ ucfirst($item->tingkat_urgensi) }}</td>
-
-                            <td class="px-4 py-3">{{ $item->mode_anonim ? 'Anonim' : 'Alias' }}</td>
-
-                            <td class="px-4 py-3">
-
-                                <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
-
-                                    {{ $item->status->nama_status ?? 'Pending' }}
-
-                                </span>
-
-                            </td>
-
-                            <td class="px-4 py-3 text-right space-x-2">
-
-                                <a href="{{ route('laporan.show', $item) }}" class="text-blue-700 hover:underline font-medium">Detail</a>
-
-                                @if(($item->status->nama_status ?? '') === 'Pending')
-
-                                    <a href="{{ route('laporan.edit', $item) }}" class="text-amber-700 hover:underline font-medium">Edit</a>
-
-                                    <form action="{{ route('laporan.destroy', $item) }}" method="POST" class="inline" onsubmit="return confirm('Batalkan dan hapus laporan ini?')">
-
-                                        @csrf
-
-                                        @method('DELETE')
-
-                                        <button type="submit" class="text-red-600 hover:underline font-medium">Batalkan</button>
-
-                                    </form>
-
-                                @endif
-
-                            </td>
-
-                        </tr>
-
-                    @empty
-
-                        <tr>
-
-                            <td colspan="6" class="px-4 py-8 text-center text-slate-500">Belum ada laporan yang dibuat.</td>
-
-                        </tr>
-
-                    @endforelse
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-        <div class="mt-4">{{ $laporans->links() }}</div>
-
-    </main>
-
-    <script>document.addEventListener('keydown', e => { if (e.key === 'Escape') window.location.replace('https://www.google.com'); });</script>
-
-</body>
-
-</html>
+    </div>
+</div>
+@endsection

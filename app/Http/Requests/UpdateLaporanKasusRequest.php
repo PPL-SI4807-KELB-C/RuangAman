@@ -29,7 +29,7 @@ class UpdateLaporanKasusRequest extends FormRequest
             'judul' => ['sometimes', 'required', 'string', 'max:200'],
             'kategori_kekerasan' => ['required', 'string', Rule::in(LaporanKasus::KATEGORI)],
             'lokasi_kejadian' => ['required', 'string', 'max:1000'],
-            'kronologi' => ['required', 'string', 'min:10'],
+            'kronologi' => ['required', 'string'],
             'waktu_kejadian' => ['required', 'date', 'before_or_equal:now'],
             'tingkat_urgensi' => ['required', Rule::in(LaporanKasus::URGENSI)],
             'mode_anonim' => ['sometimes', 'boolean'],

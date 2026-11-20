@@ -1,227 +1,182 @@
-<!DOCTYPE html>
+@extends('layouts.app')
 
-<html lang="id">
+@section('title', 'Edit Laporan ' . $laporan->kode_laporan . ' - RuangAman')
 
-<head>
+@section('content')
+<div class="mx-auto max-w-3xl py-6 space-y-6">
+    {{-- Header Halaman --}}
+    <div class="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tight text-slate-900">
+                Edit Laporan <span class="font-mono text-brand-700">({{ $laporan->kode_laporan }})</span>
+            </h1>
+            <p class="mt-1 text-sm text-slate-600">
+                Perbarui informasi laporan Anda selama status masih Pending.
+            </p>
+        </div>
+    </div>
 
-    <meta charset="UTF-8">
+    {{-- Pesan Sukses / Error Validasi --}}
+    @if (session('success'))
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-4 text-sm font-medium text-brand-800">
+            {{ session('success') }}
+        </div>
+    @endif
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @if ($errors->any())
+        <div class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+            <p class="mb-1 font-semibold">Mohon periksa kembali isian formulir Anda:</p>
+            <ul class="list-disc space-y-1 pl-5">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-    <title>Edit Laporan {{ $laporan->kode_laporan }} - RuangAman</title>
+    {{-- Form Edit Laporan --}}
+    <form action="{{ route('laporan.update', $laporan) }}" method="POST" enctype="multipart/form-data"
+          class="space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+        @csrf
+        @method('PUT')
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <div>
+            <label for="judul" class="mb-1 block text-sm font-medium text-slate-700">Judul Laporan *</label>
+            <input type="text"
+                   id="judul"
+                   name="judul"
+                   value="{{ old('judul', $laporan->judul) }}"
+                   required
+                   maxlength="200"
+                   class="w-full rounded-xl border-slate-300 text-sm focus:border-brand-500 focus:ring-brand-500">
+        </div>
 
-</head>
-
-<body class="bg-slate-50 text-slate-800 min-h-screen">
-
-    <nav class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center">
-
-        <a href="{{ route('laporan.index') }}" class="font-bold text-xl text-blue-900">RuangAman</a>
-
-        <a href="https://www.google.com" class="px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700">Keluar Cepat (Esc)</a>
-
-    </nav>
-
-
-
-    <main class="max-w-3xl mx-auto py-8 px-4 space-y-6">
-
-        <h1 class="text-2xl font-bold text-slate-900">Edit Laporan ({{ $laporan->kode_laporan }})</h1>
-
-
-
-        @if(session('success'))
-
-            <div class="p-4 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-sm">{{ session('success') }}</div>
-
-        @endif
-
-
-
-        @if($errors->any())
-
-            <div class="p-4 rounded-lg bg-red-50 text-red-800 border border-red-200 text-sm">
-
-                <ul class="list-disc pl-5 space-y-1">
-
-                    @foreach($errors->all() as $error)
-
-                        <li>{{ $error }}</li>
-
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div>
+                <label for="kategori_kekerasan" class="mb-1 block text-sm font-medium text-slate-700">Kategori Kekerasan *</label>
+                <select id="kategori_kekerasan"
+                        name="kategori_kekerasan"
+                        required
+                        class="w-full rounded-xl border-slate-300 text-sm focus:border-brand-500 focus:ring-brand-500">
+                    @foreach ($kategoriList as $kat)
+                        <option value="{{ $kat }}" @selected(old('kategori_kekerasan', $laporan->kategori_kekerasan) === $kat)>
+                            {{ $kat }}
+                        </option>
                     @endforeach
-
-                </ul>
-
+                </select>
             </div>
-
-        @endif
-
-
-
-        <form action="{{ route('laporan.update', $laporan) }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-5">
-
-            @csrf
-
-            @method('PUT')
-
-
 
             <div>
-
-                <label class="block text-sm font-medium text-slate-700 mb-1">Judul Laporan *</label>
-
-                <input type="text" name="judul" value="{{ old('judul', $laporan->judul) }}" required maxlength="200" class="w-full rounded-lg border-slate-300">
-
+                <label for="waktu_kejadian" class="mb-1 block text-sm font-medium text-slate-700">Waktu Kejadian *</label>
+                <input type="datetime-local"
+                       id="waktu_kejadian"
+                       name="waktu_kejadian"
+                       value="{{ old('waktu_kejadian', \Carbon\Carbon::parse($laporan->waktu_kejadian)->format('Y-m-d\TH:i')) }}"
+                       required
+                       class="w-full rounded-xl border-slate-300 text-sm focus:border-brand-500 focus:ring-brand-500">
             </div>
+        </div>
 
+        <div>
+            <label for="lokasi_kejadian" class="mb-1 block text-sm font-medium text-slate-700">Lokasi Kejadian *</label>
+            <input type="text"
+                   id="lokasi_kejadian"
+                   name="lokasi_kejadian"
+                   value="{{ old('lokasi_kejadian', $laporan->lokasi_kejadian) }}"
+                   required
+                   class="w-full rounded-xl border-slate-300 text-sm focus:border-brand-500 focus:ring-brand-500">
+        </div>
 
+        <div>
+            <span class="mb-2 block text-sm font-medium text-slate-700">Tingkat Urgensi *</span>
+            <div class="flex flex-wrap gap-6">
+                @foreach (\App\Models\LaporanKasus::URGENSI as $urgensi)
+                    <label class="inline-flex cursor-pointer items-center gap-2 text-sm text-slate-700">
+                        <input type="radio"
+                               name="tingkat_urgensi"
+                               value="{{ $urgensi }}"
+                               class="border-slate-300 text-brand-600 focus:ring-brand-500"
+                               @checked(old('tingkat_urgensi', $laporan->tingkat_urgensi) === $urgensi)>
+                        <span>{{ ucfirst($urgensi) }}</span>
+                    </label>
+                @endforeach
+            </div>
+        </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+            <label for="kronologi" class="mb-1 block text-sm font-medium text-slate-700">Kronologi Kejadian *</label>
+            <textarea id="kronologi"
+                      name="kronologi"
+                      rows="5"
+                      required
+                      class="w-full rounded-xl border-slate-300 text-sm focus:border-brand-500 focus:ring-brand-500">{{ old('kronologi', $laporan->kronologi) }}</textarea>
+        </div>
 
+        <div>
+            <label for="lampiran" class="mb-1 block text-sm font-medium text-slate-700">
+                Tambah Lampiran Baru <span class="font-normal text-slate-500">(Opsional, maks. 5 file)</span>
+            </label>
+            <input type="file"
+                   id="lampiran"
+                   name="lampiran[]"
+                   multiple
+                   accept=".jpg,.jpeg,.png,.webp,.pdf,.mp3,.mp4,.mov"
+                   class="mt-1 block w-full text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-brand-50 file:px-4 file:py-2 file:font-medium file:text-brand-700 hover:file:bg-brand-100">
+        </div>
+
+        <div class="rounded-xl border border-brand-200 bg-brand-50 p-4">
+            <label for="mode_anonim" class="flex cursor-pointer items-start gap-3">
+                <input type="checkbox"
+                       id="mode_anonim"
+                       name="mode_anonim"
+                       value="1"
+                       class="mt-0.5 h-5 w-5 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+                       @checked(old('mode_anonim', $laporan->mode_anonim))>
                 <div>
-
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Kategori Kekerasan *</label>
-
-                    <select name="kategori_kekerasan" required class="w-full rounded-lg border-slate-300">
-
-                        @foreach($kategoriList as $kat)
-
-                            <option value="{{ $kat }}" {{ old('kategori_kekerasan', $laporan->kategori_kekerasan) === $kat ? 'selected' : '' }}>{{ $kat }}</option>
-
-                        @endforeach
-
-                    </select>
-
+                    <span class="block text-sm font-semibold text-slate-900">Laporkan secara anonim</span>
+                    <span class="block text-xs text-slate-600">Identitas profil Anda disembunyikan dari konselor yang menangani kasus ini.</span>
                 </div>
-
-                <div>
-
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Waktu Kejadian *</label>
-
-                    <input type="datetime-local" name="waktu_kejadian" value="{{ old('waktu_kejadian', \Carbon\Carbon::parse($laporan->waktu_kejadian)->format('Y-m-d\TH:i')) }}" required class="w-full rounded-lg border-slate-300">
-
-                </div>
-
-            </div>
-
-
-
-            <div>
-
-                <label class="block text-sm font-medium text-slate-700 mb-1">Lokasi Kejadian *</label>
-
-                <input type="text" name="lokasi_kejadian" value="{{ old('lokasi_kejadian', $laporan->lokasi_kejadian) }}" required class="w-full rounded-lg border-slate-300">
-
-            </div>
-
-
-
-            <div>
-
-                <label class="block text-sm font-medium text-slate-700 mb-1">Tingkat Urgensi *</label>
-
-                <div class="flex gap-6 mt-1">
-
-                    @foreach(\App\Models\LaporanKasus::URGENSI as $urgensi)
-
-                        <label class="inline-flex items-center gap-2 text-sm">
-
-                            <input type="radio" name="tingkat_urgensi" value="{{ $urgensi }}" {{ old('tingkat_urgensi', $laporan->tingkat_urgensi) === $urgensi ? 'checked' : '' }}>
-
-                            <span>{{ ucfirst($urgensi) }}</span>
-
-                        </label>
-
-                    @endforeach
-
-                </div>
-
-            </div>
-
-
-
-            <div>
-
-                <label class="block text-sm font-medium text-slate-700 mb-1">Kronologi Kejadian *</label>
-
-                <textarea name="kronologi" rows="5" required class="w-full rounded-lg border-slate-300">{{ old('kronologi', $laporan->kronologi) }}</textarea>
-
-            </div>
-
-
-
-            <div>
-
-                <label class="block text-sm font-medium text-slate-700 mb-1">Tambah Lampiran Baru (Opsional)</label>
-
-                <input type="file" name="lampiran[]" multiple accept=".jpg,.jpeg,.png,.pdf" class="w-full text-sm text-slate-600">
-
-            </div>
-
-
-
-            <div class="flex items-center gap-3 p-3.5 bg-slate-50 rounded-lg border border-slate-200">
-
-                <input type="checkbox" id="mode_anonim" name="mode_anonim" value="1" {{ old('mode_anonim', $laporan->mode_anonim) ? 'checked' : '' }}>
-
-                <label for="mode_anonim" class="text-sm text-slate-700">Laporkan secara anonim</label>
-
-            </div>
-
-
-
-            <div class="flex justify-end gap-3">
-
-                <a href="{{ route('laporan.show', $laporan) }}" class="px-4 py-2.5 border border-slate-300 text-slate-700 text-sm font-medium rounded-lg">Kembali</a>
-
-                <button type="submit" class="px-5 py-2.5 bg-blue-900 text-white text-sm font-semibold rounded-lg hover:bg-blue-800">Simpan Perubahan</button>
-
-            </div>
-
-        </form>
-
-
-
-        @if($laporan->lampirans->isNotEmpty())
-
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-
-                <h2 class="text-base font-semibold text-slate-900 mb-3">Lampiran Terunggah</h2>
-
-                <ul class="divide-y divide-slate-200 text-sm">
-
-                    @foreach($laporan->lampirans as $file)
-
-                        <li class="py-2.5 flex justify-between items-center">
-
-                            <a href="{{ route('laporan.lampiran.download', $file) }}" class="text-blue-700 hover:underline">{{ $file->nama_file }}</a>
-
-                            <form action="{{ route('laporan.lampiran.destroy', $file) }}" method="POST" onsubmit="return confirm('Hapus bukti ini?')">
-
-                                @csrf
-
-                                @method('DELETE')
-
-                                <button type="submit" class="text-red-600 text-xs font-semibold hover:underline">Hapus</button>
-
-                            </form>
-
-                        </li>
-
-                    @endforeach
-
-                </ul>
-
-            </div>
-
-        @endif
-
-    </main>
-
-    <script>document.addEventListener('keydown', e => { if (e.key === 'Escape') window.location.replace('https://www.google.com'); });</script>
-
-</body>
-
-</html>
+            </label>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 border-t border-slate-200 pt-5">
+            <a href="{{ route('laporan.index') }}"
+               class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
+                Kembali
+            </a>
+            <button type="submit"
+                    class="inline-flex items-center justify-center rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">
+                Simpan Perubahan
+            </button>
+        </div>
+    </form>
+
+    {{-- Daftar Lampiran Terunggah --}}
+    @if ($laporan->lampirans->isNotEmpty())
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <h2 class="mb-3 text-base font-semibold text-slate-900">Lampiran Terunggah</h2>
+            <ul class="divide-y divide-slate-200 text-sm">
+                @foreach ($laporan->lampirans as $file)
+                    <li class="flex items-center justify-between gap-4 py-3">
+                        <a href="{{ route('laporan.lampiran.download', $file) }}"
+                           class="truncate font-medium text-brand-700 hover:text-brand-800 hover:underline">
+                            {{ $file->nama_file }}
+                        </a>
+
+                        <form action="{{ route('laporan.lampiran.destroy', $file) }}"
+                              method="POST"
+                              onsubmit="return confirm('Hapus bukti ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                    class="rounded-lg bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 transition hover:bg-red-100">
+                                Hapus
+                            </button>
+                        </form>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+</div>
+@endsection
