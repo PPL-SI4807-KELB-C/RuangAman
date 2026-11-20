@@ -9,7 +9,7 @@
     <section class="w-full bg-white pt-14 pb-10 sm:pt-16">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             <div class="lg:col-span-8 space-y-3">
-                <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">
+                <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">
                     Informasi layanan
                 </p>
                 <h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight leading-[1.15]">
@@ -23,7 +23,7 @@
     </section>
 
     {{-- Daftar pengumuman --}}
-    <section class="w-full bg-[#f2f2f2] border-t border-neutral-200/70 py-14 sm:py-16">
+    <section class="w-full bg-surface border-t border-neutral-200/70 py-14 sm:py-16">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             <div class="lg:col-span-8 space-y-6">
                 @forelse ($pengumumanList as $item)
@@ -33,7 +33,7 @@
                                 {{ $item->judul }}
                             </a>
                         </h2>
-                        <p class="mt-1.5 text-[11px] text-neutral-500">
+                        <p class="mt-1.5 text-[11px] text-neutral-600">
                             Tayang {{ $item->mulai_tayang->translatedFormat('d F Y') }}
                             @if ($item->akhir_tayang)
                                 &ndash; {{ $item->akhir_tayang->translatedFormat('d F Y') }}

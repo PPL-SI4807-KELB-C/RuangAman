@@ -25,11 +25,11 @@
         <form method="GET" action="{{ route('admin.artikel.index') }}" class="grid grid-cols-1 gap-3 md:grid-cols-12">
             <div class="md:col-span-5">
                 <label for="search" class="sr-only">Cari artikel</label>
-                <input type="text" id="search" name="search" value="{{ $search }}" placeholder="Cari judul atau isi artikel..." class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500" />
+                <input type="text" id="search" name="search" value="{{ $search }}" placeholder="Cari judul atau isi artikel..." class="block w-full rounded-lg border border-line-strong px-3 py-2.5 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900" />
             </div>
             <div class="md:col-span-2">
                 <label for="kategori_id" class="sr-only">Filter kategori</label>
-                <select id="kategori_id" name="kategori_id" class="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                <select id="kategori_id" name="kategori_id" class="block w-full rounded-lg border border-line-strong bg-white px-3 py-2.5 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900">
                     <option value="">Semua Kategori</option>
                     @foreach ($kategoriOptions as $id => $label)
                         <option value="{{ $id }}" @selected($selectedKategori === (int) $id)>{{ $label }}</option>
@@ -38,7 +38,7 @@
             </div>
             <div class="md:col-span-2">
                 <label for="status" class="sr-only">Filter status</label>
-                <select id="status" name="status" class="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                <select id="status" name="status" class="block w-full rounded-lg border border-line-strong bg-white px-3 py-2.5 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900">
                     <option value="">Semua Status</option>
                     @foreach ($statusOptions as $value => $label)
                         <option value="{{ $value }}" @selected($selectedStatus === $value)>{{ $label }}</option>

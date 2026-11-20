@@ -14,7 +14,7 @@
                 @endif
             </div>
             <h1 class="mt-2 text-2xl font-extrabold tracking-tight text-neutral-900">{{ $konselor->nama }}</h1>
-            <p class="mt-1 text-xs text-neutral-500">{{ $konselor->spesialisasi }}</p>
+            <p class="mt-1 text-xs text-neutral-600">{{ $konselor->spesialisasi }}</p>
         </div>
         <div class="flex flex-wrap items-center gap-3">
             <x-button href="{{ route('admin.konselor.edit', $konselor) }}" variant="secondary" size="sm">
@@ -23,7 +23,7 @@
             @if ($jumlahJadwal > 0)
                 <span
                     title="Tidak dapat dihapus karena sudah memiliki slot jadwal konseling. Ubah status menjadi Nonaktif."
-                    class="cursor-not-allowed text-xs text-neutral-500 py-1.5 px-2"
+                    class="cursor-not-allowed text-xs text-neutral-600 py-1.5 px-2"
                 >
                     Hapus Data
                 </span>
@@ -55,21 +55,21 @@
             <h2 class="text-sm font-semibold text-neutral-900 mb-4">Profil Profesional</h2>
             <dl class="space-y-4 text-xs">
                 <div>
-                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Nama Lengkap &amp; Gelar</dt>
+                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Nama Lengkap &amp; Gelar</dt>
                     <dd class="mt-1 font-medium text-neutral-900">{{ $konselor->nama }}</dd>
                 </div>
                 <div>
-                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Spesialisasi / Kualifikasi</dt>
+                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Spesialisasi / Kualifikasi</dt>
                     <dd class="mt-1 text-neutral-800">{{ $konselor->spesialisasi }}</dd>
                 </div>
                 <div>
-                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Bio Profesional</dt>
+                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Bio Profesional</dt>
                     <dd class="mt-1 whitespace-pre-line text-neutral-700 leading-relaxed">
                         {{ $konselor->bio ?: 'Bio profesional belum diisi.' }}
                     </dd>
                 </div>
                 <div>
-                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Status Ketersediaan</dt>
+                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Status Ketersediaan</dt>
                     <dd class="mt-1">
                         <x-badge :variant="$konselor->statusBadgeVariant()">{{ $konselor->statusLabel() }}</x-badge>
                     </dd>
@@ -83,17 +83,17 @@
                 <h2 class="text-sm font-semibold text-neutral-900 mb-4">Informasi Akun</h2>
                 <dl class="space-y-4 text-xs">
                     <div>
-                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Nama Tampilan</dt>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Nama Tampilan</dt>
                         <dd class="mt-1 font-medium text-neutral-900">
                             {{ $konselor->user?->nama_tampilan ?? 'Akun tidak ditemukan' }}
                         </dd>
                     </div>
                     <div>
-                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">ID Akun</dt>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">ID Akun</dt>
                         <dd class="mt-1 text-neutral-800">#{{ $konselor->user_id }}</dd>
                     </div>
                     <div>
-                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Status Akun</dt>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Status Akun</dt>
                         <dd class="mt-1">
                             @if ($konselor->user?->status === 'aktif')
                                 <x-badge variant="success">Aktif</x-badge>
@@ -103,7 +103,7 @@
                         </dd>
                     </div>
                 </dl>
-                <p class="mt-4 text-[11px] text-neutral-500">
+                <p class="mt-4 text-[11px] text-neutral-600">
                     Email akun tidak ditampilkan pada halaman manajemen demi menjaga privasi data pengguna.
                 </p>
             </x-card>
@@ -112,7 +112,7 @@
             <x-card>
                 <h2 class="text-sm font-semibold text-neutral-900 mb-2">Slot Jadwal Konseling</h2>
                 <p class="text-3xl font-extrabold text-neutral-900">{{ $jumlahJadwal }}</p>
-                <p class="mt-1 text-[11px] text-neutral-500">
+                <p class="mt-1 text-[11px] text-neutral-600">
                     @if ($jumlahJadwal > 0)
                         Profil ini sudah dipakai pada jadwal konseling sehingga tidak dapat dihapus permanen.
                     @else

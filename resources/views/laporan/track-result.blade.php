@@ -100,14 +100,14 @@
                             <span class="text-xs font-medium text-neutral-800">Dialihkan / Tidak dapat diproses sistem</span>
                         @endif
                     </div>
-                    <p class="text-[11px] text-neutral-500 mt-1">
+                    <p class="text-[11px] text-neutral-600 mt-1">
                         Diterima pada {{ ($laporan->created_at ?? now())->translatedFormat('d F Y') }}, pukul {{ ($laporan->created_at ?? now())->format('H.i') }} WIB
                     </p>
                 </div>
 
                 {{-- Kotak Alasan Khusus Jika Kasus Ditolak / Dialihkan --}}
                 @if ($statusName === 'Ditolak')
-                    <div class="rounded-xl bg-[#f2f2f2] p-5 border border-neutral-300 text-xs space-y-2">
+                    <div class="rounded-xl bg-surface p-5 border border-neutral-300 text-xs space-y-2">
                         <p class="font-semibold text-neutral-900">Catatan Pengalihan / Peninjauan:</p>
                         <p class="text-neutral-700 leading-relaxed">
                             {{ $laporan->penangananKasus?->catatan ?? 'Laporan ini berada di luar ruang lingkup penanganan kekerasan berbasis gender. Jika Anda membutuhkan bantuan darurat atau hukum perdata, Anda dapat menghubungi lembaga rujukan pada direktori bantuan kami.' }}
@@ -118,11 +118,11 @@
                 {{-- Metadata Grid --}}
                 <div class="grid grid-cols-2 gap-6 pt-4 border-t border-neutral-100 text-xs">
                     <div>
-                        <p class="text-neutral-500 text-[11px]">Alias</p>
+                        <p class="text-neutral-600 text-[11px]">Alias</p>
                         <p class="font-medium text-neutral-800 mt-0.5">{{ $laporan->user?->profilPelapor?->alias ?? 'Alias tidak tersedia' }}</p>
                     </div>
                     <div>
-                        <p class="text-neutral-500 text-[11px]">Kategori</p>
+                        <p class="text-neutral-600 text-[11px]">Kategori</p>
                         <p class="font-medium text-neutral-800 mt-0.5">
                             {{ [
                                 'Siber' => 'Kekerasan digital',
@@ -148,7 +148,7 @@
 
                 {{-- Lampiran & Retensi Privasi --}}
                 <div class="space-y-1 pt-4 border-t border-neutral-100">
-                    <p class="text-[11px] text-neutral-500">Lampiran pendukung</p>
+                    <p class="text-[11px] text-neutral-600">Lampiran pendukung</p>
                     <p class="text-xs text-neutral-600">
                         @if ($laporan && $laporan->lampiran->count() > 0)
                             {{ $laporan->lampiran->count() }} berkas terlampir (tersimpan di private storage terisolasi).
@@ -156,7 +156,7 @@
                             Belum ada lampiran.
                         @endif
                     </p>
-                    <p class="text-[11px] text-neutral-500">Berkas bukti dilindungi UU PDP dan hanya dapat dilihat konselor berwenang.</p>
+                    <p class="text-[11px] text-neutral-600">Berkas bukti dilindungi UU PDP dan hanya dapat dilihat konselor berwenang.</p>
                 </div>
 
                 {{-- PERBAIKAN 2: PESAN DARI TIM PENDAMPING DUA ARAH (FIGMA EXACT + CHAT FEED) --}}
@@ -169,7 +169,7 @@
                     </div>
 
                     @if ($laporan && $laporan->penangananKasus?->catatan)
-                        <div class="rounded-lg bg-[#f2f2f2] p-4 text-xs text-neutral-800 space-y-1">
+                        <div class="rounded-lg bg-surface p-4 text-xs text-neutral-800 space-y-1">
                             <p class="font-semibold text-neutral-900">Catatan Konselor:</p>
                             <p class="leading-relaxed">{{ $laporan->penangananKasus->catatan }}</p>
                         </div>
@@ -202,7 +202,7 @@
                         </form>
                     @endif
 
-                    <p class="text-[11px] text-neutral-500 pt-2 border-t border-neutral-100">
+                    <p class="text-[11px] text-neutral-600 pt-2 border-t border-neutral-100">
                         Periksa kembali melalui kode laporan ini saat Anda merasa aman.
                     </p>
                 </div>
@@ -220,7 +220,7 @@
                             <span class="mt-1 h-2 w-2 rounded-full bg-neutral-900 shrink-0"></span>
                             <div>
                                 <p class="font-semibold text-neutral-900">Laporan diterima</p>
-                                <p class="text-[11px] text-neutral-500 mt-0.5">
+                                <p class="text-[11px] text-neutral-600 mt-0.5">
                                     {{ ($laporan->created_at ?? now())->translatedFormat('d F Y') }} · {{ ($laporan->created_at ?? now())->format('H.i') }} WIB
                                 </p>
                             </div>
@@ -230,8 +230,8 @@
                         <div class="flex items-start gap-3">
                             <span class="mt-1 h-2 w-2 rounded-full {{ in_array($statusName, ['Proses', 'Selesai']) ? 'bg-neutral-900' : 'bg-neutral-300' }} shrink-0"></span>
                             <div>
-                                <p class="font-semibold {{ in_array($statusName, ['Proses', 'Selesai']) ? 'text-neutral-900' : 'text-neutral-500' }}">Peninjauan tim</p>
-                                <p class="text-[11px] text-neutral-500 mt-0.5">
+                                <p class="font-semibold {{ in_array($statusName, ['Proses', 'Selesai']) ? 'text-neutral-900' : 'text-neutral-600' }}">Peninjauan tim</p>
+                                <p class="text-[11px] text-neutral-600 mt-0.5">
                                     {{ in_array($statusName, ['Proses', 'Selesai']) ? 'Sedang berlangsung' : 'Belum dimulai' }}
                                 </p>
                             </div>
@@ -241,8 +241,8 @@
                         <div class="flex items-start gap-3">
                             <span class="mt-1 h-2 w-2 rounded-full {{ $statusName === 'Selesai' ? 'bg-brand-600' : 'bg-neutral-300' }} shrink-0"></span>
                             <div>
-                                <p class="font-semibold {{ $statusName === 'Selesai' ? 'text-neutral-900' : 'text-neutral-500' }}">Pendampingan & Pemulihan</p>
-                                <p class="text-[11px] text-neutral-500 mt-0.5">
+                                <p class="font-semibold {{ $statusName === 'Selesai' ? 'text-neutral-900' : 'text-neutral-600' }}">Pendampingan & Pemulihan</p>
+                                <p class="text-[11px] text-neutral-600 mt-0.5">
                                     {{ $statusName === 'Selesai' ? 'Telah selesai' : 'Sesuai kebutuhan dan persetujuan' }}
                                 </p>
                             </div>
@@ -267,7 +267,7 @@
                 </div>
 
                 {{-- Footer Info --}}
-                <div class="pt-6 border-t border-neutral-100 text-[11px] text-neutral-500 space-y-1">
+                <div class="pt-6 border-t border-neutral-100 text-[11px] text-neutral-600 space-y-1">
                     <p>Jaga kode tetap pribadi.</p>
                     <p>Keluar cepat tidak menghapus riwayat peramban Anda.</p>
                 </div>

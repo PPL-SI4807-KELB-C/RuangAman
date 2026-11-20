@@ -9,7 +9,7 @@
     <section class="w-full bg-white pt-14 pb-10 sm:pt-16">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             <div class="lg:col-span-8 space-y-3">
-                <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">
+                <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">
                     Edukasi &amp; Pencegahan KBG
                 </p>
                 <h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight leading-[1.15]">
@@ -33,7 +33,7 @@
     </section>
 
     {{-- Filter & daftar kegiatan --}}
-    <section class="w-full bg-[#f2f2f2] border-t border-neutral-200/70 py-14 sm:py-16">
+    <section class="w-full bg-surface border-t border-neutral-200/70 py-14 sm:py-16">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             <div class="lg:col-span-8 space-y-8">
                 <form method="GET" action="{{ route('kegiatan.index') }}" class="grid grid-cols-1 gap-3 sm:grid-cols-12">
@@ -41,7 +41,7 @@
                         <label for="search" class="sr-only">Cari kegiatan</label>
                         <div class="relative">
                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                <svg class="h-4 w-4 text-neutral-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <svg class="h-4 w-4 text-neutral-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
@@ -51,7 +51,7 @@
                                 name="search"
                                 value="{{ $search }}"
                                 placeholder="Cari topik webinar atau narasumber..."
-                                class="block w-full rounded bg-white py-2.5 pl-9 pr-3 text-sm text-neutral-900 ring-1 ring-inset ring-neutral-300/70 placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+                                class="block w-full rounded bg-white py-2.5 pl-9 pr-3 text-sm text-neutral-900 ring-1 ring-inset ring-line-strong placeholder:text-neutral-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
                             />
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                         <select
                             id="metode"
                             name="metode"
-                            class="block w-full rounded bg-white px-3 py-2.5 text-sm text-neutral-900 ring-1 ring-inset ring-neutral-300/70 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+                            class="block w-full rounded bg-white px-3 py-2.5 text-sm text-neutral-900 ring-1 ring-inset ring-line-strong focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
                         >
                             <option value="">Semua Metode</option>
                             @foreach ($metodeOptions as $val => $label)

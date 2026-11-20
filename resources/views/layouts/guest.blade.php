@@ -13,16 +13,8 @@
 
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-neutral-900 focus:px-4 focus:py-2 focus:text-xs focus:font-medium focus:text-white">Lompat ke konten utama</a>
 
-    {{-- Banner keselamatan --}}
-    <div class="w-full bg-[#f2f2f2] border-b border-neutral-200 text-neutral-700 text-xs py-2 px-4 sm:px-6">
-        <div class="mx-auto max-w-6xl flex items-center justify-center gap-2 text-center">
-            <svg class="h-3.5 w-3.5 shrink-0 text-neutral-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-            </svg>
-            <span>Utamakan keselamatan. Gunakan perangkat yang aman; keluar cepat tidak menghapus riwayat peramban.</span>
-        </div>
-    </div>
+    {{-- Banner keselamatan + kontak darurat --}}
+    <x-safety-banner />
 
     {{-- Header ringkas --}}
     <header class="w-full border-b border-neutral-200 bg-white">

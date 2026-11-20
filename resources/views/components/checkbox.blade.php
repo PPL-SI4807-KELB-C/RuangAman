@@ -25,7 +25,7 @@ $isChecked = old() ? (bool) old($name) : $checked;
             @if ($required) required @endif
             aria-invalid="{{ $hasError ? 'true' : 'false' }}"
             @if ($hasError) aria-describedby="{{ $id }}-error" @endif
-            class="mt-0.5 h-4 w-4 shrink-0 rounded border-neutral-400 text-neutral-900 focus:ring-2 focus:ring-neutral-400 focus:ring-offset-0"
+            class="mt-0.5 h-4 w-4 shrink-0 rounded border-line-strong text-neutral-900 focus:ring-2 focus:ring-neutral-900 focus:ring-offset-2"
         >
         <span class="text-xs leading-relaxed text-neutral-700">{{ $slot }}</span>
     </label>

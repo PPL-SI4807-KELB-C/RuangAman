@@ -10,7 +10,7 @@
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             {{-- Hero Left Content --}}
             <div class="lg:col-span-7 space-y-6">
-                <p class="text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <p class="text-xs font-medium text-neutral-600 uppercase tracking-wider">
                     Pelaporan dan pendampingan
                 </p>
                 <h1 class="text-4xl sm:text-5xl font-extrabold text-neutral-900 tracking-tight leading-[1.15]">
@@ -33,7 +33,7 @@
 
             {{-- Hero Right Card (Abu-abu di dalam background putih) --}}
             <div class="lg:col-span-5">
-                <div class="rounded-xl bg-[#f2f2f2] p-6 sm:p-7 space-y-5 border border-neutral-200/60">
+                <div class="rounded-xl bg-surface p-6 sm:p-7 space-y-5 border border-neutral-200/60">
                     <div class="flex items-center gap-2 text-neutral-700">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
@@ -48,7 +48,7 @@
                         <li>Lampiran bersifat opsional.</li>
                     </ul>
 
-                    <p class="text-[11px] leading-relaxed text-neutral-500 pt-3 border-t border-neutral-300/60">
+                    <p class="text-[11px] leading-relaxed text-neutral-600 pt-3 border-t border-neutral-300/60">
                         Bukan layanan darurat. Jika ada ancaman langsung, cari tempat aman dan bantuan setempat.
                     </p>
                 </div>
@@ -60,7 +60,7 @@
             <div class="mx-auto max-w-6xl px-4 sm:px-6 mt-14 sm:mt-16">
                 <div class="border-t border-neutral-300/60 pt-8">
                     <div class="flex items-baseline justify-between gap-6">
-                        <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Pengumuman terbaru</p>
+                        <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Pengumuman terbaru</p>
                         <a href="{{ route('pengumuman.index') }}" class="text-sm font-medium text-neutral-800 hover:text-neutral-900 hover:underline">
                             Semua pengumuman
                         </a>
@@ -69,7 +69,7 @@
                         @foreach ($pengumumanTerbaru as $item)
                             <li class="border-t border-neutral-200/70 first:border-t-0">
                                 <a href="{{ route('pengumuman.show', $item) }}" class="group grid grid-cols-1 gap-x-6 gap-y-1 py-4 sm:grid-cols-[8rem_1fr]">
-                                    <span class="text-xs text-neutral-500">{{ $item->mulai_tayang->translatedFormat('d F Y') }}</span>
+                                    <span class="text-xs text-neutral-600">{{ $item->mulai_tayang->translatedFormat('d F Y') }}</span>
                                     <span>
                                         <span class="block text-sm font-semibold text-neutral-900 group-hover:text-brand-700">{{ $item->judul }}</span>
                                         <span class="mt-1 line-clamp-1 text-xs leading-relaxed text-neutral-600">{{ $item->isi }}</span>
@@ -84,11 +84,11 @@
     </section>
 
     {{-- SECTION 2: DUKUNGAN SESUAI KEBUTUHAN ANDA (ABU-ABU #f2f2f2 PENUH) --}}
-    <section id="layanan" class="w-full bg-[#f2f2f2] py-16 sm:py-20 border-y border-neutral-200/70">
+    <section id="layanan" class="w-full bg-surface py-16 sm:py-20 border-y border-neutral-200/70">
         <div class="mx-auto max-w-6xl px-4 sm:px-6">
             <div class="mb-12">
                 <h2 class="text-2xl font-bold text-neutral-900 tracking-tight">Dukungan sesuai kebutuhan Anda</h2>
-                <p class="text-xs text-neutral-500 mt-1">Anda dapat memulai dari layanan yang paling relevan.</p>
+                <p class="text-xs text-neutral-600 mt-1">Anda dapat memulai dari layanan yang paling relevan.</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -157,12 +157,12 @@
         <div class="mx-auto max-w-6xl px-4 sm:px-6">
             <div class="mb-12">
                 <h2 class="text-2xl font-bold text-neutral-900 tracking-tight">Alur pelaporan</h2>
-                <p class="text-xs text-neutral-500 mt-1">Tahapan yang dapat Anda ikuti, tanpa harus menceritakan semuanya sekaligus.</p>
+                <p class="text-xs text-neutral-600 mt-1">Tahapan yang dapat Anda ikuti, tanpa harus menceritakan semuanya sekaligus.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                 <div class="space-y-2">
-                    <span class="text-xs text-neutral-500 font-mono">01</span>
+                    <span class="text-xs text-neutral-600 font-mono">01</span>
                     <h3 class="text-sm font-semibold text-neutral-900">Sampaikan laporan</h3>
                     <p class="text-xs text-neutral-600 leading-relaxed">
                         Pilih kategori dan tulis kronologi sebatas yang nyaman Anda bagikan.
@@ -170,7 +170,7 @@
                 </div>
 
                 <div class="space-y-2">
-                    <span class="text-xs text-neutral-500 font-mono">02</span>
+                    <span class="text-xs text-neutral-600 font-mono">02</span>
                     <h3 class="text-sm font-semibold text-neutral-900">Simpan kode Anda</h3>
                     <p class="text-xs text-neutral-600 leading-relaxed">
                         Kode enam karakter digunakan untuk membuka perkembangan laporan.
@@ -178,7 +178,7 @@
                 </div>
 
                 <div class="space-y-2">
-                    <span class="text-xs text-neutral-500 font-mono">03</span>
+                    <span class="text-xs text-neutral-600 font-mono">03</span>
                     <h3 class="text-sm font-semibold text-neutral-900">Tentukan tindak lanjut</h3>
                     <p class="text-xs text-neutral-600 leading-relaxed">
                         Tim meninjau laporan. Pendampingan dilakukan dengan persetujuan Anda.
@@ -189,11 +189,11 @@
     </section>
 
     {{-- SECTION 4: PRIVASI SEJAK LANGKAH PERTAMA (ABU-ABU #f2f2f2 PENUH) --}}
-    <section class="w-full bg-[#f2f2f2] py-16 sm:py-20 border-y border-neutral-200/70">
+    <section class="w-full bg-surface py-16 sm:py-20 border-y border-neutral-200/70">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div class="lg:col-span-5 space-y-1">
                 <h2 class="text-2xl font-bold text-neutral-900 tracking-tight">Privasi sejak langkah pertama</h2>
-                <p class="text-xs text-neutral-500">Bagikan hanya yang diperlukan.</p>
+                <p class="text-xs text-neutral-600">Bagikan hanya yang diperlukan.</p>
             </div>
 
             <div class="lg:col-span-7 space-y-6">
@@ -219,7 +219,7 @@
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div class="lg:col-span-5 space-y-1">
                 <h2 class="text-2xl font-bold text-neutral-900 tracking-tight">Pertanyaan umum</h2>
-                <p class="text-xs text-neutral-500">Informasi sebelum melapor.</p>
+                <p class="text-xs text-neutral-600">Informasi sebelum melapor.</p>
             </div>
 
             <div class="lg:col-span-7 space-y-6">
@@ -255,14 +255,14 @@
     </section>
 
     {{-- SECTION 6: MULAI LAPORAN (ABU-ABU #f2f2f2 PENUH DENGAN FORM PUTIH) --}}
-    <section class="w-full bg-[#f2f2f2] py-16 sm:py-20 border-t border-neutral-200/70">
+    <section class="w-full bg-surface py-16 sm:py-20 border-t border-neutral-200/70">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             <div class="lg:col-span-5 space-y-3">
                 <h2 class="text-2xl font-bold text-neutral-900 tracking-tight">Mulai laporan</h2>
                 <p class="text-xs text-neutral-600 leading-relaxed max-w-sm">
                     Buat akun alias lebih dulu, lalu lanjutkan ke formulir laporan lengkap. Alias dibawa otomatis dari profil Anda.
                 </p>
-                <p class="text-xs text-neutral-500">
+                <p class="text-xs text-neutral-600">
                     Tanpa nama asli. Mode anonim menyembunyikan identitas Anda dari konselor.
                 </p>
             </div>
@@ -271,7 +271,7 @@
                 {{-- POST + session: kronologi tidak boleh masuk URL/riwayat peramban. --}}
                 <form action="{{ route('laporan.draf') }}" method="POST" class="rounded-xl border border-neutral-200/80 bg-white p-6 sm:p-7 space-y-5">
                     @csrf
-                    <p class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Isian awal</p>
+                    <p class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Isian awal</p>
 
                     <x-select
                         id="draf_kategori"

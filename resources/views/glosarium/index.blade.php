@@ -9,7 +9,7 @@
     <section class="w-full bg-white pt-14 pb-10 sm:pt-16">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           <div class="lg:col-span-8">
-            <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">
+            <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">
                 Edukasi &amp; pencegahan KBG
             </p>
             <h1 class="mt-3 text-3xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight leading-[1.15]">
@@ -35,7 +35,7 @@
             </form>
 
             @if ($search !== '')
-                <p class="mt-4 text-xs text-neutral-500">
+                <p class="mt-4 text-xs text-neutral-600">
                     {{ $glosariumList->total() }} istilah cocok dengan pencarian "{{ $search }}".
                 </p>
             @endif
@@ -44,12 +44,12 @@
     </section>
 
     {{-- Daftar istilah per huruf --}}
-    <section class="w-full bg-[#f2f2f2] border-t border-neutral-200/70 py-14 sm:py-16">
+    <section class="w-full bg-surface border-t border-neutral-200/70 py-14 sm:py-16">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           <div class="lg:col-span-8 space-y-12">
             @forelse ($grupHuruf as $huruf => $istilahPerHuruf)
                 <div class="space-y-5" aria-labelledby="huruf-{{ $huruf }}">
-                    <h2 id="huruf-{{ $huruf }}" class="text-xs font-semibold uppercase tracking-wider text-neutral-500">
+                    <h2 id="huruf-{{ $huruf }}" class="text-xs font-semibold uppercase tracking-wider text-neutral-600">
                         {{ $huruf }}
                     </h2>
 

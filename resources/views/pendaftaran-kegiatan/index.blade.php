@@ -9,7 +9,7 @@
     <section class="w-full bg-white pt-14 pb-10 sm:pt-16">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             <div class="lg:col-span-8 space-y-3">
-                <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">
+                <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">
                     Edukasi &amp; Pencegahan KBG
                 </p>
                 <h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight leading-[1.15]">
@@ -29,7 +29,7 @@
     </section>
 
     {{-- Daftar pendaftaran --}}
-    <section class="w-full bg-[#f2f2f2] border-t border-neutral-200/70 py-14 sm:py-16">
+    <section class="w-full bg-surface border-t border-neutral-200/70 py-14 sm:py-16">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             <div class="lg:col-span-8">
                 @if ($pendaftaranList->isEmpty())
@@ -45,7 +45,7 @@
                     <div class="overflow-hidden rounded-xl border border-neutral-200/70 bg-white">
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-sm text-neutral-600">
-                                <thead class="border-b border-neutral-200 bg-[#f2f2f2] text-[11px] uppercase tracking-wider text-neutral-500">
+                                <thead class="border-b border-neutral-200 bg-surface text-[11px] uppercase tracking-wider text-neutral-600">
                                     <tr>
                                         <th scope="col" class="px-6 py-3.5 font-medium">Kegiatan Edukasi</th>
                                         <th scope="col" class="px-6 py-3.5 font-medium">Jadwal &amp; Metode</th>
@@ -59,7 +59,7 @@
                                         @php
                                             $kegiatan = $pendaftaran->kegiatanEdukasi;
                                         @endphp
-                                        <tr class="transition-colors hover:bg-[#f2f2f2]/70">
+                                        <tr class="transition-colors hover:bg-surface/70">
                                             <td class="px-6 py-4">
                                                 <a href="{{ route('kegiatan.show', $kegiatan) }}" class="font-semibold text-neutral-900 hover:text-brand-700">
                                                     {{ $kegiatan->judul }}

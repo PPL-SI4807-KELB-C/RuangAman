@@ -19,11 +19,11 @@
         <form method="GET" action="{{ route('artikel.index') }}" class="grid grid-cols-1 gap-3 sm:grid-cols-12">
             <div class="sm:col-span-6">
                 <label for="search" class="sr-only">Cari artikel</label>
-                <input type="text" id="search" name="search" value="{{ $search }}" placeholder="Cari topik, judul, atau isi artikel..." class="block w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500" />
+                <input type="text" id="search" name="search" value="{{ $search }}" placeholder="Cari topik, judul, atau isi artikel..." class="block w-full rounded-lg border border-line-strong px-3 py-2.5 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900" />
             </div>
             <div class="sm:col-span-4">
                 <label for="kategori_id" class="sr-only">Kategori artikel</label>
-                <select id="kategori_id" name="kategori_id" class="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                <select id="kategori_id" name="kategori_id" class="block w-full rounded-lg border border-line-strong bg-white px-3 py-2.5 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900">
                     <option value="">Semua Kategori</option>
                     @foreach ($kategoriOptions as $id => $label)
                         <option value="{{ $id }}" @selected($selectedKategori === (int) $id)>{{ $label }}</option>
@@ -54,7 +54,7 @@
                     <div>
                         <div class="flex items-center justify-between gap-3">
                             <x-badge variant="brand">{{ $item->kategori?->nama_kategori ?? 'Edukasi' }}</x-badge>
-                            <time datetime="{{ $item->updated_at?->toISOString() }}" class="text-xs text-slate-400">{{ $item->updated_at?->translatedFormat('d M Y') }}</time>
+                            <time datetime="{{ $item->updated_at?->toISOString() }}" class="text-xs text-neutral-600">{{ $item->updated_at?->translatedFormat('d M Y') }}</time>
                         </div>
                         <h2 class="mt-4 text-lg font-bold leading-snug text-slate-900">
                             <a href="{{ route('artikel.show', $item) }}" class="hover:text-brand-700">{{ $item->judul }}</a>

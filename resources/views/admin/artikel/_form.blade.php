@@ -5,7 +5,7 @@
 <div class="space-y-5">
     @if ($isEdit)
         <div class="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
-            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Penulis</p>
+            <p class="text-xs font-semibold uppercase tracking-wider text-neutral-600">Penulis</p>
             <p class="mt-1 text-sm font-semibold text-slate-900">{{ $artikel->penulis?->nama_tampilan ?? 'Pengguna tidak ditemukan' }}</p>
             <p class="mt-1 text-xs text-slate-500">Slug saat ini: <span class="font-mono">{{ $artikel->slug }}</span>. Slug diperbarui otomatis ketika judul berubah.</p>
         </div>

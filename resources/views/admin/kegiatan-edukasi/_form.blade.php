@@ -93,7 +93,7 @@
                 id="metode"
                 x-model="metode"
                 required
-                class="block w-full rounded bg-white px-3.5 py-2.5 text-sm text-neutral-900 ring-1 ring-inset ring-neutral-300/70 focus:outline-none focus:ring-1 focus:ring-neutral-400 {{ $errors->has('metode') ? 'ring-safety-rose focus:ring-safety-rose' : '' }}"
+                class="block w-full rounded bg-white px-3.5 py-2.5 text-sm text-neutral-900 ring-1 ring-inset ring-line-strong focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 {{ $errors->has('metode') ? 'ring-safety-rose focus-visible:ring-safety-rose' : '' }}"
             >
                 @foreach ($metodeOptions as $val => $label)
                     <option value="{{ $val }}" @selected($selectedMetode === $val)>{{ $label }}</option>
@@ -124,9 +124,9 @@
             id="lokasi_atau_tautan"
             value="{{ old('lokasi_atau_tautan', $kegiatan->lokasi_atau_tautan) }}"
             :placeholder="metode === 'online' ? 'Contoh: https://zoom.us/j/123456789' : 'Contoh: Aula Serbaguna Gedung C, Bandung'"
-            class="block w-full rounded bg-white px-3.5 py-2.5 text-sm text-neutral-900 ring-1 ring-inset ring-neutral-300/70 placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 {{ $errors->has('lokasi_atau_tautan') ? 'ring-safety-rose text-safety-rose focus:ring-safety-rose' : '' }}"
+            class="block w-full rounded bg-white px-3.5 py-2.5 text-sm text-neutral-900 ring-1 ring-inset ring-line-strong placeholder:text-neutral-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 {{ $errors->has('lokasi_atau_tautan') ? 'ring-safety-rose text-safety-rose focus-visible:ring-safety-rose' : '' }}"
         />
-        <p class="mt-1.5 text-[11px] leading-relaxed text-neutral-500">
+        <p class="mt-1.5 text-[11px] leading-relaxed text-neutral-600">
             <span x-show="metode === 'online'">Tautan meeting hanya akan ditampilkan kepada peserta yang sudah terdaftar aktif.</span>
             <span x-show="metode === 'offline'" x-cloak>Cantumkan alamat lengkap ruangan/gedung tempat kegiatan berlangsung.</span>
         </p>

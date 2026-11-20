@@ -13,7 +13,7 @@
     <section class="w-full bg-white pt-14 pb-10 sm:pt-16">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             <div class="lg:col-span-8 space-y-3">
-                <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">
+                <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">
                     Ruang Pendamping &middot; Konselor
                 </p>
                 <h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight leading-[1.15]">
@@ -37,31 +37,31 @@
     </section>
 
     {{-- Ringkasan & daftar kerja --}}
-    <section class="w-full bg-[#f2f2f2] border-t border-neutral-200/70 py-14 sm:py-16">
+    <section class="w-full bg-surface border-t border-neutral-200/70 py-14 sm:py-16">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 space-y-12">
 
             {{-- FR-05: kartu ringkasan --}}
             <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
                 <div class="rounded-xl border border-neutral-200/60 bg-white p-6">
-                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Kasus ditugaskan</p>
+                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Kasus ditugaskan</p>
                     <p class="mt-5 text-3xl font-extrabold tracking-tight text-neutral-900">{{ $totalKasus }}</p>
-                    <p class="mt-1 text-xs text-neutral-500">Termasuk kasus yang sudah selesai ditangani</p>
+                    <p class="mt-1 text-xs text-neutral-600">Termasuk kasus yang sudah selesai ditangani</p>
                 </div>
                 <div class="rounded-xl border border-neutral-200/60 bg-white p-6">
-                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Jadwal konseling</p>
+                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Jadwal konseling</p>
                     <p class="mt-5 text-3xl font-extrabold tracking-tight text-neutral-900">{{ $totalJadwal }}</p>
-                    <p class="mt-1 text-xs text-neutral-500">Sesi mendatang yang belum dibatalkan</p>
+                    <p class="mt-1 text-xs text-neutral-600">Sesi mendatang yang belum dibatalkan</p>
                 </div>
                 <div class="rounded-xl border border-neutral-200/60 bg-white p-6">
-                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Aktivitas tercatat</p>
+                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Aktivitas tercatat</p>
                     <p class="mt-5 text-3xl font-extrabold tracking-tight text-neutral-900">{{ $totalAktivitas }}</p>
-                    <p class="mt-1 text-xs text-neutral-500">Catatan manual dan entri sistem pada kasus Anda</p>
+                    <p class="mt-1 text-xs text-neutral-600">Catatan manual dan entri sistem pada kasus Anda</p>
                 </div>
             </div>
 
             {{-- FR-05: kasus yang ditugaskan --}}
             <div>
-                <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Kasus yang ditugaskan kepada saya</p>
+                <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Kasus yang ditugaskan kepada saya</p>
 
                 @if ($kasusSaya->isEmpty())
                     <div class="mt-5 rounded-xl border border-dashed border-neutral-300 bg-white p-8 text-center">
@@ -73,7 +73,7 @@
                     <div class="mt-5 overflow-hidden rounded-xl border border-neutral-200/70 bg-white">
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-sm text-neutral-600">
-                                <thead class="border-b border-neutral-200 bg-[#f2f2f2] text-[11px] uppercase tracking-wider text-neutral-500">
+                                <thead class="border-b border-neutral-200 bg-surface text-[11px] uppercase tracking-wider text-neutral-600">
                                     <tr>
                                         <th scope="col" class="px-6 py-3.5 font-medium">Laporan</th>
                                         <th scope="col" class="px-6 py-3.5 font-medium">Status</th>
@@ -83,10 +83,10 @@
                                 </thead>
                                 <tbody class="divide-y divide-neutral-200/70">
                                     @foreach ($kasusSaya as $penanganan)
-                                        <tr class="transition-colors hover:bg-[#f2f2f2]/70">
+                                        <tr class="transition-colors hover:bg-surface/70">
                                             <td class="px-6 py-4">
                                                 <div class="font-semibold text-neutral-900">{{ $penanganan->laporanKasus?->judul ?? 'Laporan tidak ditemukan' }}</div>
-                                                <p class="mt-0.5 text-[11px] text-neutral-500">
+                                                <p class="mt-0.5 text-[11px] text-neutral-600">
                                                     Kode {{ $penanganan->laporanKasus?->kode_laporan ?? '-' }}
                                                     &bull; {{ $penanganan->laporanKasus?->kategori_kekerasan ?? '-' }}
                                                 </p>
@@ -98,7 +98,7 @@
                                             </td>
                                             <td class="whitespace-nowrap px-6 py-4 text-xs">
                                                 <div class="font-medium text-neutral-800">{{ $penanganan->tanggal_mulai?->translatedFormat('d M Y') ?? '-' }}</div>
-                                                <div class="mt-0.5 text-neutral-500">
+                                                <div class="mt-0.5 text-neutral-600">
                                                     s/d {{ $penanganan->tanggal_selesai ? $penanganan->tanggal_selesai->translatedFormat('d M Y') : 'berjalan' }}
                                                 </div>
                                             </td>
@@ -117,7 +117,7 @@
             {{-- FR-05: jadwal konseling mendatang --}}
             <div class="grid grid-cols-1 gap-10 lg:grid-cols-12">
                 <div class="lg:col-span-6">
-                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Jadwal konseling mendatang</p>
+                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Jadwal konseling mendatang</p>
 
                     <div class="mt-5 overflow-hidden rounded-xl border border-neutral-200/70 bg-white">
                         <ul class="divide-y divide-neutral-200/70">
@@ -136,7 +136,7 @@
                                     </p>
                                 </li>
                             @empty
-                                <li class="px-6 py-10 text-center text-xs text-neutral-500">
+                                <li class="px-6 py-10 text-center text-xs text-neutral-600">
                                     Belum ada jadwal konseling mendatang. Modul penjadwalan konseling masih dalam pengembangan tim.
                                 </li>
                             @endforelse
@@ -146,21 +146,21 @@
 
                 {{-- FR-05: aktivitas penanganan terbaru --}}
                 <div class="lg:col-span-6">
-                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Aktivitas penanganan terbaru</p>
+                    <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Aktivitas penanganan terbaru</p>
 
                     <div class="mt-5 overflow-hidden rounded-xl border border-neutral-200/70 bg-white">
                         <ul class="divide-y divide-neutral-200/70">
                             @forelse ($aktivitasTerbaru as $log)
                                 <li class="px-6 py-4">
                                     <p class="text-sm leading-relaxed text-neutral-800">{{ $log->aktivitas }}</p>
-                                    <p class="mt-1 text-[11px] text-neutral-500">
+                                    <p class="mt-1 text-[11px] text-neutral-600">
                                         {{ $log->waktu?->translatedFormat('d M Y H:i') }}
                                         &bull; {{ $log->user?->nama_tampilan ?? 'Sistem' }}
                                         &bull; {{ $log->laporanKasus?->kode_laporan ?? '-' }}
                                     </p>
                                 </li>
                             @empty
-                                <li class="px-6 py-10 text-center text-xs text-neutral-500">
+                                <li class="px-6 py-10 text-center text-xs text-neutral-600">
                                     Belum ada aktivitas tercatat pada kasus yang Anda pegang.
                                 </li>
                             @endforelse

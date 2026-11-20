@@ -7,7 +7,7 @@
     <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
             <h1 class="text-2xl font-extrabold tracking-tight text-neutral-900">Manajemen Status Kasus</h1>
-            <p class="mt-1.5 text-xs text-neutral-500 leading-relaxed max-w-2xl">
+            <p class="mt-1.5 text-xs text-neutral-600 leading-relaxed max-w-2xl">
                 Kelola master status kasus dalam alur penanganan laporan kekerasan berbasis gender.
             </p>
         </div>
@@ -25,7 +25,7 @@
             <div class="flex-1">
                 <div class="relative">
                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                        <svg class="h-4 w-4 text-neutral-500" viewBox="0 0 20 20" fill="currentColor">
+                        <svg class="h-4 w-4 text-neutral-600" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                         </svg>
                     </div>
@@ -34,7 +34,7 @@
                         name="search"
                         value="{{ $search }}"
                         placeholder="Cari berdasarkan nama status atau deskripsi..."
-                        class="block w-full rounded bg-white py-2.5 pl-9 pr-3 text-sm text-neutral-900 ring-1 ring-inset ring-neutral-300/70 placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+                        class="block w-full rounded bg-white py-2.5 pl-9 pr-3 text-sm text-neutral-900 ring-1 ring-inset ring-line-strong placeholder:text-neutral-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
                     />
                 </div>
             </div>
@@ -55,7 +55,7 @@
     <div class="overflow-hidden rounded-xl border border-neutral-200/70 bg-white">
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm text-neutral-600">
-                <thead class="border-b border-neutral-200 bg-[#f2f2f2] text-[11px] uppercase tracking-wider text-neutral-500">
+                <thead class="border-b border-neutral-200 bg-surface text-[11px] uppercase tracking-wider text-neutral-600">
                     <tr>
                         <th scope="col" class="px-6 py-3.5 font-medium">ID</th>
                         <th scope="col" class="px-6 py-3.5 font-medium">Nama Status</th>
@@ -66,8 +66,8 @@
                 </thead>
                 <tbody class="divide-y divide-neutral-200/70">
                     @forelse ($statusKasus as $item)
-                        <tr class="transition-colors hover:bg-[#f2f2f2]/70">
-                            <td class="whitespace-nowrap px-6 py-4 font-mono text-xs text-neutral-500">
+                        <tr class="transition-colors hover:bg-surface/70">
+                            <td class="whitespace-nowrap px-6 py-4 font-mono text-xs text-neutral-600">
                                 #{{ $item->status_id }}
                             </td>
                             <td class="whitespace-nowrap px-6 py-4 font-medium text-neutral-900">
@@ -88,7 +88,7 @@
                                 {{ $item->deskripsi ?: '-' }}
                             </td>
                             <td class="whitespace-nowrap px-6 py-4 text-center">
-                                <span class="inline-flex items-center rounded bg-[#f2f2f2] px-2.5 py-0.5 text-xs font-semibold text-neutral-700">
+                                <span class="inline-flex items-center rounded bg-surface px-2.5 py-0.5 text-xs font-semibold text-neutral-700">
                                     {{ $item->laporan_kasus_count }} laporan
                                 </span>
                             </td>
@@ -104,7 +104,7 @@
                                     @if ($item->laporan_kasus_count > 0)
                                         <span
                                             title="Tidak dapat dihapus karena masih digunakan oleh {{ $item->laporan_kasus_count }} laporan."
-                                            class="cursor-not-allowed text-neutral-500"
+                                            class="cursor-not-allowed text-neutral-600"
                                         >
                                             Hapus
                                         </span>
@@ -129,7 +129,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-10 text-center text-sm text-neutral-500">
+                            <td colspan="5" class="px-6 py-10 text-center text-sm text-neutral-600">
                                 Belum ada data status kasus yang sesuai.
                             </td>
                         </tr>
@@ -139,7 +139,7 @@
         </div>
 
         @if ($statusKasus->hasPages())
-            <div class="border-t border-neutral-200/70 bg-[#f2f2f2]/40 px-6 py-4">
+            <div class="border-t border-neutral-200/70 bg-surface/40 px-6 py-4">
                 {{ $statusKasus->links() }}
             </div>
         @endif

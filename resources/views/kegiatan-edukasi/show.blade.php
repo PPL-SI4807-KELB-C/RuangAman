@@ -42,7 +42,7 @@
                 {{-- Jadwal & akses --}}
                 <dl class="border-t border-neutral-300/60">
                     <div class="grid grid-cols-1 gap-x-6 gap-y-1 border-b border-neutral-300/60 py-4 sm:grid-cols-[10rem_1fr]">
-                        <dt class="text-xs font-medium uppercase tracking-wider text-neutral-500">Mulai</dt>
+                        <dt class="text-xs font-medium uppercase tracking-wider text-neutral-600">Mulai</dt>
                         <dd class="text-sm text-neutral-800">
                             {{ $kegiatan->tanggal_mulai->translatedFormat('l, d F Y') }}
                             <span class="text-neutral-600">&bull; Pukul {{ substr((string) $kegiatan->waktu_mulai, 0, 5) }} WIB</span>
@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="grid grid-cols-1 gap-x-6 gap-y-1 border-b border-neutral-300/60 py-4 sm:grid-cols-[10rem_1fr]">
-                        <dt class="text-xs font-medium uppercase tracking-wider text-neutral-500">Selesai</dt>
+                        <dt class="text-xs font-medium uppercase tracking-wider text-neutral-600">Selesai</dt>
                         <dd class="text-sm text-neutral-800">
                             @if ($kegiatan->tanggal_selesai || $kegiatan->waktu_selesai)
                                 {{ ($kegiatan->tanggal_selesai ?? $kegiatan->tanggal_mulai)->translatedFormat('l, d F Y') }}
@@ -64,7 +64,7 @@
                     </div>
 
                     <div class="grid grid-cols-1 gap-x-6 gap-y-1 border-b border-neutral-300/60 py-4 sm:grid-cols-[10rem_1fr]">
-                        <dt class="text-xs font-medium uppercase tracking-wider text-neutral-500">
+                        <dt class="text-xs font-medium uppercase tracking-wider text-neutral-600">
                             {{ $kegiatan->metode === 'online' ? 'Tautan akses' : 'Lokasi' }}
                         </dt>
                         <dd class="text-sm">
@@ -87,7 +87,7 @@
 
                 {{-- Deskripsi --}}
                 <div>
-                    <h2 class="text-xs font-medium uppercase tracking-wider text-neutral-500">Deskripsi kegiatan</h2>
+                    <h2 class="text-xs font-medium uppercase tracking-wider text-neutral-600">Deskripsi kegiatan</h2>
                     <div class="mt-3 max-w-2xl whitespace-pre-line text-sm leading-relaxed text-neutral-700">
                         {{ $kegiatan->deskripsi ?: 'Tidak ada deskripsi tambahan.' }}
                     </div>
@@ -171,7 +171,7 @@
                                     <x-button type="button" variant="secondary" size="md" class="w-full" disabled>
                                         Pendaftaran ditutup
                                     </x-button>
-                                    <p class="mt-2 text-[11px] leading-relaxed text-neutral-500">
+                                    <p class="mt-2 text-[11px] leading-relaxed text-neutral-600">
                                         Waktu pelaksanaan kegiatan telah dimulai atau terlewati.
                                     </p>
                                 @elseif ($sisaKuota === 0)
@@ -197,7 +197,7 @@
                     </div>
                 </x-card>
 
-                <p class="text-[11px] leading-relaxed text-neutral-500">
+                <p class="text-[11px] leading-relaxed text-neutral-600">
                     Identitas Anda tidak dibagikan kepada peserta lain selama kegiatan berlangsung.
                 </p>
             </aside>

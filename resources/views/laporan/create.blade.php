@@ -40,7 +40,7 @@
                         </svg>
                         <div>
                             <p class="text-xs text-neutral-600">Dilaporkan sebagai <span class="font-semibold text-neutral-900">{{ $alias }}</span></p>
-                            <p class="mt-0.5 text-[11px] leading-relaxed text-neutral-500">Konselor hanya melihat alias ini, bukan nama asli atau email Anda.</p>
+                            <p class="mt-0.5 text-[11px] leading-relaxed text-neutral-600">Konselor hanya melihat alias ini, bukan nama asli atau email Anda.</p>
                         </div>
                     </div>
 
@@ -67,7 +67,7 @@
 
                     {{-- Lampiran (opsional) --}}
                     <div x-data="{ files: [] }">
-                        <label for="lampiran" class="block text-xs font-semibold text-neutral-800">Lampiran pendukung <span class="font-normal text-neutral-500">(opsional)</span></label>
+                        <label for="lampiran" class="block text-xs font-semibold text-neutral-800">Lampiran pendukung <span class="font-normal text-neutral-600">(opsional)</span></label>
 
                         <div class="relative mt-1.5 rounded-lg border border-dashed bg-white p-6 text-center transition-colors hover:bg-neutral-50 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-neutral-400 {{ $errors->has('lampiran') || $errors->has('lampiran.*') ? 'border-safety-rose' : 'border-neutral-300' }}">
                             <input
@@ -80,13 +80,13 @@
                                 @change="files = Array.from($event.target.files).map(f => f.name)"
                                 class="absolute inset-0 h-full w-full cursor-pointer opacity-0"
                             >
-                            <svg class="mx-auto h-5 w-5 text-neutral-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <svg class="mx-auto h-5 w-5 text-neutral-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                                 <polyline points="17 8 12 3 7 8" />
                                 <line x1="12" y1="3" x2="12" y2="15" />
                             </svg>
                             <p class="mt-2 text-sm font-medium text-neutral-800" x-text="files.length ? files.length + ' berkas dipilih' : 'Pilih berkas'">Pilih berkas</p>
-                            <p id="lampiran-help" class="mt-1 text-[11px] text-neutral-500">JPG, PNG, WEBP, atau PDF · maksimal 5 berkas, 10 MB per berkas</p>
+                            <p id="lampiran-help" class="mt-1 text-[11px] text-neutral-600">JPG, PNG, WEBP, atau PDF · maksimal 5 berkas, 10 MB per berkas</p>
                         </div>
 
                         <ul x-show="files.length" x-cloak class="mt-2 space-y-1 text-[11px] text-neutral-600">
@@ -98,7 +98,7 @@
                         @if ($errors->has('lampiran') || $errors->has('lampiran.*'))
                             <p class="mt-1.5 text-[11px] text-safety-rose">{{ $errors->first('lampiran') ?: $errors->first('lampiran.*') }}</p>
                         @else
-                            <p class="mt-1.5 text-[11px] leading-relaxed text-neutral-500">Hanya unggah jika aman. Periksa nama berkas dan informasi pribadi sebelum mengunggah.</p>
+                            <p class="mt-1.5 text-[11px] leading-relaxed text-neutral-600">Hanya unggah jika aman. Periksa nama berkas dan informasi pribadi sebelum mengunggah.</p>
                         @endif
                     </div>
 
@@ -111,7 +111,7 @@
                         <x-button type="submit" variant="primary">Kirim laporan</x-button>
                         <x-button :href="url('/')" variant="ghost">Batalkan</x-button>
                     </div>
-                    <p class="text-[11px] text-neutral-500">Setelah dikirim, Anda akan menerima kode laporan enam karakter.</p>
+                    <p class="text-[11px] text-neutral-600">Setelah dikirim, Anda akan menerima kode laporan enam karakter.</p>
                 </form>
             </x-card>
         </div>

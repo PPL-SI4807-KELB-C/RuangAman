@@ -11,7 +11,7 @@
             <span>Kembali ke daftar</span>
         </a>
         <h1 class="mt-5 text-2xl font-extrabold tracking-tight text-neutral-900">Tambah Halaman Informasi</h1>
-        <p class="mt-1.5 text-xs text-neutral-500 leading-relaxed">
+        <p class="mt-1.5 text-xs text-neutral-600 leading-relaxed">
             Halaman baru tersimpan sebagai draft sampai Anda menerbitkannya.
         </p>
     </div>

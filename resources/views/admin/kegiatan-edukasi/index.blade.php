@@ -7,7 +7,7 @@
     <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
             <h1 class="text-2xl font-extrabold tracking-tight text-neutral-900">Manajemen Kegiatan &amp; Webinar Edukasi</h1>
-            <p class="mt-1.5 text-xs text-neutral-500 leading-relaxed max-w-2xl">
+            <p class="mt-1.5 text-xs text-neutral-600 leading-relaxed max-w-2xl">
                 Kelola jadwal webinar, kuota peserta, status penayangan, serta verifikasi kehadiran peserta.
             </p>
         </div>
@@ -26,7 +26,7 @@
                 <label for="search" class="sr-only">Cari kegiatan</label>
                 <div class="relative">
                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                        <svg class="h-4 w-4 text-neutral-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <svg class="h-4 w-4 text-neutral-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                         </svg>
                     </div>
@@ -36,7 +36,7 @@
                         name="search"
                         value="{{ $search }}"
                         placeholder="Cari judul kegiatan atau nama narasumber..."
-                        class="block w-full rounded bg-white py-2.5 pl-9 pr-3 text-sm text-neutral-900 ring-1 ring-inset ring-neutral-300/70 placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+                        class="block w-full rounded bg-white py-2.5 pl-9 pr-3 text-sm text-neutral-900 ring-1 ring-inset ring-line-strong placeholder:text-neutral-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
                     />
                 </div>
             </div>
@@ -46,7 +46,7 @@
                 <select
                     id="status"
                     name="status"
-                    class="block w-full rounded bg-white px-3 py-2.5 text-sm text-neutral-900 ring-1 ring-inset ring-neutral-300/70 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+                    class="block w-full rounded bg-white px-3 py-2.5 text-sm text-neutral-900 ring-1 ring-inset ring-line-strong focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
                 >
                     <option value="">Semua Status</option>
                     @foreach ($statusOptions as $val => $label)
@@ -60,7 +60,7 @@
                 <select
                     id="metode"
                     name="metode"
-                    class="block w-full rounded bg-white px-3 py-2.5 text-sm text-neutral-900 ring-1 ring-inset ring-neutral-300/70 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+                    class="block w-full rounded bg-white px-3 py-2.5 text-sm text-neutral-900 ring-1 ring-inset ring-line-strong focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
                 >
                     <option value="">Semua Metode</option>
                     @foreach ($metodeOptions as $val => $label)
@@ -86,7 +86,7 @@
     <div class="overflow-hidden rounded-xl border border-neutral-200/70 bg-white">
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm text-neutral-600">
-                <thead class="border-b border-neutral-200 bg-[#f2f2f2] text-[11px] uppercase tracking-wider text-neutral-500">
+                <thead class="border-b border-neutral-200 bg-surface text-[11px] uppercase tracking-wider text-neutral-600">
                     <tr>
                         <th scope="col" class="px-6 py-3.5 font-medium">Kegiatan &amp; Narasumber</th>
                         <th scope="col" class="px-6 py-3.5 font-medium">Jadwal</th>
@@ -98,18 +98,18 @@
                 </thead>
                 <tbody class="divide-y divide-neutral-200/70">
                     @forelse ($kegiatanList as $item)
-                        <tr class="transition-colors hover:bg-[#f2f2f2]/70">
+                        <tr class="transition-colors hover:bg-surface/70">
                             <td class="px-6 py-4">
                                 <a href="{{ route('admin.kegiatan-edukasi.show', $item) }}" class="font-semibold text-neutral-900 hover:underline">
                                     {{ $item->judul }}
                                 </a>
-                                <p class="mt-0.5 text-[11px] text-neutral-500">
+                                <p class="mt-0.5 text-[11px] text-neutral-600">
                                     Narasumber: {{ $item->narasumber ?: 'Belum ditentukan' }}
                                 </p>
                             </td>
                             <td class="whitespace-nowrap px-6 py-4 text-xs text-neutral-600">
                                 <div class="font-medium text-neutral-900">{{ $item->tanggal_mulai->translatedFormat('d M Y') }}</div>
-                                <div class="mt-0.5 text-[11px] text-neutral-500">Pukul {{ substr((string) $item->waktu_mulai, 0, 5) }} WIB</div>
+                                <div class="mt-0.5 text-[11px] text-neutral-600">Pukul {{ substr((string) $item->waktu_mulai, 0, 5) }} WIB</div>
                             </td>
                             <td class="whitespace-nowrap px-6 py-4">
                                 <x-badge :variant="$item->metode === 'online' ? 'info' : 'brand'">
@@ -118,8 +118,8 @@
                             </td>
                             <td class="whitespace-nowrap px-6 py-4 text-center">
                                 <span class="font-semibold text-neutral-900">{{ $item->terisiKuotaCount() }}</span>
-                                <span class="text-neutral-500">/ {{ $item->kuota }}</span>
-                                <div class="text-[11px] text-neutral-500">
+                                <span class="text-neutral-600">/ {{ $item->kuota }}</span>
+                                <div class="text-[11px] text-neutral-600">
                                     ({{ $item->pendaftaran_kegiatan_count }} total record)
                                 </div>
                             </td>
@@ -163,7 +163,7 @@
                                         @endif
                                         <span
                                             title="Tidak dapat dihapus permanen karena sudah memiliki pendaftar"
-                                            class="cursor-not-allowed text-neutral-500"
+                                            class="cursor-not-allowed text-neutral-600"
                                         >
                                             Hapus
                                         </span>
@@ -188,7 +188,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-10 text-center text-sm text-neutral-500">
+                            <td colspan="6" class="px-6 py-10 text-center text-sm text-neutral-600">
                                 Belum ada data kegiatan edukasi yang sesuai dengan pencarian atau filter.
                             </td>
                         </tr>
@@ -198,7 +198,7 @@
         </div>
 
         @if ($kegiatanList->hasPages())
-            <div class="border-t border-neutral-200/70 bg-[#f2f2f2]/40 px-6 py-4">
+            <div class="border-t border-neutral-200/70 bg-surface/40 px-6 py-4">
                 {{ $kegiatanList->links() }}
             </div>
         @endif

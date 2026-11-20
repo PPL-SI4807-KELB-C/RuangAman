@@ -24,7 +24,7 @@
     <dl class="grid grid-cols-3 gap-4">
         @foreach ([['Total instansi', $totalCount], ['Aktif', $aktifCount], ['Nonaktif', $nonaktifCount]] as [$labelRingkas, $jumlah])
             <div class="rounded-xl border border-neutral-200/70 bg-white px-5 py-4">
-                <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">{{ $labelRingkas }}</dt>
+                <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">{{ $labelRingkas }}</dt>
                 <dd class="mt-1 text-2xl font-extrabold tracking-tight text-neutral-900">{{ $jumlah }}</dd>
             </div>
         @endforeach
@@ -42,7 +42,7 @@
 
             <div class="md:col-span-2">
                 <label for="status" class="sr-only">Filter status</label>
-                <select id="status" name="status" class="block w-full rounded bg-white px-3 py-2.5 text-sm text-neutral-900 ring-1 ring-inset ring-neutral-300/70 focus:outline-none focus:ring-1 focus:ring-neutral-400">
+                <select id="status" name="status" class="block w-full rounded bg-white px-3 py-2.5 text-sm text-neutral-900 ring-1 ring-inset ring-line-strong focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900">
                     <option value="">Semua Status</option>
                     <option value="aktif" @selected($statusFilter === 'aktif')>Aktif</option>
                     <option value="nonaktif" @selected($statusFilter === 'nonaktif')>Nonaktif</option>
@@ -63,7 +63,7 @@
         <h2 id="judul-daftar-instansi" class="sr-only">Daftar instansi</h2>
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm text-neutral-600">
-                <thead class="border-b border-neutral-200 bg-[#f2f2f2] text-[11px] uppercase tracking-wider text-neutral-500">
+                <thead class="border-b border-neutral-200 bg-surface text-[11px] uppercase tracking-wider text-neutral-600">
                     <tr>
                         <th scope="col" class="px-6 py-3.5 font-medium">Nama Instansi</th>
                         <th scope="col" class="px-6 py-3.5 font-medium">Alamat</th>
@@ -74,7 +74,7 @@
                 </thead>
                 <tbody class="divide-y divide-neutral-200/70">
                     @forelse ($instansis as $instansi)
-                        <tr class="transition-colors hover:bg-[#f2f2f2]/70">
+                        <tr class="transition-colors hover:bg-surface/70">
                             <td class="px-6 py-4">
                                 <a href="{{ route('instansi.show', $instansi) }}" class="font-semibold text-neutral-900 hover:text-brand-700">
                                     {{ $instansi->nama_instansi }}
@@ -88,7 +88,7 @@
                                         <span class="sr-only">(tab baru)</span>
                                     </a>
                                 @else
-                                    <span class="text-neutral-500">&mdash;</span>
+                                    <span class="text-neutral-600">&mdash;</span>
                                 @endif
                             </td>
                             <td class="whitespace-nowrap px-6 py-4">
@@ -119,7 +119,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-12 text-center text-xs text-neutral-500">
+                            <td colspan="5" class="px-6 py-12 text-center text-xs text-neutral-600">
                                 Belum ada instansi yang sesuai dengan pencarian atau filter.
                             </td>
                         </tr>
@@ -128,7 +128,7 @@
             </table>
         </div>
 
-        <div class="border-t border-neutral-200/70 px-6 py-4 text-xs text-neutral-500">
+        <div class="border-t border-neutral-200/70 px-6 py-4 text-xs text-neutral-600">
             Menampilkan {{ $instansis->count() }} dari {{ $totalCount }} instansi
         </div>
     </section>

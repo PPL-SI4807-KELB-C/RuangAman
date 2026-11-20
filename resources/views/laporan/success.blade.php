@@ -16,11 +16,17 @@
         </p>
     </div>
 
+    <x-alert variant="danger" title="Jika Anda dalam bahaya sekarang">
+        Jangan menunggu tindak lanjut laporan. Hubungi
+        <a href="tel:112" class="font-semibold text-neutral-900 underline">112</a> (darurat) atau
+        <a href="tel:129" class="font-semibold text-neutral-900 underline">SAPA 129</a> (layanan pengaduan KemenPPPA).
+    </x-alert>
+
     {{-- Kode laporan --}}
     <x-card>
         <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between" x-data="copyText(@js($kode_laporan))">
             <div>
-                <p class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Kode laporan Anda</p>
+                <p class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Kode laporan Anda</p>
                 <p class="mt-2 font-mono text-4xl font-extrabold tracking-[0.2em] text-neutral-900 sm:text-5xl">{{ $kode_laporan }}</p>
             </div>
             <x-button variant="secondary" @click="copy()" class="shrink-0">

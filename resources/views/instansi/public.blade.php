@@ -9,7 +9,7 @@
     <section class="w-full bg-white pt-14 pb-10 sm:pt-16">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 space-y-6">
             <div class="max-w-2xl space-y-3">
-                <p class="text-xs font-medium uppercase tracking-wider text-neutral-500">Direktori bantuan</p>
+                <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Direktori bantuan</p>
                 <h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight leading-[1.15]">
                     Temukan pilihan bantuan Anda.
                 </h1>
@@ -31,11 +31,11 @@
     </section>
 
     {{-- Daftar instansi --}}
-    <section class="w-full bg-[#f2f2f2] border-t border-neutral-200/70 py-14 sm:py-16">
+    <section class="w-full bg-surface border-t border-neutral-200/70 py-14 sm:py-16">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 space-y-6">
             <div class="flex flex-wrap items-baseline justify-between gap-2">
                 <h2 class="text-lg font-bold text-neutral-900 tracking-tight">{{ $totalAktif }} instansi bantuan</h2>
-                <p class="text-xs text-neutral-500">Menampilkan instansi aktif</p>
+                <p class="text-xs text-neutral-600">Menampilkan instansi aktif</p>
             </div>
 
             @if ($instansis->count() > 0)
@@ -43,7 +43,7 @@
                     @foreach ($instansis as $instansi)
                         <article class="flex flex-col rounded-xl border border-neutral-200/60 bg-white p-6 sm:p-7">
                             <h3 class="text-base font-bold text-neutral-900 tracking-tight">{{ $instansi->nama_instansi }}</h3>
-                            <p class="mt-1.5 text-[11px] text-neutral-500">{{ $instansi->alamat }}</p>
+                            <p class="mt-1.5 text-[11px] text-neutral-600">{{ $instansi->alamat }}</p>
                             <p class="mt-3 flex-1 text-xs leading-relaxed text-neutral-600">{{ $instansi->deskripsi }}</p>
 
                             <div class="mt-5 border-t border-neutral-200/70 pt-4 text-xs">
@@ -53,7 +53,7 @@
                                         <span class="sr-only">(tab baru)</span>
                                     </a>
                                 @else
-                                    <span class="text-neutral-500">Situs web belum tersedia</span>
+                                    <span class="text-neutral-600">Situs web belum tersedia</span>
                                 @endif
                             </div>
                         </article>

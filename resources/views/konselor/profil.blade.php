@@ -11,7 +11,7 @@
                 <x-badge variant="brand">Role Konselor</x-badge>
             </div>
             <h1 class="mt-2 text-2xl font-extrabold tracking-tight text-neutral-900">Profil Konselor Saya</h1>
-            <p class="mt-1.5 text-xs text-neutral-500 leading-relaxed">
+            <p class="mt-1.5 text-xs text-neutral-600 leading-relaxed">
                 Perbarui biodata profesional Anda. Status ketersediaan dan akun pengguna dikelola oleh Admin Kasus.
             </p>
         </div>
@@ -54,10 +54,10 @@
 
             <!-- Informasi Readonly -->
             <div class="rounded bg-white p-4 ring-1 ring-inset ring-neutral-300/70">
-                <p class="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">Status Ketersediaan Saat Ini</p>
+                <p class="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Status Ketersediaan Saat Ini</p>
                 <div class="mt-1 flex items-center gap-2">
                     <x-badge :variant="$konselor->statusBadgeVariant()">{{ $konselor->statusLabel() }}</x-badge>
-                    <span class="text-[11px] text-neutral-500">
+                    <span class="text-[11px] text-neutral-600">
                         Status hanya dapat diubah oleh Admin Kasus melalui menu Data Konselor.
                     </span>
                 </div>

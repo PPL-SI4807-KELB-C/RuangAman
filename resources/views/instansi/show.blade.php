@@ -33,15 +33,15 @@
         <x-card class="lg:col-span-8">
             <dl class="divide-y divide-neutral-300/60">
                 <div class="pb-5">
-                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Alamat</dt>
+                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Alamat</dt>
                     <dd class="mt-1.5 text-sm leading-relaxed text-neutral-800">{{ $instansi->alamat }}</dd>
                 </div>
                 <div class="py-5">
-                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Deskripsi</dt>
+                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Deskripsi</dt>
                     <dd class="mt-1.5 whitespace-pre-line text-sm leading-relaxed text-neutral-800">{{ $instansi->deskripsi }}</dd>
                 </div>
                 <div class="pt-5">
-                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Situs Web</dt>
+                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Situs Web</dt>
                     <dd class="mt-1.5 text-sm">
                         @if ($instansi->website)
                             <a href="{{ $instansi->website }}" target="_blank" rel="noopener noreferrer" class="break-all font-medium text-neutral-800 hover:text-brand-700 hover:underline">
@@ -49,7 +49,7 @@
                                 <span class="sr-only">(tab baru)</span>
                             </a>
                         @else
-                            <span class="text-neutral-500">Belum tersedia</span>
+                            <span class="text-neutral-600">Belum tersedia</span>
                         @endif
                     </dd>
                 </div>
@@ -73,15 +73,15 @@
             <x-card header="Riwayat">
                 <dl class="space-y-4 text-sm">
                     <div>
-                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">ID Instansi</dt>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">ID Instansi</dt>
                         <dd class="mt-1.5 font-medium text-neutral-800">INS-{{ str_pad($instansi->instansi_id, 3, '0', STR_PAD_LEFT) }}</dd>
                     </div>
                     <div>
-                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Dibuat</dt>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Dibuat</dt>
                         <dd class="mt-1.5 font-medium text-neutral-800">{{ $instansi->created_at?->translatedFormat('d F Y') ?? '—' }}</dd>
                     </div>
                     <div>
-                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Terakhir Diperbarui</dt>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Terakhir Diperbarui</dt>
                         <dd class="mt-1.5 font-medium text-neutral-800">{{ $instansi->updated_at ? $instansi->updated_at->translatedFormat('d F Y, H.i') . ' WIB' : '—' }}</dd>
                     </div>
                 </dl>

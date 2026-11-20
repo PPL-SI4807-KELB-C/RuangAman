@@ -18,7 +18,7 @@ $dots = [
 $dot = $dots[$variant] ?? $dots['info'];
 @endphp
 
-<div {{ $attributes->merge(['class' => 'rounded-lg border border-neutral-200/70 bg-[#f2f2f2] p-4', 'role' => 'alert']) }} @if ($dismissible) x-data="{ open: true }" x-show="open" @endif>
+<div {{ $attributes->merge(['class' => 'rounded-lg border border-neutral-200/70 bg-surface p-4', 'role' => 'alert']) }} @if ($dismissible) x-data="{ open: true }" x-show="open" @endif>
     <div class="flex items-start gap-2.5">
         <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full {{ $dot }}" aria-hidden="true"></span>
 
@@ -32,7 +32,7 @@ $dot = $dots[$variant] ?? $dots['info'];
         </div>
 
         @if ($dismissible)
-            <button type="button" @click="open = false" class="text-xs font-medium text-neutral-500 hover:text-neutral-900" aria-label="Tutup">
+            <button type="button" @click="open = false" class="text-xs font-medium text-neutral-600 hover:text-neutral-900" aria-label="Tutup">
                 &times;
             </button>
         @endif
