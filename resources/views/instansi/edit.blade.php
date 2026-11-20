@@ -1,4 +1,6 @@
-<x-layouts.app :title="$title">
+@extends('layouts.app')
+@section('title', $title)
+@section('content')
     <div class="w-full bg-[#FAF9F7] min-h-[calc(100vh-160px)]">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
             {{-- Breadcrumb / Back --}}
@@ -166,4 +168,4 @@
             </div>
         </div>
     </div>
-</x-layouts.app>
+@endsection
