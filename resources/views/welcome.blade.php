@@ -268,8 +268,10 @@
             </div>
 
             <div class="lg:col-span-7">
-                <form action="{{ auth()->user()?->isPelapor() ? route('laporan.create') : (auth()->check() ? route('dashboard') : route('register')) }}" method="GET" class="rounded-xl border border-neutral-200/80 bg-white p-6 sm:p-7 space-y-4 shadow-xs">
-                    <p class="text-[11px] text-neutral-400">Pratinjau formulir · Data contoh</p>
+                {{-- POST + session: kronologi tidak boleh masuk URL/riwayat peramban. --}}
+                <form action="{{ route('laporan.draf') }}" method="POST" class="rounded-xl border border-neutral-200/80 bg-white p-6 sm:p-7 space-y-4 shadow-xs">
+                    @csrf
+                    <p class="text-[11px] text-neutral-500">Isian awal · dilanjutkan di formulir laporan lengkap</p>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>

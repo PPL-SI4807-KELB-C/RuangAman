@@ -21,7 +21,10 @@ use App\Policies\PenangananKasusPolicy;
 use App\Policies\PendaftaranKegiatanPolicy;
 use App\Policies\PengumumanPolicy;
 use App\Policies\StatusKasusPolicy;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -72,5 +75,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('kelola-pengumuman', fn (User $user) => $user->isAdminKasus() || $user->hasPermission('kelola-pengumuman'));
         Gate::define('kelola-artikel', fn (User $user) => $user->isAdminKasus() || $user->hasPermission('kelola-artikel'));
         Gate::define('daftar-kegiatan', fn (User $user) => $user->isPelapor() && $user->hasPermission('daftar-kegiatan'));
+
+        // Batasi percobaan pelacakan kode & pengiriman pesan publik (cegah tebak kode dan spam).
+        RateLimiter::for('lacak', fn (Request $request) => Limit::perMinute(10)->by($request->ip()));
     }
 }

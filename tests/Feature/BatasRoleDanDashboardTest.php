@@ -94,7 +94,7 @@ class BatasRoleDanDashboardTest extends TestCase
 
         $this->actingAs($peminta)
             ->post(route('lacak.tautkan'), ['kode_laporan' => $laporan->kode_laporan])
-            ->assertRedirect(route('lacak.hasil', ['kode_laporan' => $laporan->kode_laporan]))
+            ->assertRedirect(route('lacak.hasil'))
             ->assertSessionHas('success');
 
         $this->assertSame($peminta->user_id, $laporan->fresh()->user_id);
@@ -148,10 +148,64 @@ class BatasRoleDanDashboardTest extends TestCase
         $form = $this->get(route('lacak.form'))->assertOk();
         $this->assertStringNotContainsString($rahasia->kronologi, $form->getContent());
 
-        $hasil = $this->get(route('lacak.hasil', ['kode_laporan' => 'KODETIDAKADA']))->assertOk();
+        $this->post(route('lacak.cari'), ['kode_laporan' => 'KODETIDAKADA'])
+            ->assertRedirect(route('lacak.hasil'));
+        $hasil = $this->get(route('lacak.hasil'))->assertOk();
         $hasil->assertSee('Periksa kembali huruf dan angkanya', false);
-        $this->get(route('lacak.hasil'))->assertSessionHasErrors('kode_laporan');
         $this->assertStringNotContainsString($rahasia->kronologi, $hasil->getContent());
+
+        $this->flushSession();
+        $this->get(route('lacak.hasil'))->assertSessionHasErrors('kode_laporan');
+    }
+
+    public function test_lacak_memakai_post_dan_kode_tidak_muncul_di_url(): void
+    {
+        $laporan = $this->buatLaporan($this->pelaporUser, 'KODEURLAMAN');
+
+        $response = $this->post(route('lacak.cari'), ['kode_laporan' => $laporan->kode_laporan]);
+        $response->assertRedirect(route('lacak.hasil'));
+        $this->assertStringNotContainsString('KODEURLAMAN', $response->headers->get('Location'));
+
+        $this->get(route('lacak.hasil'))->assertOk()->assertSee($laporan->kronologi);
+    }
+
+    public function test_lacak_dibatasi_rate_limit(): void
+    {
+        for ($i = 0; $i < 10; $i++) {
+            $this->post(route('lacak.cari'), ['kode_laporan' => 'TEBAK' . $i])->assertRedirect();
+        }
+
+        $this->post(route('lacak.cari'), ['kode_laporan' => 'TEBAK99'])->assertStatus(429);
+    }
+
+    public function test_draf_beranda_dikirim_lewat_post_dan_tidak_masuk_url(): void
+    {
+        $kronologi = 'Isi kronologi rahasia dari beranda';
+
+        $response = $this->actingAs($this->pelaporUser)
+            ->post(route('laporan.draf'), ['kategori' => 'Psikis', 'kronologi' => $kronologi]);
+
+        $response->assertRedirect(route('laporan.create'));
+        $this->assertStringNotContainsString('kronologi', $response->headers->get('Location'));
+
+        $this->actingAs($this->pelaporUser)->get(route('laporan.create'))
+            ->assertOk()
+            ->assertSee($kronologi);
+    }
+
+    public function test_tamu_yang_mengisi_draf_diarahkan_ke_registrasi(): void
+    {
+        $this->post(route('laporan.draf'), ['kronologi' => 'Draf tamu'])
+            ->assertRedirect(route('register'))
+            ->assertSessionHas('draf_laporan.kronologi', 'Draf tamu');
+    }
+
+    public function test_formulir_laporan_tidak_berisi_teks_contoh(): void
+    {
+        $response = $this->actingAs($this->pelaporUser)->get(route('laporan.create'))->assertOk();
+
+        $this->assertStringNotContainsString('Isian ini menggambarkan laporan fiktif', $response->getContent());
+        $this->assertMatchesRegularExpression('/<textarea name="kronologi"[^>]*>\s*<\/textarea>/', $response->getContent());
     }
 
     private function buatLaporan(User $pemilik, string $kode): LaporanKasus

@@ -14,15 +14,20 @@
     </div>
 
     {{-- Search Input (Figma Exact) --}}
-    <form method="GET" action="{{ route('lacak.hasil') }}" class="space-y-2 max-w-2xl mb-8">
-        <label class="block text-xs font-semibold text-neutral-800">Kode laporan</label>
+    {{-- POST + session: kode laporan tidak masuk URL/riwayat peramban. --}}
+    <form method="POST" action="{{ route('lacak.cari') }}" class="space-y-2 max-w-2xl mb-8">
+        @csrf
+        <label for="kode_laporan" class="block text-xs font-semibold text-neutral-800">Kode laporan</label>
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <input type="text" name="kode_laporan" value="{{ old('kode_laporan', $kode_laporan ?? 'Q7M2K9') }}" placeholder="Contoh: Q7M2K9" required class="flex-1 rounded bg-[#f2f2f2] border-0 text-xs px-3.5 py-2.5 text-neutral-800 focus:ring-1 focus:ring-neutral-400 font-mono">
+            <input type="text" id="kode_laporan" name="kode_laporan" value="{{ old('kode_laporan', $kode_laporan) }}" placeholder="Contoh: Q7M2K9" required autocomplete="off" autocapitalize="characters" spellcheck="false" class="flex-1 rounded bg-[#f2f2f2] border-0 text-xs px-3.5 py-2.5 text-neutral-800 focus:ring-1 focus:ring-neutral-400 font-mono">
             <button type="submit" class="inline-flex items-center justify-center rounded bg-[#10a349] hover:bg-[#0e8e40] text-white font-medium text-xs px-6 py-2.5 transition-colors shrink-0">
                 Periksa status
             </button>
         </div>
-        <p class="text-[11px] text-neutral-400">{{ $laporan ? 'Laporan resmi · Jangan bagikan kode ini kepada orang lain.' : 'Data contoh · Kode dan seluruh isi laporan di bawah ini bersifat fiktif.' }}</p>
+        @error('kode_laporan')
+            <p class="text-[11px] text-safety-rose">{{ $message }}</p>
+        @enderror
+        <p class="text-[11px] text-neutral-500">Jangan bagikan kode ini kepada orang lain.</p>
     </form>
 
     @if ($tidakDitemukan ?? false)
@@ -67,6 +72,8 @@
         @endauth
     @endif
 
+    {{-- Detail hanya tampil untuk laporan nyata; tanpa laporan tidak ada data contoh yang ditampilkan. --}}
+    @if ($laporan)
     <div class="border-t border-neutral-100 pt-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             
@@ -258,6 +265,7 @@
 
         </div>
     </div>
+    @endif
 
 </div>
 @endsection
