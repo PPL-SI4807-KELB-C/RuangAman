@@ -53,22 +53,35 @@ Pengembangan berlangsung dalam 2 Sprint sesuai kalender perkuliahan:
 | ID PBI | Nama PBI & Deskripsi | PIC | Sprint | Tabel Utama | Referensi Hanya-Baca (Seeder) |
 | :--- | :--- | :--- | :---: | :--- | :--- |
 | **Tim 1** | **Fondasi Bersama**: Auth, User, Role & Permissions RBAC, reset password, layout utama. | Seluruh Tim | 1–2 | `users`, `roles`, `permissions`, `role_permissions` | - |
-| **Tim 2** | **Integrasi Bersama**: Dashboard 3 peran, pelacakan publik, alur persetujuan status kasus terpusat (`CaseApprovalService`), Quick Exit, UAT & Testing. | Seluruh Tim | 2 | Seluruh tabel (hanya-baca); mutasi status ke `laporan_kasus`, `penanganan_kasus`, `log_penanganan` | - |
+| **Tim 2** | **Integrasi Bersama**: Dashboard 3 peran, pelacakan publik, alur persetujuan status kasus terpusat (`CaseApprovalService`), notifikasi & log otomatis lintas modul, Quick Exit, UAT & Testing. | Seluruh Tim | 2 | Seluruh tabel (hanya-baca); mutasi status ke `laporan_kasus`, `penanganan_kasus`, `log_penanganan` | - |
 | **PBI-01** | **Manajemen Halaman Informasi Statis**: CRUD halaman statis (Tentang Kami, Visi Misi, Panduan, Kebijakan Privasi). | Ghalib | 1 | `halaman_informasi` | - |
 | **PBI-02** | **Manajemen Glosarium Istilah KBG**: CRUD istilah dan definisi seputar kekerasan berbasis gender. | Ghalib | 1 | `glosarium_kbg` | - |
 | **PBI-03** | **Manajemen Pengumuman**: CRUD pengumuman publik (periode tayang, status). Tidak mengirim notifikasi otomatis. | Ghalib | 1 | `pengumuman` | `users` |
-| **PBI-04** | **Manajemen Status & Penugasan Kasus**: CRUD master status dan pencatatan penugasan kasus ke konselor pendamping. | Glen | 1 | `status_kasus`, `penanganan_kasus` | `laporan_kasus`, `users` |
+| **PBI-04** | **Manajemen Status & Penugasan Kasus**: CRUD master status dan CRUD penugasan kasus ke konselor pendamping (dipecah 2 sub-task). | Glen | 1 | `status_kasus`, `penanganan_kasus` | `laporan_kasus`, `konselor`, `users` |
 | **PBI-05** | **Manajemen Kegiatan/Webinar Edukasi**: CRUD webinar edukasi beserta pendaftaran peserta mandiri & verifikasi kehadiran. | Glen | 2 | `kegiatan_edukasi`, `pendaftaran_kegiatan` | `users` |
-| **PBI-06** | **Log Penanganan Kasus**: CRUD catatan aktivitas manual penanganan (catatan perubahan status terkunci otomatis). | Glen | 2 | `log_penanganan` | `penanganan_kasus`, `users` |
+| **PBI-06** | **Log Penanganan Kasus**: CRUD catatan aktivitas manual per laporan; `penanganan_id` nullable. Log status otomatis (immutable) dibuat oleh Tim 2. | Glen | 2 | `log_penanganan` | `laporan_kasus`, `users` |
 | **PBI-07** | **Manajemen Instansi Bantuan**: CRUD direktori lembaga penyedia layanan bantuan & rujukan korban. | Haqi | 1 | `instansi_bantuan` | - |
-| **PBI-08** | **Manajemen Layanan & Kontak Bantuan**: CRUD rincian layanan spesifik dan hotline/kontak darurat per instansi. | Haqi | 2 | `layanan_bantuan`, `kontak_bantuan` | `instansi_bantuan` |
+| **PBI-08** | **Manajemen Layanan & Kontak Bantuan**: CRUD rincian layanan spesifik dan hotline/kontak darurat per instansi (dipecah 2 sub-task). | Haqi | 2 | `layanan_bantuan`, `kontak_bantuan` | `instansi_bantuan` |
 | **PBI-09** | **Manajemen FAQ / Pusat Bantuan**: CRUD pertanyaan yang sering diajukan dan jawaban informasi umum. | Haqi | 2 | `faq` | - |
-| **PBI-10** | **Manajemen Artikel Edukasi**: CRUD materi artikel edukasi pencegahan & pemulihan KBG. | Niky | 1 | `artikel` | `kategori_artikel`, `users` |
-| **PBI-11** | **Manajemen Kategori Artikel**: CRUD pengelompokan tema artikel edukasi. | Niky | 1 | `kategori_artikel` | - |
+| **PBI-10** | **Manajemen Artikel Edukasi**: CRUD materi artikel edukasi pencegahan & pemulihan KBG; kategori default "Umum" dari seeder. | Niky | 1 | `artikel` | `kategori_artikel`, `users` |
+| **PBI-11** | **Manajemen Kategori Artikel**: CRUD pengelompokan tema artikel edukasi; kategori yang dipakai artikel tidak bisa dihapus. | Niky | 1 | `kategori_artikel` | - |
 | **PBI-12** | **Manajemen Feedback Artikel**: CRUD komentar & ulasan pengguna terhadap artikel serta moderasi admin. | Niky | 2 | `feedback_artikel` | `artikel`, `users` |
 | **PBI-13** | **Manajemen Data Konselor/Psikolog**: CRUD biodata, kualifikasi/spesialisasi, dan status ketersediaan konselor. | Altaf | 1 | `konselor` | `users` |
 | **PBI-14** | **Manajemen Jadwal Konseling**: CRUD slot jadwal ketersediaan sesi tatap muka online maupun offline. | Altaf | 2 | `jadwal_konseling` | `konselor`, `users` |
-| **PBI-15** | **Manajemen Sesi Konseling**: Pencatatan riwayat sesi, catatan konseling, dan rekomendasi hasil akhir. | Altaf | 2 | `sesi_konseling` | `jadwal_konseling` |
-| **PBI-16** | **Manajemen Laporan Kasus & Lampiran Bukti**: Pembuatan formulir pengaduan, token lacak acak, upload file ke storage privat. | Fauzi | 1 | `laporan_kasus`, `lampiran_laporan` | `users`, `status_kasus` |
-| **PBI-17** | **Manajemen Mode Anonim & Profil Pelapor**: Pengelolaan profil alias dan preferensi bawaan mode anonim. | Fauzi | 1 | `profil_pelapor` | `users` |
-| **PBI-18** | **Manajemen Notifikasi Sistem**: Notifikasi in-app otomatis saat ada peristiwa penting (baca/tandai/hapus notifikasi pribadi). | Fauzi | 2 | `notifikasi` | `users` |
+| **PBI-15** | **Manajemen Sesi Konseling**: CRUD riwayat sesi, catatan konseling, dan rekomendasi hasil akhir; merujuk `konselor_id` + `laporan_id`, `jadwal_id` nullable. | Altaf | 2 | `sesi_konseling` | `konselor`, `laporan_kasus`, `jadwal_konseling` (opsional) |
+| **PBI-16** | **Manajemen Laporan Kasus & Lampiran Bukti**: C: formulir pengaduan + kode lacak + lampiran privat; R: "Laporan saya" & lacak; U: tambah keterangan/lampiran saat *Menunggu peninjauan*; D: tarik laporan sebelum ditinjau (soft delete). | Fauzi | 1 | `laporan_kasus`, `lampiran_laporan` | `users`, `status_kasus` |
+| **PBI-17** | **Manajemen Mode Anonim & Profil Pelapor**: C: profil alias saat registrasi; R/U: "Profil saya" (alias & preferensi anonim); D: reset alias/hapus akun (laporan tetap anonim). | Fauzi | 1 | `profil_pelapor` | `users` |
+| **PBI-18** | **Manajemen Notifikasi**: C: Admin membuat notifikasi (per user/role/semua); R: daftar & badge belum dibaca; U: tandai dibaca, Admin edit; D: hapus/tarik. Notifikasi otomatis dipindah ke Tim 2. | Fauzi | 2 | `notifikasi` | `users`, `roles` |
+
+---
+
+## 3. Aturan Independensi & CRUD PBI (revisi 20 November 2026)
+
+1. **Setiap PBI wajib punya Create, Read, Update, Delete** dengan aktor yang jelas, dan aktor lain mendapat 403.
+2. **Data dari PBI lain hanya dibaca** dan disediakan lewat seeder/factory (kolom "Referensi Hanya-Baca"). Setiap PBI harus bisa dikembangkan, diuji, dan didemokan tanpa menunggu PBI lain.
+3. **Foreign key ke modul lain dibuat nullable** bila memungkinkan (mis. `log_penanganan.penanganan_id`, `sesi_konseling.jadwal_id`, `artikel.kategori_id` default "Umum").
+4. **Perilaku lintas modul otomatis** (notifikasi peristiwa, log perubahan status) menjadi tanggung jawab PBI Tim 2.
+5. **Setiap PBI punya feature test** `PbiXX...Test` yang mencakup CRUD dan penolakan akses.
+6. **Commit, branch, dan judul PR memuat issue key Jira** (`[PKBC-XX]`).
+
+Deskripsi lengkap (user story, CRUD, dependensi, acceptance criteria) ada di masing-masing issue Jira project PKBC.
