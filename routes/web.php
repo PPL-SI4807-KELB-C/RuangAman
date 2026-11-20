@@ -48,12 +48,23 @@ Route::middleware(['auth', 'pelapor'])->controller(LaporanKasusController::class
     Route::get('/laporan/sukses', 'success')->name('laporan.success');
 });
 
+// Draf dari mini-form beranda: dikirim lewat POST dan disimpan di session server,
+// supaya kronologi tidak pernah masuk ke URL, riwayat peramban, atau log server.
+Route::post('/laporan/draf', [LaporanKasusController::class, 'simpanDraf'])
+    ->middleware('throttle:lacak')
+    ->name('laporan.draf');
+
 // Pelacakan status tetap publik (FR-14: memantau lewat kode acak tanpa login).
+// Kode dikirim lewat POST dan disimpan di session agar tidak tercatat di URL/riwayat peramban.
 Route::controller(LaporanKasusController::class)->group(function () {
     Route::get('/lacak', 'trackForm')->name('lacak.form');
     Route::get('/lacak/hasil', 'trackResult')->name('lacak.hasil');
-    Route::post('/lacak/pesan', 'kirimPesan')->name('lacak.pesan');
-    Route::post('/lacak/tautkan', 'tautkanAkun')->name('lacak.tautkan');
+
+    Route::middleware('throttle:lacak')->group(function () {
+        Route::post('/lacak', 'cariLaporan')->name('lacak.cari');
+        Route::post('/lacak/pesan', 'kirimPesan')->name('lacak.pesan');
+        Route::post('/lacak/tautkan', 'tautkanAkun')->name('lacak.tautkan');
+    });
 });
 
 /*
@@ -72,11 +83,13 @@ Route::get('/instansi-bantuan', [InstansiBantuanController::class, 'publicDirect
 
 /*
 |--------------------------------------------------------------------------
-| PBI-07: Manajemen Instansi Bantuan (CRUD Lengkap)
+| PBI-07: Manajemen Instansi Bantuan (CRUD Lengkap, khusus Admin Kasus)
 |--------------------------------------------------------------------------
 | Tersedia via /instansi dan /admin/instansi untuk kompatibilitas penuh.
+| Keduanya wajib lewat middleware admin.kasus agar Pelapor/Konselor tidak
+| bisa menambah, mengubah, atau menghapus direktori instansi.
 */
-Route::middleware('auth')->controller(InstansiBantuanController::class)->group(function () {
+Route::middleware(['auth', 'admin.kasus'])->controller(InstansiBantuanController::class)->group(function () {
     Route::get('/instansi', 'index')->name('instansi.index');
     Route::get('/instansi/create', 'create')->name('instansi.create');
     Route::post('/instansi', 'store')->name('instansi.store');
