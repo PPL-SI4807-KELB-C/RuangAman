@@ -43,7 +43,7 @@
         x-transition:leave="ease-in duration-150"
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
-        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+        class="fixed inset-0 bg-neutral-900/50 transition-opacity"
         @click="closeModal()"
     ></div>
 
@@ -59,13 +59,13 @@
                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 @click.stop
-                class="relative w-full max-w-lg transform overflow-hidden rounded-2xl bg-white p-6 text-left shadow-2xl transition-all border border-slate-100 sm:my-8"
+                class="relative w-full max-w-lg transform overflow-hidden rounded-xl border border-neutral-200/70 bg-white p-6 text-left shadow-lg transition-all sm:my-8"
             >
                 <div class="sm:flex sm:items-start gap-4">
                     <!-- Icon Peringatan -->
                     <div
                         class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full sm:mx-0"
-                        :class="confirmVariant === 'danger' ? 'bg-red-100' : 'bg-brand-100'"
+                        :class="confirmVariant === 'danger' ? 'bg-safety-rose/10' : 'bg-brand-50'"
                     >
                         <svg
                             class="h-6 w-6"
@@ -82,9 +82,9 @@
 
                     <!-- Teks Judul & Pesan -->
                     <div class="mt-3 text-center sm:mt-0 sm:text-left flex-1">
-                        <h3 class="text-lg font-bold leading-6 text-slate-900" x-text="title"></h3>
+                        <h3 class="text-base font-bold leading-6 text-neutral-900" x-text="title"></h3>
                         <div class="mt-2">
-                            <p class="text-sm text-slate-600 leading-relaxed" x-text="message"></p>
+                            <p class="text-xs text-neutral-600 leading-relaxed" x-text="message"></p>
                         </div>
                     </div>
                 </div>
@@ -99,11 +99,11 @@
                 </form>
 
                 <!-- Tombol Aksi Modal -->
-                <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3 border-t border-slate-100 pt-4">
+                <div class="mt-6 flex flex-col-reverse gap-3 border-t border-neutral-200/70 pt-4 sm:flex-row sm:justify-end sm:gap-4">
                     <button
                         type="button"
                         @click="closeModal()"
-                        class="inline-flex w-full sm:w-auto items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-400 transition"
+                        class="inline-flex w-full sm:w-auto items-center justify-center rounded border border-neutral-300/70 bg-white px-5 py-2.5 text-xs font-medium text-neutral-800 transition-colors hover:bg-neutral-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
                     >
                         Batal
                     </button>
@@ -111,8 +111,8 @@
                         type="button"
                         x-ref="confirmButton"
                         @click="$refs.confirmForm.submit()"
-                        class="inline-flex w-full sm:w-auto items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition focus:outline-none focus:ring-2 focus:ring-offset-2"
-                        :class="confirmVariant === 'danger' ? 'bg-safety-rose hover:bg-safety-alert focus:ring-safety-rose' : 'bg-brand-600 hover:bg-brand-700 focus:ring-brand-500'"
+                        class="inline-flex w-full sm:w-auto items-center justify-center rounded px-5 py-2.5 text-xs font-medium text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+                        :class="confirmVariant === 'danger' ? 'bg-safety-rose hover:bg-safety-alert' : 'bg-brand-600 hover:bg-brand-700'"
                         x-text="confirmText"
                     ></button>
                 </div>

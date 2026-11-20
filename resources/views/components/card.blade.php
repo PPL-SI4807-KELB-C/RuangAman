@@ -1,18 +1,19 @@
 @props(['header' => null, 'footer' => null])
 
-<div {{ $attributes->merge(['class' => 'bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden']) }}>
+{{-- Panel datar khas Figma RuangAman: isi #f2f2f2, hairline netral, tanpa shadow. --}}
+<div {{ $attributes->merge(['class' => 'overflow-hidden rounded-xl border border-neutral-200/70 bg-[#f2f2f2]']) }}>
     @if ($header)
-        <div class="px-5 py-4 border-b border-slate-100 bg-slate-50/50">
+        <div class="border-b border-neutral-300/60 px-6 py-4 text-sm font-semibold text-neutral-900">
             {{ $header }}
         </div>
     @endif
 
-    <div class="px-5 py-5">
+    <div class="px-6 py-5">
         {{ $slot }}
     </div>
 
     @if ($footer)
-        <div class="px-5 py-4 border-t border-slate-100 bg-slate-50/50">
+        <div class="border-t border-neutral-300/60 px-6 py-4">
             {{ $footer }}
         </div>
     @endif
