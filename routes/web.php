@@ -11,6 +11,7 @@ use App\Http\Controllers\KonselorProfilController;
 use App\Http\Controllers\LaporanKasusController;
 use App\Http\Controllers\PenangananKasusController;
 use App\Http\Controllers\PendaftaranKegiatanController;
+use App\Http\Controllers\ProfilPelaporController;
 use App\Http\Controllers\StatusKasusController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,13 +29,53 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/lacak/tautkan', 'tautkanAkun')->name('lacak.tautkan');
 });
 
-// Pelaporan Kasus (Dapat diakses publik / anonim sesuai mockup Figma)
+/*
+|--------------------------------------------------------------------------
+| Pelaporan & Pelacakan Publik Laporan Kasus (Tanpa Login - FR-14)
+|--------------------------------------------------------------------------
+*/
 Route::controller(LaporanKasusController::class)->group(function () {
     Route::get('/laporan/create', 'create')->name('laporan.create');
     Route::post('/laporan', 'store')->name('laporan.store');
     Route::get('/laporan/sukses', 'success')->name('laporan.success');
     Route::get('/lacak', 'trackForm')->name('lacak.form');
     Route::get('/lacak/hasil', 'trackResult')->name('lacak.hasil');
+});
+
+/*
+|--------------------------------------------------------------------------
+| PBI-16 & PBI-17: Modul Pelaporan Kasus, Lampiran, dan Profil Pelapor
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'pelapor'])->group(function () {
+    // PBI-17: Manajemen Mode Anonim & Profil Pelapor
+    Route::controller(ProfilPelaporController::class)->prefix('profil-pelapor')->name('profil-pelapor.')->group(function () {
+        Route::get('/', 'edit')->name('edit');
+        Route::put('/', 'update')->name('update');
+    });
+
+    // PBI-16: Manajemen Laporan Kasus (Detail, Edit, Batalkan, & Lampiran Privat)
+    Route::controller(LaporanKasusController::class)->prefix('laporan')->name('laporan.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{laporan}', 'show')->name('show');
+        Route::get('/{laporan}/edit', 'edit')->name('edit');
+        Route::put('/{laporan}', 'update')->name('update');
+        Route::delete('/{laporan}', 'destroy')->name('destroy');
+
+        // Lampiran Bukti Privat
+        Route::get('/lampiran/{lampiran}/download', 'downloadLampiran')->name('lampiran.download');
+        Route::delete('/lampiran/{lampiran}', 'destroyLampiran')->name('lampiran.destroy');
+    });
+
+    // PBI-05: Pendaftaran Kegiatan oleh Pelapor
+    Route::post('/edukasi/kegiatan/{kegiatan}/daftar', [PendaftaranKegiatanController::class, 'store'])
+        ->name('kegiatan.daftar');
+
+    Route::get('/pendaftaran-saya', [PendaftaranKegiatanController::class, 'index'])
+        ->name('pendaftaran-kegiatan.index');
+
+    Route::patch('/pendaftaran-saya/{pendaftaran}/batalkan', [PendaftaranKegiatanController::class, 'cancel'])
+        ->name('pendaftaran-kegiatan.cancel');
 });
 
 /*
@@ -48,7 +89,6 @@ Route::get('/instansi-bantuan', [InstansiBantuanController::class, 'publicDirect
 |--------------------------------------------------------------------------
 | PBI-07: Manajemen Instansi Bantuan (CRUD Lengkap)
 |--------------------------------------------------------------------------
-| Tersedia via /instansi dan /admin/instansi untuk kompatibilitas penuh.
 */
 Route::middleware('auth')->controller(InstansiBantuanController::class)->group(function () {
     Route::get('/instansi', 'index')->name('instansi.index');
@@ -62,7 +102,7 @@ Route::middleware('auth')->controller(InstansiBantuanController::class)->group(f
 
 /*
 |--------------------------------------------------------------------------
-| PBI-04, PBI-05, PBI-07, PBI-13: Modul Admin Kasus
+| PBI-04, PBI-05, PBI-07, PBI-10, PBI-13: Modul Admin Kasus
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'admin.kasus'])->prefix('admin')->name('admin.')->group(function () {
@@ -73,18 +113,10 @@ Route::middleware(['auth', 'admin.kasus'])->prefix('admin')->name('admin.')->gro
     Route::resource('penanganan-kasus', PenangananKasusController::class)
         ->parameters(['penanganan-kasus' => 'penangananKasus']);
 
-    /*
-    |--------------------------------------------------------------------------
-    | PBI-10: Manajemen Artikel Edukasi - Niky (Admin Kasus)
-    |--------------------------------------------------------------------------
-    */
+    // PBI-10: Manajemen Artikel Edukasi (Admin Kasus)
     Route::resource('artikel', AdminArtikelController::class);
 
-    /*
-    |--------------------------------------------------------------------------
-    | PBI-05: Manajemen Kegiatan/Webinar Edukasi (Admin Kasus)
-    |--------------------------------------------------------------------------
-    */
+    // PBI-05: Manajemen Kegiatan/Webinar Edukasi (Admin Kasus)
     Route::resource('kegiatan-edukasi', AdminKegiatanEdukasiController::class)
         ->parameters(['kegiatan-edukasi' => 'kegiatan']);
 
@@ -94,19 +126,11 @@ Route::middleware(['auth', 'admin.kasus'])->prefix('admin')->name('admin.')->gro
     Route::patch('kegiatan-edukasi/{kegiatan}/pendaftaran/{pendaftaran}/verifikasi', [AdminKegiatanEdukasiController::class, 'verifikasiKehadiran'])
         ->name('kegiatan-edukasi.verifikasi-kehadiran');
 
-    /*
-    |--------------------------------------------------------------------------
-    | PBI-13: Manajemen Data Konselor/Psikolog (Admin Kasus)
-    |--------------------------------------------------------------------------
-    */
+    // PBI-13: Manajemen Data Konselor/Psikolog (Admin Kasus)
     Route::resource('konselor', AdminKonselorController::class)
         ->parameters(['konselor' => 'konselor']);
 
-    /*
-    |--------------------------------------------------------------------------
-    | PBI-07: Manajemen Instansi Bantuan (Admin Kasus Prefix)
-    |--------------------------------------------------------------------------
-    */
+    // PBI-07: Manajemen Instansi Bantuan (Admin Kasus Prefix)
     Route::resource('instansi', InstansiBantuanController::class)
         ->parameters(['instansi' => 'instansi']);
 });
@@ -123,7 +147,7 @@ Route::middleware(['auth', 'konselor'])->prefix('konselor')->name('konselor.')->
 
 /*
 |--------------------------------------------------------------------------
-| PBI-10: Artikel Edukasi - Niky (Publik & Pelapor)
+| PBI-10: Artikel Edukasi (Publik & Pelapor)
 |--------------------------------------------------------------------------
 */
 Route::controller(ArtikelController::class)->prefix('edukasi/artikel')->name('artikel.')->group(function () {
@@ -133,21 +157,10 @@ Route::controller(ArtikelController::class)->prefix('edukasi/artikel')->name('ar
 
 /*
 |--------------------------------------------------------------------------
-| PBI-05: Kegiatan/Webinar Edukasi (Publik & Pelapor)
+| PBI-05: Kegiatan/Webinar Edukasi (Publik)
 |--------------------------------------------------------------------------
 */
 Route::controller(KegiatanEdukasiController::class)->prefix('edukasi/kegiatan')->name('kegiatan.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('/{kegiatan}', 'show')->name('show');
-});
-
-Route::middleware(['auth', 'pelapor'])->group(function () {
-    Route::post('/edukasi/kegiatan/{kegiatan}/daftar', [PendaftaranKegiatanController::class, 'store'])
-        ->name('kegiatan.daftar');
-
-    Route::get('/pendaftaran-saya', [PendaftaranKegiatanController::class, 'index'])
-        ->name('pendaftaran-kegiatan.index');
-
-    Route::patch('/pendaftaran-saya/{pendaftaran}/batalkan', [PendaftaranKegiatanController::class, 'cancel'])
-        ->name('pendaftaran-kegiatan.cancel');
 });

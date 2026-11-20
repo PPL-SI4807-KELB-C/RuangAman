@@ -11,18 +11,25 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-white text-neutral-900 antialiased font-sans selection:bg-neutral-200" x-data="{
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased font-sans" x-data="{
+    mobileMenuOpen: false,
     quickExit() {
         sessionStorage.clear();
         localStorage.clear();
         window.location.replace('https://www.google.com');
     }
 }" @keydown.escape.window="quickExit()">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-brand-600 focus:text-white focus:px-3 focus:py-2 focus:rounded">
+        Langsung ke konten utama
+    </a>
 
-    {{-- Top Emergency Banner (Figma Exact) --}}
-    <div class="w-full bg-[#f2f2f2] border-b border-neutral-200 text-neutral-700 text-xs py-2 px-4 sm:px-6">
-        <div class="mx-auto max-w-6xl flex items-center justify-center gap-2 text-center">
-            <svg class="h-3.5 w-3.5 shrink-0 text-neutral-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <x-quick-exit />
+    <x-confirm-modal />
+
+    {{-- Top Emergency Banner --}}
+    <div class="w-full border-b border-slate-200 bg-slate-100 px-4 py-2 text-xs text-slate-700 sm:px-6">
+        <div class="mx-auto flex max-w-7xl items-center justify-center gap-2 text-center">
+            <svg class="h-3.5 w-3.5 shrink-0 text-slate-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
@@ -30,66 +37,74 @@
         </div>
     </div>
 
-    {{-- Navigation Header (Figma Exact) --}}
-    <header class="w-full border-b border-neutral-200 bg-white sticky top-0 z-40" x-data="{ mobileMenuOpen: false }">
-        <div class="mx-auto max-w-6xl flex items-center justify-between px-4 sm:px-6 py-4">
-            {{-- Logo --}}
-            <a href="{{ url('/') }}" class="text-xl font-bold tracking-tight text-neutral-900 hover:opacity-90">
-                RuangAman
-            </a>
+    {{-- Header Navigasi (Grid 12 Kolom Terkunci) --}}
+    <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
+        <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 md:grid md:grid-cols-12 md:gap-2 lg:px-8">
+            {{-- Kolom Kiri: Logo (2 kolom) --}}
+            <div class="flex items-center md:col-span-2">
+                <a href="{{ url('/') }}" class="flex items-center gap-2 text-brand-700 hover:text-brand-800" aria-label="RuangAman Beranda">
+                    <svg class="h-8 w-8 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M12 3l7 4v6c0 5.55-3.84 10.74-9 12-5.16-1.26-9-6.45-9-12V7l7-4z" />
+                        <path d="M9 12l2 2 4-4" />
+                    </svg>
+                    <span class="text-lg font-bold tracking-tight">RuangAman</span>
+                </a>
+            </div>
 
-            {{-- Center Navigation Links --}}
-            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-neutral-600" aria-label="Navigasi utama">
-                <a href="{{ url('/') }}" class="hover:text-neutral-900 transition-colors">Beranda</a>
-                <a href="{{ url('/#layanan') }}" class="hover:text-neutral-900 transition-colors">Layanan</a>
-                <a href="{{ route('laporan.create') }}" class="hover:text-neutral-900 transition-colors">Pelaporan</a>
-                <a href="{{ route('lacak.form') }}" class="hover:text-neutral-900 transition-colors {{ request()->routeIs('lacak.*') ? 'text-neutral-900 font-semibold' : '' }}">Lacak laporan</a>
-                <a href="{{ route('artikel.index') }}" class="hover:text-neutral-900 transition-colors {{ request()->routeIs('artikel.*') ? 'text-neutral-900 font-semibold' : '' }}">Artikel</a>
-                <a href="{{ route('kegiatan.index') }}" class="hover:text-neutral-900 transition-colors {{ request()->routeIs('kegiatan.*') ? 'text-neutral-900 font-semibold' : '' }}">Kegiatan</a>
-                <a href="{{ route('instansi.publik') }}" class="hover:text-neutral-900 transition-colors {{ request()->routeIs('instansi.publik') ? 'text-neutral-900 font-semibold' : '' }}">Instansi bantuan</a>
+            {{-- Kolom Tengah: Navigasi Utama Terkunci Mati di Tengah (8 kolom) --}}
+            <nav class="hidden flex-wrap items-center justify-center gap-4 text-sm font-medium text-slate-600 md:col-span-8 md:flex lg:gap-5" aria-label="Navigasi utama">
+                <a href="{{ url('/') }}" class="whitespace-nowrap transition-colors hover:text-brand-700">Beranda</a>
+                <a href="{{ url('/#layanan') }}" class="whitespace-nowrap transition-colors hover:text-brand-700">Layanan</a>
+                <a href="{{ route('laporan.create') }}" class="whitespace-nowrap transition-colors hover:text-brand-700">Pelaporan</a>
+                <a href="{{ route('lacak.form') }}" class="whitespace-nowrap transition-colors hover:text-brand-700 {{ request()->routeIs('lacak.*') ? 'font-semibold text-brand-700' : '' }}">Lacak Laporan</a>
+                <a href="{{ route('artikel.index') }}" class="whitespace-nowrap transition-colors hover:text-brand-700 {{ request()->routeIs('artikel.*') ? 'font-semibold text-brand-700' : '' }}">Artikel</a>
+                <a href="{{ route('kegiatan.index') }}" class="whitespace-nowrap transition-colors hover:text-brand-700 {{ request()->routeIs('kegiatan.*') ? 'font-semibold text-brand-700' : '' }}">Kegiatan</a>
+                <a href="{{ route('instansi.publik') }}" class="whitespace-nowrap transition-colors hover:text-brand-700 {{ request()->routeIs('instansi.publik') ? 'font-semibold text-brand-700' : '' }}">Instansi Bantuan</a>
 
                 @auth
                     @if (Auth::user()->isPelapor())
-                        <a href="{{ route('pendaftaran-kegiatan.index') }}" class="hover:text-neutral-900 transition-colors {{ request()->routeIs('pendaftaran-kegiatan.*') ? 'text-neutral-900 font-semibold underline underline-offset-4' : '' }}">Pendaftaran Saya</a>
+                        <a href="{{ route('laporan.index') }}" class="whitespace-nowrap transition-colors hover:text-brand-700 {{ request()->routeIs('laporan.index', 'laporan.show', 'laporan.edit') ? 'font-semibold text-brand-700 underline underline-offset-4' : '' }}">Laporan Saya</a>
+                        <a href="{{ route('pendaftaran-kegiatan.index') }}" class="whitespace-nowrap transition-colors hover:text-brand-700 {{ request()->routeIs('pendaftaran-kegiatan.*') ? 'font-semibold text-brand-700 underline underline-offset-4' : '' }}">Pendaftaran Saya</a>
+                        <a href="{{ route('profil-pelapor.edit') }}" class="whitespace-nowrap transition-colors hover:text-brand-700 {{ request()->routeIs('profil-pelapor.*') ? 'font-semibold text-brand-700 underline underline-offset-4' : '' }}">Profil</a>
                     @endif
                     @if (Auth::user()->isKonselor())
-                        <a href="{{ route('konselor.profil.edit') }}" class="hover:text-neutral-900 transition-colors {{ request()->routeIs('konselor.profil.*') ? 'text-neutral-900 font-semibold underline underline-offset-4' : '' }}">Profil Saya</a>
+                        <a href="{{ route('konselor.profil.edit') }}" class="whitespace-nowrap transition-colors hover:text-brand-700 {{ request()->routeIs('konselor.profil.*') ? 'font-semibold text-brand-700 underline underline-offset-4' : '' }}">Profil Saya</a>
                     @endif
                 @endauth
 
                 @can('admin-kasus')
-                    <div class="h-4 w-px bg-neutral-300"></div>
-                    <a href="{{ route('admin.status-kasus.index') }}" class="inline-flex items-center gap-1 font-semibold text-neutral-900 hover:text-neutral-700 {{ request()->routeIs('admin.status-kasus.*') ? 'underline underline-offset-4' : '' }}">
+                    <div class="h-4 w-px bg-slate-300"></div>
+                    <a href="{{ route('admin.status-kasus.index') }}" class="inline-flex items-center gap-1 whitespace-nowrap font-semibold text-brand-700 hover:text-brand-800 {{ request()->routeIs('admin.status-kasus.*') ? 'text-brand-800 underline underline-offset-4' : '' }}">
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                         </svg>
                         <span>Status Kasus</span>
                     </a>
-                    <a href="{{ route('admin.penanganan-kasus.index') }}" class="inline-flex items-center gap-1 font-semibold text-neutral-900 hover:text-neutral-700 {{ request()->routeIs('admin.penanganan-kasus.*') ? 'underline underline-offset-4' : '' }}">
+                    <a href="{{ route('admin.penanganan-kasus.index') }}" class="inline-flex items-center gap-1 whitespace-nowrap font-semibold text-brand-700 hover:text-brand-800 {{ request()->routeIs('admin.penanganan-kasus.*') ? 'text-brand-800 underline underline-offset-4' : '' }}">
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
                         <span>Penugasan Kasus</span>
                     </a>
-                    <a href="{{ route('admin.kegiatan-edukasi.index') }}" class="inline-flex items-center gap-1 font-semibold text-neutral-900 hover:text-neutral-700 {{ request()->routeIs('admin.kegiatan-edukasi.*') ? 'underline underline-offset-4' : '' }}">
+                    <a href="{{ route('admin.kegiatan-edukasi.index') }}" class="inline-flex items-center gap-1 whitespace-nowrap font-semibold text-brand-700 hover:text-brand-800 {{ request()->routeIs('admin.kegiatan-edukasi.*') ? 'text-brand-800 underline underline-offset-4' : '' }}">
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         <span>Kegiatan Edukasi</span>
                     </a>
-                    <a href="{{ route('admin.artikel.index') }}" class="inline-flex items-center gap-1 font-semibold text-neutral-900 hover:text-neutral-700 {{ request()->routeIs('admin.artikel.*') ? 'underline underline-offset-4' : '' }}">
+                    <a href="{{ route('admin.artikel.index') }}" class="inline-flex items-center gap-1 whitespace-nowrap font-semibold text-brand-700 hover:text-brand-800 {{ request()->routeIs('admin.artikel.*') ? 'text-brand-800 underline underline-offset-4' : '' }}">
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2" />
                         </svg>
                         <span>Artikel Edukasi</span>
                     </a>
-                    <a href="{{ route('admin.konselor.index') }}" class="inline-flex items-center gap-1 font-semibold text-neutral-900 hover:text-neutral-700 {{ request()->routeIs('admin.konselor.*') ? 'underline underline-offset-4' : '' }}">
+                    <a href="{{ route('admin.konselor.index') }}" class="inline-flex items-center gap-1 whitespace-nowrap font-semibold text-brand-700 hover:text-brand-800 {{ request()->routeIs('admin.konselor.*') ? 'text-brand-800 underline underline-offset-4' : '' }}">
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                         <span>Data Konselor</span>
                     </a>
-                    <a href="{{ route('instansi.index') }}" class="inline-flex items-center gap-1 font-semibold text-neutral-900 hover:text-neutral-700 {{ request()->routeIs('instansi.*') && !request()->routeIs('instansi.publik') || request()->routeIs('admin.instansi.*') ? 'underline underline-offset-4' : '' }}">
+                    <a href="{{ route('instansi.index') }}" class="inline-flex items-center gap-1 whitespace-nowrap font-semibold text-brand-700 hover:text-brand-800 {{ (request()->routeIs('instansi.*') && !request()->routeIs('instansi.publik')) || request()->routeIs('admin.instansi.*') ? 'text-brand-800 underline underline-offset-4' : '' }}">
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                         </svg>
@@ -98,93 +113,87 @@
                 @endcan
             </nav>
 
-            {{-- Right Actions: Auth Status & Quick Exit Button --}}
-            <div class="flex items-center gap-4">
+            {{-- Kolom Kanan: Nama Alias/Anonim & Tombol Keluar (2 kolom) --}}
+            <div class="hidden items-center justify-end gap-3 md:col-span-2 md:flex">
                 @auth
-                    <div class="hidden sm:flex items-center gap-3 text-xs text-neutral-700">
-                        <span class="inline-flex items-center gap-1.5 font-medium">
-                            <span class="h-2 w-2 rounded-full bg-green-500"></span>
-                            {{ Auth::user()->nama_tampilan }} ({{ Auth::user()->role?->nama_role ?? 'User' }})
-                        </span>
-                        <form method="POST" action="{{ route('logout') }}" class="inline">
-                            @csrf
-                            <button type="submit" class="text-neutral-500 hover:text-red-600 transition-colors">
-                                Keluar Akun
-                            </button>
-                        </form>
-                    </div>
+                    @if (Auth::user()->isPelapor())
+                        @php
+                            $profilPelapor = Auth::user()->profilPelapor;
+                            $isAnonim = $profilPelapor?->preferensi_anonim ?? false;
+                            $realName = $profilPelapor?->alias ?? Auth::user()->nama_tampilan;
+                        @endphp
+                        <a href="{{ route('profil-pelapor.edit') }}"
+                           id="navbar-user-name"
+                           data-real-name="{{ $realName }}"
+                           title="Kelola Profil Alias & Mode Anonim"
+                           class="inline-block w-28 truncate text-right text-sm font-medium text-slate-600 transition hover:text-brand-700 hover:underline">
+                            {{ $isAnonim ? 'Anonim' : $realName }}
+                        </a>
+                    @else
+                        <span class="truncate text-sm text-slate-500">{{ Auth::user()->nama_tampilan }}</span>
+                    @endif
+                    <form method="POST" action="{{ route('logout') }}" class="shrink-0">
+                        @csrf
+                        <x-button type="submit" variant="secondary" size="sm">Keluar</x-button>
+                    </form>
                 @else
-                    <div class="hidden sm:flex items-center gap-2 text-xs">
-                        <a href="{{ route('login') }}" class="text-neutral-700 hover:text-neutral-900 font-medium px-2 py-1">
-                            Masuk
-                        </a>
-                        <a href="{{ route('register') }}" class="rounded bg-neutral-900 hover:bg-neutral-800 text-white font-medium px-3 py-1.5 transition-colors">
-                            Daftar
-                        </a>
-                    </div>
+                    <x-button href="{{ route('login') }}" variant="ghost" size="sm">Masuk</x-button>
+                    <x-button href="{{ route('register') }}" variant="primary" size="sm">Daftar</x-button>
                 @endauth
-
-                {{-- Tombol Darurat Keluar Cepat (Figma Exact) --}}
-                <button type="button" @click="quickExit()" class="inline-flex items-center gap-1.5 rounded bg-[#f2f2f2] hover:bg-neutral-200 text-neutral-800 text-xs font-medium px-3.5 py-1.5 transition-colors border border-neutral-300/70" title="Keluar seketika ke Google (shortcut: tombol Esc)">
-                    <span>Keluar Cepat</span>
-                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                        <polyline points="16 17 21 12 16 7" />
-                        <line x1="21" y1="12" x2="9" y2="12" />
-                    </svg>
-                </button>
-
-                {{-- Mobile Menu Toggle --}}
-                <button type="button" class="rounded-md p-2 text-neutral-600 hover:bg-neutral-100 md:hidden" @click="mobileMenuOpen = !mobileMenuOpen" :aria-expanded="mobileMenuOpen.toString()" aria-label="Buka menu">
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
             </div>
+
+            {{-- Mobile Menu Toggle --}}
+            <button type="button" class="rounded-md p-2 text-slate-600 hover:bg-slate-100 md:hidden" @click="mobileMenuOpen = !mobileMenuOpen" :aria-expanded="mobileMenuOpen.toString()" aria-label="Buka menu">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    <path x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
         </div>
 
         {{-- Mobile Menu --}}
-        <div x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="border-t border-neutral-100 bg-white md:hidden" x-cloak>
+        <div x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="border-t border-slate-100 bg-white md:hidden" x-cloak>
             <div class="space-y-1 px-4 py-3">
-                <a href="{{ url('/') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Beranda</a>
-                <a href="{{ url('/#layanan') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Layanan</a>
-                <a href="{{ route('laporan.create') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Pelaporan</a>
-                <a href="{{ route('lacak.form') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Lacak laporan</a>
-                <a href="{{ route('artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Artikel</a>
-                <a href="{{ route('kegiatan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Kegiatan</a>
-                <a href="{{ route('instansi.publik') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Instansi bantuan</a>
+                <a href="{{ url('/') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Beranda</a>
+                <a href="{{ url('/#layanan') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Layanan</a>
+                <a href="{{ route('laporan.create') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Pelaporan</a>
+                <a href="{{ route('lacak.form') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Lacak Laporan</a>
+                <a href="{{ route('artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Artikel</a>
+                <a href="{{ route('kegiatan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Kegiatan</a>
+                <a href="{{ route('instansi.publik') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Instansi Bantuan</a>
 
                 @auth
                     @if (Auth::user()->isPelapor())
-                        <a href="{{ route('pendaftaran-kegiatan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Pendaftaran Saya</a>
+                        <a href="{{ route('laporan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Laporan Saya</a>
+                        <a href="{{ route('pendaftaran-kegiatan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Pendaftaran Saya</a>
+                        <a href="{{ route('profil-pelapor.edit') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Profil</a>
                     @endif
                     @if (Auth::user()->isKonselor())
-                        <a href="{{ route('konselor.profil.edit') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Profil Saya</a>
+                        <a href="{{ route('konselor.profil.edit') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Profil Saya</a>
                     @endif
                 @endauth
 
                 @can('admin-kasus')
-                    <div class="border-t border-neutral-100 pt-2 mt-2">
-                        <div class="px-3 py-1 text-xs font-semibold text-neutral-400 uppercase tracking-wider">Admin Kasus</div>
-                        <a href="{{ route('admin.status-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Status Kasus</a>
-                        <a href="{{ route('admin.penanganan-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Penugasan Kasus</a>
-                        <a href="{{ route('admin.kegiatan-edukasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Kegiatan Edukasi</a>
-                        <a href="{{ route('admin.artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Artikel Edukasi</a>
-                        <a href="{{ route('admin.konselor.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Data Konselor</a>
-                        <a href="{{ route('instansi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Instansi Bantuan</a>
+                    <div class="mt-2 border-t border-slate-100 pt-2">
+                        <div class="px-3 py-1 text-xs font-semibold uppercase tracking-wider text-slate-400">Admin Kasus</div>
+                        <a href="{{ route('admin.status-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Status Kasus</a>
+                        <a href="{{ route('admin.penanganan-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Penugasan Kasus</a>
+                        <a href="{{ route('admin.kegiatan-edukasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Kegiatan Edukasi</a>
+                        <a href="{{ route('admin.artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Artikel Edukasi</a>
+                        <a href="{{ route('admin.konselor.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Data Konselor</a>
+                        <a href="{{ route('instansi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50">Instansi Bantuan</a>
                     </div>
                 @endcan
 
                 @auth
-                    <form method="POST" action="{{ route('logout') }}" class="border-t border-neutral-100 pt-2">
+                    <form method="POST" action="{{ route('logout') }}" class="border-t border-slate-100 pt-2">
                         @csrf
-                        <button type="submit" class="w-full text-left rounded-lg px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50">Keluar</button>
+                        <button type="submit" class="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-safety-rose hover:bg-red-50">Keluar</button>
                     </form>
                 @else
-                    <div class="flex flex-col gap-2 border-t border-neutral-100 pt-3">
-                        <a href="{{ route('login') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Masuk</a>
-                        <a href="{{ route('register') }}" class="block rounded-lg px-3 py-2 text-sm font-medium bg-neutral-900 text-white hover:bg-neutral-800 text-center">Daftar</a>
+                    <div class="flex flex-col gap-2 border-t border-slate-100 pt-3">
+                        <x-button href="{{ route('login') }}" variant="ghost" size="sm">Masuk</x-button>
+                        <x-button href="{{ route('register') }}" variant="primary" size="sm">Daftar</x-button>
                     </div>
                 @endauth
             </div>
@@ -192,42 +201,34 @@
     </header>
 
     {{-- Main Content Slot --}}
-    <main id="main-content" class="w-full">
+    <main id="main-content" class="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         @if (session('success'))
-            <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-4">
-                <div class="rounded-lg bg-green-50 border border-green-200 text-green-800 text-sm p-4">
-                    {{ session('success') }}
-                </div>
-            </div>
+            <x-alert variant="success" class="mb-4">
+                {{ session('success') }}
+            </x-alert>
         @endif
         @if (session('error'))
-            <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-4">
-                <div class="rounded-lg bg-red-50 border border-red-200 text-red-800 text-sm p-4">
-                    {{ session('error') }}
-                </div>
-            </div>
+            <x-alert variant="danger" class="mb-4">
+                {{ session('error') }}
+            </x-alert>
+        @endif
+        @if (session('status'))
+            <x-alert variant="info" class="mb-4">
+                {{ session('status') }}
+            </x-alert>
         @endif
 
         @yield('content')
         {{ $slot ?? '' }}
     </main>
 
-    {{-- Footer (Figma Exact) --}}
-    <footer class="w-full border-t border-neutral-200 bg-white py-12">
-        <div class="mx-auto max-w-6xl px-4 sm:px-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-            <div>
-                <p class="text-base font-bold text-neutral-900">RuangAman</p>
-                <p class="text-xs text-neutral-500 mt-1">Pelaporan dan pendampingan kekerasan berbasis gender.</p>
-            </div>
-            <div class="text-left sm:text-right text-xs text-neutral-500 space-y-1">
-                <p>Pratinjau layanan · Data contoh</p>
-                <p class="text-neutral-400">
-                    <a href="#" class="hover:underline">Kebijakan privasi</a> / 
-                    <a href="#" class="hover:underline">Ketentuan layanan</a>
-                </p>
-            </div>
+    {{-- Footer --}}
+    <footer class="mt-auto border-t border-slate-200 bg-white py-8">
+        <div class="mx-auto max-w-7xl px-4 text-center text-sm text-slate-500 sm:px-6 lg:px-8">
+            <p class="font-medium text-slate-700">RuangAman</p>
+            <p class="mt-1">Pelaporan aman kekerasan berbasis gender sesuai UU TPKS & UU PDP.</p>
+            <p class="mt-3 text-xs">&copy; {{ date('Y') }} RuangAman. Dibangun oleh PPL-SI4807-KELB-C.</p>
         </div>
     </footer>
-
 </body>
 </html>
