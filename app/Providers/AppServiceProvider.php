@@ -7,6 +7,7 @@ use App\Models\GlosariumKbg;
 use App\Models\HalamanInformasi;
 use App\Models\KegiatanEdukasi;
 use App\Models\Konselor;
+use App\Models\LaporanKasus;
 use App\Models\PenangananKasus;
 use App\Models\PendaftaranKegiatan;
 use App\Models\Pengumuman;
@@ -17,6 +18,7 @@ use App\Policies\GlosariumKbgPolicy;
 use App\Policies\HalamanInformasiPolicy;
 use App\Policies\KegiatanEdukasiPolicy;
 use App\Policies\KonselorPolicy;
+use App\Policies\LaporanKasusPolicy;
 use App\Policies\PenangananKasusPolicy;
 use App\Policies\PendaftaranKegiatanPolicy;
 use App\Policies\PengumumanPolicy;
@@ -66,6 +68,14 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('production')) {
             URL::forceScheme('https');
         }
+
+        Gate::policy(LaporanKasus::class, LaporanKasusPolicy::class);
+        Gate::policy(Artikel::class, ArtikelPolicy::class);
+        Gate::policy(StatusKasus::class, StatusKasusPolicy::class);
+        Gate::policy(PenangananKasus::class, PenangananKasusPolicy::class);
+        Gate::policy(KegiatanEdukasi::class, KegiatanEdukasiPolicy::class);
+        Gate::policy(PendaftaranKegiatan::class, PendaftaranKegiatanPolicy::class);
+        Gate::policy(Konselor::class, KonselorPolicy::class);
 
         Gate::define('admin-kasus', fn (User $user) => $user->isAdminKasus());
         Gate::define('konselor', fn (User $user) => $user->isKonselor());

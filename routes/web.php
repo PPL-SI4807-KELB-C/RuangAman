@@ -18,6 +18,7 @@ use App\Http\Controllers\LaporanKasusController;
 use App\Http\Controllers\PenangananKasusController;
 use App\Http\Controllers\PengumumanPublikController;
 use App\Http\Controllers\PendaftaranKegiatanController;
+use App\Http\Controllers\ProfilPelaporController;
 use App\Http\Controllers\StatusKasusController;
 use App\Models\Pengumuman;
 use Illuminate\Support\Facades\Route;
@@ -73,6 +74,34 @@ Route::controller(LaporanKasusController::class)->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+/*
+|--------------------------------------------------------------------------
+| PBI-16 & PBI-17: Manajemen Laporan Kasus, Lampiran, dan Profil Pelapor
+|--------------------------------------------------------------------------
+| Didaftarkan sesudah /laporan/create dan /laporan/sukses agar rute statis
+| itu tidak tertangkap oleh /laporan/{laporan}.
+*/
+Route::middleware(['auth', 'pelapor'])->group(function () {
+    // PBI-17: Manajemen Mode Anonim & Profil Pelapor
+    Route::controller(ProfilPelaporController::class)->prefix('profil-pelapor')->name('profil-pelapor.')->group(function () {
+        Route::get('/', 'edit')->name('edit');
+        Route::put('/', 'update')->name('update');
+    });
+
+    // PBI-16: Manajemen Laporan Kasus (Detail, Edit, Batalkan, & Lampiran Privat)
+    Route::controller(LaporanKasusController::class)->prefix('laporan')->name('laporan.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{laporan}', 'show')->name('show');
+        Route::get('/{laporan}/edit', 'edit')->name('edit');
+        Route::put('/{laporan}', 'update')->name('update');
+        Route::delete('/{laporan}', 'destroy')->name('destroy');
+
+        // Lampiran Bukti Privat
+        Route::get('/lampiran/{lampiran}/download', 'downloadLampiran')->name('lampiran.download');
+        Route::delete('/lampiran/{lampiran}', 'destroyLampiran')->name('lampiran.destroy');
+    });
+});
 
 /*
 |--------------------------------------------------------------------------

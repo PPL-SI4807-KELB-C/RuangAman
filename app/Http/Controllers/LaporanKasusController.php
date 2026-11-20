@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLaporanKasusRequest;
+use App\Http\Requests\UpdateLaporanKasusRequest;
+use App\Models\LampiranLaporan;
 use App\Models\LaporanKasus;
 use App\Services\LaporanSubmissionService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\Response;
 
 class LaporanKasusController extends Controller
 {
@@ -32,6 +36,20 @@ class LaporanKasusController extends Controller
         //
     }
 
+    /**
+     * PBI-16: Daftar laporan milik pelapor yang sedang login.
+     */
+    public function index(): View
+    {
+        $laporans = Auth::user()
+            ->laporanKasus()
+            ->with('status')
+            ->latest()
+            ->paginate(10);
+
+        return view('pelapor.profil.laporan.index', compact('laporans'));
+    }
+
     public function create(): View
     {
         $user = Auth::user();
@@ -41,6 +59,8 @@ class LaporanKasusController extends Controller
             'title' => 'Buat Laporan — RuangAman',
             'alias' => $alias,
             'draf' => session(self::SESSION_DRAF, []),
+            // Nilai awal checkbox mode anonim mengikuti preferensi pada profil (PBI-17).
+            'defaultAnonim' => $user->profilPelapor?->preferensi_anonim ?? true,
             'kategoriOptions' => self::KATEGORI,
             'urgensiOptions' => [
                 'rendah' => 'Rendah',
@@ -73,8 +93,9 @@ class LaporanKasusController extends Controller
     {
         $kode = session('kode_laporan');
 
+        // Session kosong (mis. halaman di-refresh): kembali ke daftar laporan milik pelapor.
         if ($kode === null) {
-            return redirect()->route('lacak.form');
+            return redirect()->route('laporan.index');
         }
 
         return view('laporan.success', [
@@ -103,6 +124,79 @@ class LaporanKasusController extends Controller
         }
 
         return $user ? redirect()->route('dashboard') : redirect()->route('register');
+    }
+
+    public function show(LaporanKasus $laporan): View
+    {
+        $this->authorize('view', $laporan);
+
+        $laporan->load(['status', 'lampirans']);
+
+        return view('pelapor.profil.laporan.show', compact('laporan'));
+    }
+
+    public function edit(LaporanKasus $laporan): View
+    {
+        $this->authorize('update', $laporan);
+
+        $laporan->load(['status', 'lampirans']);
+
+        return view('pelapor.profil.laporan.edit', [
+            'laporan' => $laporan,
+            'kategoriList' => LaporanKasus::KATEGORI,
+        ]);
+    }
+
+    public function update(UpdateLaporanKasusRequest $request, LaporanKasus $laporan): RedirectResponse
+    {
+        // Otorisasi (pemilik + status Pending) sudah dilakukan oleh UpdateLaporanKasusRequest.
+        $this->submissionService->update(
+            $laporan,
+            $request->validated(),
+            $request->file('lampiran', [])
+        );
+
+        return redirect()
+            ->route('laporan.show', $laporan)
+            ->with('success', 'Laporan berhasil diperbarui.');
+    }
+
+    public function destroy(LaporanKasus $laporan): RedirectResponse
+    {
+        $this->authorize('delete', $laporan);
+
+        $this->submissionService->cancel($laporan);
+
+        return redirect()
+            ->route('laporan.index')
+            ->with('success', 'Laporan berhasil dibatalkan dan dihapus.');
+    }
+
+    /**
+     * Unduh lampiran dari storage privat; hanya pemilik laporan.
+     */
+    public function downloadLampiran(LampiranLaporan $lampiran): Response
+    {
+        $this->authorize('view', $lampiran->laporanKasus);
+
+        $disk = Storage::disk('local');
+
+        abort_unless($disk->exists($lampiran->path_privat), 404, 'Berkas lampiran tidak ditemukan.');
+
+        return $disk->download($lampiran->path_privat, $lampiran->nama_file);
+    }
+
+    public function destroyLampiran(LampiranLaporan $lampiran): RedirectResponse
+    {
+        $laporan = $lampiran->laporanKasus;
+
+        $this->authorize('update', $laporan);
+
+        $this->submissionService->deleteLampiran($lampiran);
+
+        return redirect()
+            ->route('laporan.edit', $laporan)
+            ->with('success', 'Lampiran berhasil dihapus.');
     }
 
     public function trackForm(): View
