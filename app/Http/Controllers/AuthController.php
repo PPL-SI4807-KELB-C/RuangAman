@@ -28,7 +28,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/')->with('success', 'Selamat datang kembali.');
+            return redirect()->intended(route('dashboard'))->with('success', 'Selamat datang kembali.');
         }
 
         return back()->withErrors([
@@ -69,7 +69,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect('/')->with('success', 'Akun berhasil dibuat. Selamat datang di RuangAman.');
+        return redirect()->route('dashboard')->with('success', 'Akun berhasil dibuat. Selamat datang di RuangAman.');
     }
 
     public function logout(Request $request): RedirectResponse

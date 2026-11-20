@@ -58,8 +58,8 @@
             <a href="{{ route('register') }}" class="font-semibold text-neutral-900 hover:underline">Daftar dengan alias</a>
         </p>
         <p class="text-[11px] text-neutral-400">
-            Atau ingin melapor tanpa akun?
-            <a href="{{ route('laporan.create') }}" class="text-neutral-700 hover:underline">Buat laporan anonim langsung</a>
+            Sudah punya kode lacak?
+            <a href="{{ route('lacak.form') }}" class="text-neutral-700 hover:underline">Lacak status laporan tanpa login</a>
         </p>
     </div>
 
