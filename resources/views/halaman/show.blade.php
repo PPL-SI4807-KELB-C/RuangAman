@@ -15,7 +15,7 @@
                 <h1 class="mt-3 text-3xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight leading-[1.15]">
                     {{ $halaman->judul }}
                 </h1>
-                <p class="mt-3 text-[11px] text-neutral-400">
+                <p class="mt-3 text-[11px] text-neutral-500">
                     Terakhir diperbarui {{ $halaman->updated_at->translatedFormat('d F Y') }}
                 </p>
 

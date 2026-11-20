@@ -43,6 +43,11 @@ class AuthController extends Controller
 
     public function register(Request $request): RedirectResponse
     {
+        // Formulir hanya meminta alias; nama tampilan disamakan bila tidak dikirim (mis. JavaScript nonaktif).
+        if (blank($request->input('nama_tampilan'))) {
+            $request->merge(['nama_tampilan' => $request->input('alias')]);
+        }
+
         $data = $request->validate([
             'nama_tampilan' => ['required', 'string', 'max:100'],
             'email' => ['required', 'email', 'max:150', 'unique:users,email'],

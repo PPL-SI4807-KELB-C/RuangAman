@@ -23,7 +23,7 @@
             @if ($jumlahJadwal > 0)
                 <span
                     title="Tidak dapat dihapus karena sudah memiliki slot jadwal konseling. Ubah status menjadi Nonaktif."
-                    class="cursor-not-allowed text-xs text-neutral-400 py-1.5 px-2"
+                    class="cursor-not-allowed text-xs text-neutral-500 py-1.5 px-2"
                 >
                     Hapus Data
                 </span>
@@ -32,7 +32,7 @@
                     type="button"
                     @click="$dispatch('open-confirm-modal', {{ Js::from([
                         'title' => 'Hapus Data Konselor',
-                        'message' => 'Apakah Anda yakin ingin menghapus permanen profil konselor \"' . $konselor->nama . '\"? Profil akun penggunanya tetap ada.',
+                        'message' => 'Apakah Anda yakin ingin menghapus permanen profil konselor “' . $konselor->nama . '”? Profil akun penggunanya tetap ada.',
                         'action' => route('admin.konselor.destroy', $konselor),
                         'method' => 'DELETE',
                         'confirmText' => 'Ya, Hapus Permanen',
@@ -55,21 +55,21 @@
             <h2 class="text-sm font-semibold text-neutral-900 mb-4">Profil Profesional</h2>
             <dl class="space-y-4 text-xs">
                 <div>
-                    <dt class="font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Nama Lengkap &amp; Gelar</dt>
+                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Nama Lengkap &amp; Gelar</dt>
                     <dd class="mt-1 font-medium text-neutral-900">{{ $konselor->nama }}</dd>
                 </div>
                 <div>
-                    <dt class="font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Spesialisasi / Kualifikasi</dt>
+                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Spesialisasi / Kualifikasi</dt>
                     <dd class="mt-1 text-neutral-800">{{ $konselor->spesialisasi }}</dd>
                 </div>
                 <div>
-                    <dt class="font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Bio Profesional</dt>
+                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Bio Profesional</dt>
                     <dd class="mt-1 whitespace-pre-line text-neutral-700 leading-relaxed">
                         {{ $konselor->bio ?: 'Bio profesional belum diisi.' }}
                     </dd>
                 </div>
                 <div>
-                    <dt class="font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Status Ketersediaan</dt>
+                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Status Ketersediaan</dt>
                     <dd class="mt-1">
                         <x-badge :variant="$konselor->statusBadgeVariant()">{{ $konselor->statusLabel() }}</x-badge>
                     </dd>
@@ -83,17 +83,17 @@
                 <h2 class="text-sm font-semibold text-neutral-900 mb-4">Informasi Akun</h2>
                 <dl class="space-y-4 text-xs">
                     <div>
-                        <dt class="font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Nama Tampilan</dt>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Nama Tampilan</dt>
                         <dd class="mt-1 font-medium text-neutral-900">
                             {{ $konselor->user?->nama_tampilan ?? 'Akun tidak ditemukan' }}
                         </dd>
                     </div>
                     <div>
-                        <dt class="font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">ID Akun</dt>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">ID Akun</dt>
                         <dd class="mt-1 text-neutral-800">#{{ $konselor->user_id }}</dd>
                     </div>
                     <div>
-                        <dt class="font-semibold uppercase tracking-wider text-neutral-400 text-[10px]">Status Akun</dt>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Status Akun</dt>
                         <dd class="mt-1">
                             @if ($konselor->user?->status === 'aktif')
                                 <x-badge variant="success">Aktif</x-badge>

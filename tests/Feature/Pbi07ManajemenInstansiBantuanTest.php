@@ -35,7 +35,7 @@ class Pbi07ManajemenInstansiBantuanTest extends TestCase
         $response = $this->actingAs($this->adminUser)->get(route('instansi.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Manajemen instansi bantuan');
+        $response->assertSee('Manajemen Instansi Bantuan');
         $response->assertSee('Daftar instansi');
     }
 
@@ -83,8 +83,8 @@ class Pbi07ManajemenInstansiBantuanTest extends TestCase
         $response = $this->actingAs($this->adminUser)->get(route('instansi.create'));
 
         $response->assertStatus(200);
-        $response->assertSee('Tambah instansi bantuan');
-        $response->assertSee('Simpan instansi');
+        $response->assertSee('Tambah Instansi Bantuan');
+        $response->assertSee('Simpan Instansi');
     }
 
     #[Test]
@@ -158,7 +158,7 @@ class Pbi07ManajemenInstansiBantuanTest extends TestCase
         $response = $this->actingAs($this->adminUser)->get(route('instansi.edit', $instansi));
 
         $response->assertStatus(200);
-        $response->assertSee('Ubah instansi bantuan');
+        $response->assertSee('Ubah Instansi Bantuan');
         $response->assertSee($instansi->nama_instansi);
     }
 

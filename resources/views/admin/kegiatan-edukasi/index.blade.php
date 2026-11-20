@@ -26,7 +26,7 @@
                 <label for="search" class="sr-only">Cari kegiatan</label>
                 <div class="relative">
                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                        <svg class="h-4 w-4 text-neutral-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <svg class="h-4 w-4 text-neutral-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                         </svg>
                     </div>
@@ -118,8 +118,8 @@
                             </td>
                             <td class="whitespace-nowrap px-6 py-4 text-center">
                                 <span class="font-semibold text-neutral-900">{{ $item->terisiKuotaCount() }}</span>
-                                <span class="text-neutral-400">/ {{ $item->kuota }}</span>
-                                <div class="text-[10px] text-neutral-500">
+                                <span class="text-neutral-500">/ {{ $item->kuota }}</span>
+                                <div class="text-[11px] text-neutral-500">
                                     ({{ $item->pendaftaran_kegiatan_count }} total record)
                                 </div>
                             </td>
@@ -149,7 +149,7 @@
                                                 type="button"
                                                 @click="$dispatch('open-confirm-modal', {{ Js::from([
                                                     'title' => 'Nonaktifkan Kegiatan Edukasi',
-                                                    'message' => 'Kegiatan \"' . $item->judul . '\" sudah memiliki pendaftar sehingga tidak dapat dihapus permanen. Ubah status kegiatan menjadi Dibatalkan?',
+                                                    'message' => 'Kegiatan “' . $item->judul . '” sudah memiliki pendaftar sehingga tidak dapat dihapus permanen. Ubah status kegiatan menjadi Dibatalkan?',
                                                     'action' => route('admin.kegiatan-edukasi.nonaktifkan', $item),
                                                     'method' => 'PATCH',
                                                     'payload' => ['target_status' => \App\Models\KegiatanEdukasi::STATUS_DIBATALKAN],
@@ -163,7 +163,7 @@
                                         @endif
                                         <span
                                             title="Tidak dapat dihapus permanen karena sudah memiliki pendaftar"
-                                            class="cursor-not-allowed text-neutral-400"
+                                            class="cursor-not-allowed text-neutral-500"
                                         >
                                             Hapus
                                         </span>
@@ -172,7 +172,7 @@
                                             type="button"
                                             @click="$dispatch('open-confirm-modal', {{ Js::from([
                                                 'title' => 'Hapus Kegiatan Edukasi',
-                                                'message' => 'Apakah Anda yakin ingin menghapus permanen kegiatan \"' . $item->judul . '\"? Tindakan ini tidak dapat dibatalkan.',
+                                                'message' => 'Apakah Anda yakin ingin menghapus permanen kegiatan “' . $item->judul . '”? Tindakan ini tidak dapat dibatalkan.',
                                                 'action' => route('admin.kegiatan-edukasi.destroy', $item),
                                                 'method' => 'DELETE',
                                                 'confirmText' => 'Ya, Hapus Permanen',

@@ -19,7 +19,7 @@
             <x-button href="{{ route('admin.artikel.edit', $artikel) }}" variant="secondary" size="sm">Ubah Artikel</x-button>
             <button type="button" @click="$dispatch('open-confirm-modal', {{ Js::from([
                 'title' => 'Hapus Artikel Edukasi',
-                'message' => 'Hapus artikel \"' . $artikel->judul . '\"? Feedback yang terkait juga akan terhapus. Tindakan ini tidak dapat dibatalkan.',
+                'message' => 'Hapus artikel “' . $artikel->judul . '”? Feedback yang terkait juga akan terhapus. Tindakan ini tidak dapat dibatalkan.',
                 'action' => route('admin.artikel.destroy', $artikel),
                 'method' => 'DELETE',
                 'confirmText' => 'Ya, Hapus Artikel',

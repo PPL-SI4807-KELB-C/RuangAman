@@ -3,196 +3,141 @@
 @section('title', 'Buat Laporan — RuangAman')
 
 @section('content')
-<div class="mx-auto max-w-6xl px-4 sm:px-6 py-8">
+<div class="mx-auto max-w-6xl px-4 sm:px-6 py-10 space-y-8">
 
-    {{-- Back Link --}}
-    <div class="mb-6">
-        <a href="{{ url('/') }}" class="inline-flex items-center gap-1.5 text-xs text-neutral-600 hover:text-neutral-900 transition-colors">
-            <span>&larr;</span>
-            <span>Kembali ke beranda</span>
-        </a>
-    </div>
+    <x-page-header
+        title="Buat laporan"
+        description="Ceritakan sebatas yang Anda siap bagikan. Kolom bertanda * wajib diisi."
+        :back="url('/')"
+        back-label="Kembali ke beranda"
+    />
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-        
-        {{-- Left Column: Form (Figma Exact) --}}
-        <div class="lg:col-span-8 space-y-8">
-            <div>
-                <h1 class="text-3xl font-extrabold text-neutral-900 tracking-tight">Buat laporan</h1>
-                <p class="text-xs text-neutral-500 mt-2">
-                    Ceritakan sebatas yang Anda siap bagikan. Kolom wajib ditandai dengan *.
-                </p>
-            </div>
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start">
 
-            <form method="POST" action="{{ route('laporan.store') }}" enctype="multipart/form-data" class="space-y-6">
-                @csrf
+        <div class="lg:col-span-8 space-y-6">
+            @if ($errors->any())
+                <x-alert variant="danger" title="Laporan belum terkirim">
+                    Periksa kembali kolom yang ditandai di bawah ini.
+                </x-alert>
+            @endif
 
-                {{-- Hidden defaults to satisfy backend requirements --}}
-                <input type="hidden" name="judul" value="Laporan Kasus">
-                <input type="hidden" name="tingkat_urgensi" value="sedang">
-                <input type="hidden" name="lokasi_kejadian" value="Tidak disebutkan / Dilaporkan via web">
-                <input type="hidden" name="waktu_kejadian" value="{{ now()->format('Y-m-d H:i:s') }}">
-                <input type="hidden" name="mode_anonim" value="1">
+            <x-card>
+                <form method="POST" action="{{ route('laporan.store') }}" enctype="multipart/form-data" class="space-y-6">
+                    @csrf
 
-                {{-- Field 1: Alias (dibawa dari profil Pelapor, FR-17) --}}
-                <div class="space-y-1.5">
-                    <label class="block text-xs font-semibold text-neutral-800">
-                        Alias Anda
-                    </label>
-                    <p class="rounded bg-[#f2f2f2] px-3.5 py-2.5 text-xs text-neutral-800">{{ $alias }}</p>
-                    <p class="text-[11px] text-neutral-400">Konselor hanya melihat alias ini, bukan nama asli atau email Anda.</p>
-                </div>
+                    {{-- Nilai bawaan yang masih diwajibkan backend (lihat PKBC-24: akan dibuat nullable). --}}
+                    <input type="hidden" name="judul" value="Laporan Kasus">
+                    <input type="hidden" name="tingkat_urgensi" value="sedang">
+                    <input type="hidden" name="lokasi_kejadian" value="Tidak disebutkan / Dilaporkan via web">
+                    <input type="hidden" name="waktu_kejadian" value="{{ now()->format('Y-m-d H:i:s') }}">
+                    <input type="hidden" name="mode_anonim" value="1">
 
-                {{-- Field 2: Kategori Kejadian (Radio Pill Grid - Figma Exact) --}}
-                <div class="space-y-2">
-                    <div>
-                        <label class="block text-xs font-semibold text-neutral-800">
-                            Kategori kejadian *
-                        </label>
-                        <p class="text-[11px] text-neutral-400">Pilih kategori yang paling mendekati. Tidak apa-apa jika belum yakin.</p>
-                    </div>
-
-                    @php
-                        $selectedKat = old('kategori_kekerasan', $draf['kategori'] ?? null);
-                    @endphp
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                        {{-- Siber / Digital --}}
-                        <label class="flex items-center gap-2.5 rounded bg-[#f2f2f2] hover:bg-neutral-200/70 p-3 text-xs text-neutral-800 cursor-pointer border border-transparent has-[:checked]:border-neutral-400 transition-colors">
-                            <input type="radio" name="kategori_kekerasan" value="Siber" required class="text-neutral-900 focus:ring-0" {{ $selectedKat === 'Siber' ? 'checked' : '' }}>
-                            <span>Kekerasan digital</span>
-                        </label>
-
-                        {{-- Seksual --}}
-                        <label class="flex items-center gap-2.5 rounded bg-[#f2f2f2] hover:bg-neutral-200/70 p-3 text-xs text-neutral-800 cursor-pointer border border-transparent has-[:checked]:border-neutral-400 transition-colors">
-                            <input type="radio" name="kategori_kekerasan" value="Seksual" class="text-neutral-900 focus:ring-0" {{ $selectedKat === 'Seksual' ? 'checked' : '' }}>
-                            <span>Kekerasan seksual</span>
-                        </label>
-
-                        {{-- Psikis --}}
-                        <label class="flex items-center gap-2.5 rounded bg-[#f2f2f2] hover:bg-neutral-200/70 p-3 text-xs text-neutral-800 cursor-pointer border border-transparent has-[:checked]:border-neutral-400 transition-colors">
-                            <input type="radio" name="kategori_kekerasan" value="Psikis" class="text-neutral-900 focus:ring-0" {{ $selectedKat === 'Psikis' ? 'checked' : '' }}>
-                            <span>Kekerasan psikis</span>
-                        </label>
-
-                        {{-- Fisik --}}
-                        <label class="flex items-center gap-2.5 rounded bg-[#f2f2f2] hover:bg-neutral-200/70 p-3 text-xs text-neutral-800 cursor-pointer border border-transparent has-[:checked]:border-neutral-400 transition-colors">
-                            <input type="radio" name="kategori_kekerasan" value="Fisik" class="text-neutral-900 focus:ring-0" {{ $selectedKat === 'Fisik' ? 'checked' : '' }}>
-                            <span>Kekerasan fisik</span>
-                        </label>
-
-                        {{-- Ekonomi --}}
-                        <label class="flex items-center gap-2.5 rounded bg-[#f2f2f2] hover:bg-neutral-200/70 p-3 text-xs text-neutral-800 cursor-pointer border border-transparent has-[:checked]:border-neutral-400 transition-colors">
-                            <input type="radio" name="kategori_kekerasan" value="Ekonomi" class="text-neutral-900 focus:ring-0" {{ $selectedKat === 'Ekonomi' ? 'checked' : '' }}>
-                            <span>Kekerasan ekonomi</span>
-                        </label>
-
-                        {{-- Belum Yakin / Lainnya --}}
-                        <label class="flex items-center gap-2.5 rounded bg-[#f2f2f2] hover:bg-neutral-200/70 p-3 text-xs text-neutral-800 cursor-pointer border border-transparent has-[:checked]:border-neutral-400 transition-colors">
-                            <input type="radio" name="kategori_kekerasan" value="Lainnya" class="text-neutral-900 focus:ring-0" {{ $selectedKat === 'Lainnya' ? 'checked' : '' }}>
-                            <span>Belum yakin / lainnya</span>
-                        </label>
-                    </div>
-                </div>
-
-                {{-- Field 3: Kronologi Kejadian --}}
-                <div class="space-y-1.5">
-                    <div>
-                        <label class="block text-xs font-semibold text-neutral-800">
-                            Kronologi kejadian *
-                        </label>
-                        <p class="text-[11px] text-neutral-400">Anda dapat menyertakan waktu, konteks, dan bantuan yang dibutuhkan.</p>
-                    </div>
-                    <textarea name="kronologi" rows="6" required placeholder="Contoh: Saya menerima pesan yang mengancam akan menyebarkan informasi pribadi saya. Saya ingin tahu pilihan bantuan dan cara menyimpan bukti dengan aman." class="w-full rounded bg-[#f2f2f2] border-0 text-xs p-3.5 text-neutral-800 placeholder:text-neutral-400 focus:ring-1 focus:ring-neutral-400 leading-relaxed">{{ old('kronologi', $draf['kronologi'] ?? '') }}</textarea>
-                    <p class="text-[11px] text-neutral-400">Hindari nama asli, alamat lengkap, atau nomor identitas.</p>
-                </div>
-
-                {{-- Field 4: Lampiran Pendukung (Opsional) --}}
-                <div class="space-y-2">
-                    <label class="block text-xs font-semibold text-neutral-800">
-                        Lampiran pendukung (opsional)
-                    </label>
-
-                    <div class="relative rounded border border-dashed border-neutral-300 bg-white p-6 text-center hover:bg-neutral-50 transition-colors">
-                        <input type="file" name="lampiran[]" multiple class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                        <div class="space-y-1">
-                            <div class="flex justify-center text-neutral-500">
-                                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                    <polyline points="17 8 12 3 7 8" />
-                                    <line x1="12" y1="3" x2="12" y2="15" />
-                                </svg>
-                            </div>
-                            <p class="text-xs font-medium text-neutral-800">Pilih berkas</p>
-                            <p class="text-[10px] text-neutral-400">JPG, PNG, atau PDF · Maksimal 10 MB per berkas</p>
-                            <p class="text-[10px] text-neutral-400">Hanya unggah jika aman. Lampiran tidak wajib untuk melapor.</p>
-                        </div>
-                    </div>
-                    <p class="text-[11px] text-neutral-400 leading-relaxed">
-                        Periksa nama berkas dan informasi pribadi sebelum mengunggah. Jangan mengambil bukti baru jika hal itu membahayakan Anda.
-                    </p>
-                </div>
-
-                {{-- Agreement Checkbox --}}
-                <div class="pt-2">
-                    <label class="flex items-start gap-2.5 cursor-pointer">
-                        <input type="checkbox" name="persetujuan" value="1" required checked class="mt-0.5 rounded border-neutral-300 text-neutral-900 focus:ring-0">
-                        <span class="text-xs text-neutral-700 leading-relaxed">
-                            Saya memahami bahwa informasi ini akan ditinjau oleh tim RuangAman untuk penanganan laporan sesuai kebijakan privasi.
-                        </span>
-                    </label>
-                </div>
-
-                {{-- Actions --}}
-                <div class="pt-4 flex items-center gap-4">
-                    <button type="submit" class="inline-flex items-center justify-center rounded bg-[#10a349] hover:bg-[#0e8e40] text-white font-medium text-xs px-6 py-2.5 transition-colors">
-                        Kirim laporan
-                    </button>
-                    <a href="{{ url('/') }}" class="text-xs text-neutral-600 hover:text-neutral-900">
-                        Batalkan
-                    </a>
-                </div>
-                <p class="text-[11px] text-neutral-400">Setelah dikirim, Anda akan menerima kode laporan enam karakter.</p>
-            </form>
-        </div>
-
-        {{-- Right Column: Information Sidebar (Figma Exact) --}}
-        <div class="lg:col-span-4 space-y-6 lg:pl-6 lg:border-l lg:border-neutral-100">
-            <div class="space-y-6 text-xs text-neutral-600">
-                <div class="space-y-2">
-                    <div class="text-neutral-700">
-                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    {{-- Alias dari profil Pelapor (FR-17) --}}
+                    <div class="flex items-start gap-3 border-b border-neutral-300/60 pb-5">
+                        <svg class="mt-0.5 h-4 w-4 shrink-0 text-neutral-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                         </svg>
+                        <div>
+                            <p class="text-xs text-neutral-600">Dilaporkan sebagai <span class="font-semibold text-neutral-900">{{ $alias }}</span></p>
+                            <p class="mt-0.5 text-[11px] leading-relaxed text-neutral-500">Konselor hanya melihat alias ini, bukan nama asli atau email Anda.</p>
+                        </div>
                     </div>
-                    <h3 class="text-sm font-semibold text-neutral-900">Sebelum mengirim</h3>
-                    <p class="leading-relaxed text-neutral-600">
-                        Anda tidak harus menceritakan semua detail untuk mulai mendapatkan arahan.
-                    </p>
-                </div>
 
-                <div class="space-y-1.5 pt-4 border-t border-neutral-100">
-                    <h4 class="font-semibold text-neutral-900">Identitas tetap berupa alias</h4>
-                    <p class="leading-relaxed text-neutral-600">
-                        Tidak ada permintaan KTP, nama lengkap, atau alamat rumah.
-                    </p>
-                </div>
+                    <x-radio-cards
+                        name="kategori_kekerasan"
+                        label="Kategori kejadian"
+                        helper="Pilih yang paling mendekati. Tidak apa-apa jika belum yakin."
+                        :options="$kategoriOptions"
+                        :value="$draf['kategori'] ?? null"
+                        :error="$errors->first('kategori_kekerasan')"
+                        required
+                    />
 
-                <div class="space-y-1.5 pt-4 border-t border-neutral-100">
-                    <h4 class="font-semibold text-neutral-900">Tidak diteruskan otomatis</h4>
-                    <p class="leading-relaxed text-neutral-600">
-                        Pilihan rujukan dan pendampingan dibahas dengan persetujuan Anda.
-                    </p>
-                </div>
+                    <x-textarea
+                        name="kronologi"
+                        label="Kronologi kejadian"
+                        rows="6"
+                        :value="$draf['kronologi'] ?? ''"
+                        placeholder="Contoh: Saya menerima pesan yang mengancam akan menyebarkan informasi pribadi saya. Saya ingin tahu pilihan bantuan dan cara menyimpan bukti dengan aman."
+                        helper="Anda dapat menyertakan waktu, konteks, dan bantuan yang dibutuhkan. Hindari nama asli, alamat lengkap, atau nomor identitas."
+                        :error="$errors->first('kronologi')"
+                        required
+                    />
 
-                <div class="pt-6 border-t border-neutral-100">
-                    <p class="text-[11px] text-neutral-400 leading-relaxed">
-                        Jika belum siap, Anda dapat berhenti. Pastikan perangkat tetap aman.
-                    </p>
-                </div>
-            </div>
+                    {{-- Lampiran (opsional) --}}
+                    <div x-data="{ files: [] }">
+                        <label for="lampiran" class="block text-xs font-semibold text-neutral-800">Lampiran pendukung <span class="font-normal text-neutral-500">(opsional)</span></label>
+
+                        <div class="relative mt-1.5 rounded-lg border border-dashed bg-white p-6 text-center transition-colors hover:bg-neutral-50 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-neutral-400 {{ $errors->has('lampiran') || $errors->has('lampiran.*') ? 'border-safety-rose' : 'border-neutral-300' }}">
+                            <input
+                                type="file"
+                                id="lampiran"
+                                name="lampiran[]"
+                                multiple
+                                accept=".jpg,.jpeg,.png,.webp,.pdf"
+                                aria-describedby="lampiran-help"
+                                @change="files = Array.from($event.target.files).map(f => f.name)"
+                                class="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                            >
+                            <svg class="mx-auto h-5 w-5 text-neutral-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="17 8 12 3 7 8" />
+                                <line x1="12" y1="3" x2="12" y2="15" />
+                            </svg>
+                            <p class="mt-2 text-sm font-medium text-neutral-800" x-text="files.length ? files.length + ' berkas dipilih' : 'Pilih berkas'">Pilih berkas</p>
+                            <p id="lampiran-help" class="mt-1 text-[11px] text-neutral-500">JPG, PNG, WEBP, atau PDF · maksimal 5 berkas, 10 MB per berkas</p>
+                        </div>
+
+                        <ul x-show="files.length" x-cloak class="mt-2 space-y-1 text-[11px] text-neutral-600">
+                            <template x-for="nama in files" :key="nama">
+                                <li class="truncate" x-text="nama"></li>
+                            </template>
+                        </ul>
+
+                        @if ($errors->has('lampiran') || $errors->has('lampiran.*'))
+                            <p class="mt-1.5 text-[11px] text-safety-rose">{{ $errors->first('lampiran') ?: $errors->first('lampiran.*') }}</p>
+                        @else
+                            <p class="mt-1.5 text-[11px] leading-relaxed text-neutral-500">Hanya unggah jika aman. Periksa nama berkas dan informasi pribadi sebelum mengunggah.</p>
+                        @endif
+                    </div>
+
+                    <x-checkbox name="persetujuan" :error="$errors->first('persetujuan')" required>
+                        Saya memahami bahwa informasi ini akan ditinjau oleh tim RuangAman untuk penanganan laporan sesuai
+                        <a href="{{ route('halaman.show', 'kebijakan-privasi') }}" target="_blank" class="font-medium text-neutral-900 underline">kebijakan privasi</a>.
+                    </x-checkbox>
+
+                    <div class="flex flex-wrap items-center gap-5 border-t border-neutral-300/60 pt-5">
+                        <x-button type="submit" variant="primary">Kirim laporan</x-button>
+                        <x-button :href="url('/')" variant="ghost">Batalkan</x-button>
+                    </div>
+                    <p class="text-[11px] text-neutral-500">Setelah dikirim, Anda akan menerima kode laporan enam karakter.</p>
+                </form>
+            </x-card>
         </div>
+
+        {{-- Panduan --}}
+        <aside class="lg:col-span-4">
+            <x-card header="Sebelum mengirim">
+                <dl class="space-y-4 text-xs leading-relaxed">
+                    <div>
+                        <dt class="font-semibold text-neutral-900">Tidak harus lengkap</dt>
+                        <dd class="mt-1 text-neutral-600">Anda tidak harus menceritakan semua detail untuk mulai mendapatkan arahan.</dd>
+                    </div>
+                    <div>
+                        <dt class="font-semibold text-neutral-900">Identitas tetap berupa alias</dt>
+                        <dd class="mt-1 text-neutral-600">Tidak ada permintaan KTP, nama lengkap, atau alamat rumah.</dd>
+                    </div>
+                    <div>
+                        <dt class="font-semibold text-neutral-900">Tidak diteruskan otomatis</dt>
+                        <dd class="mt-1 text-neutral-600">Pilihan rujukan dan pendampingan dibahas dengan persetujuan Anda.</dd>
+                    </div>
+                </dl>
+                <x-slot:footer>
+                    <p class="text-[11px] leading-relaxed text-neutral-600">Jika belum siap, Anda dapat berhenti kapan saja. Pastikan perangkat tetap aman.</p>
+                </x-slot:footer>
+            </x-card>
+        </aside>
 
     </div>
 </div>

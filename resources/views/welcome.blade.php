@@ -22,7 +22,7 @@
                     Sampaikan pengalaman sesuai kesiapan Anda. Gunakan alias, pilih informasi yang ingin dibagikan, dan lacak tindak lanjutnya.
                 </p>
                 <div class="pt-2 flex flex-wrap items-center gap-4">
-                    <a href="{{ auth()->user()?->isPelapor() ? route('laporan.create') : (auth()->check() ? route('dashboard') : route('register')) }}" class="inline-flex items-center justify-center rounded bg-[#10a349] hover:bg-[#0e8e40] text-white font-medium text-sm px-6 py-2.5 transition-colors shadow-xs">
+                    <a href="{{ auth()->user()?->isPelapor() ? route('laporan.create') : (auth()->check() ? route('dashboard') : route('register')) }}" class="inline-flex items-center justify-center rounded bg-brand-600 hover:bg-brand-700 text-white font-medium text-sm px-6 py-2.5 transition-colors shadow-xs">
                         Buat laporan
                     </a>
                     <a href="{{ route('lacak.form') }}" class="text-sm font-medium text-neutral-800 hover:text-neutral-900 hover:underline px-2 py-1">
@@ -162,7 +162,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                 <div class="space-y-2">
-                    <span class="text-xs text-neutral-400 font-mono">01</span>
+                    <span class="text-xs text-neutral-500 font-mono">01</span>
                     <h3 class="text-sm font-semibold text-neutral-900">Sampaikan laporan</h3>
                     <p class="text-xs text-neutral-600 leading-relaxed">
                         Pilih kategori dan tulis kronologi sebatas yang nyaman Anda bagikan.
@@ -170,7 +170,7 @@
                 </div>
 
                 <div class="space-y-2">
-                    <span class="text-xs text-neutral-400 font-mono">02</span>
+                    <span class="text-xs text-neutral-500 font-mono">02</span>
                     <h3 class="text-sm font-semibold text-neutral-900">Simpan kode Anda</h3>
                     <p class="text-xs text-neutral-600 leading-relaxed">
                         Kode enam karakter digunakan untuk membuka perkembangan laporan.
@@ -178,7 +178,7 @@
                 </div>
 
                 <div class="space-y-2">
-                    <span class="text-xs text-neutral-400 font-mono">03</span>
+                    <span class="text-xs text-neutral-500 font-mono">03</span>
                     <h3 class="text-sm font-semibold text-neutral-900">Tentukan tindak lanjut</h3>
                     <p class="text-xs text-neutral-600 leading-relaxed">
                         Tim meninjau laporan. Pendampingan dilakukan dengan persetujuan Anda.
@@ -269,40 +269,37 @@
 
             <div class="lg:col-span-7">
                 {{-- POST + session: kronologi tidak boleh masuk URL/riwayat peramban. --}}
-                <form action="{{ route('laporan.draf') }}" method="POST" class="rounded-xl border border-neutral-200/80 bg-white p-6 sm:p-7 space-y-4 shadow-xs">
+                <form action="{{ route('laporan.draf') }}" method="POST" class="rounded-xl border border-neutral-200/80 bg-white p-6 sm:p-7 space-y-5">
                     @csrf
-                    <p class="text-[11px] text-neutral-500">Isian awal · dilanjutkan di formulir laporan lengkap</p>
+                    <p class="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Isian awal</p>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-medium text-neutral-800 mb-1">Alias</label>
-                            <p class="rounded bg-[#f2f2f2] px-3.5 py-2.5 text-xs text-neutral-800">Dibawa dari profil Pelapor</p>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-neutral-800 mb-1">Kategori kejadian</label>
-                            <select name="kategori" class="w-full rounded bg-[#f2f2f2] border-0 text-xs px-3.5 py-2.5 text-neutral-800 focus:ring-1 focus:ring-neutral-400">
-                                <option value="Siber">Kekerasan digital</option>
-                                <option value="Seksual">Kekerasan seksual</option>
-                                <option value="Psikis">Kekerasan psikis</option>
-                                <option value="Fisik">Kekerasan fisik</option>
-                                <option value="Ekonomi">Kekerasan ekonomi</option>
-                                <option value="Lainnya">Belum yakin / lainnya</option>
-                            </select>
-                        </div>
-                    </div>
+                    <x-select
+                        id="draf_kategori"
+                        name="kategori"
+                        label="Kategori kejadian"
+                        placeholder="Pilih yang paling mendekati"
+                        :options="[
+                            'Siber' => 'Kekerasan digital',
+                            'Seksual' => 'Kekerasan seksual',
+                            'Psikis' => 'Kekerasan psikis',
+                            'Fisik' => 'Kekerasan fisik',
+                            'Ekonomi' => 'Kekerasan ekonomi',
+                            'Lainnya' => 'Belum yakin / lainnya',
+                        ]"
+                    />
 
-                    <div>
-                        <label class="block text-xs font-medium text-neutral-800 mb-1">Kronologi awal</label>
-                        <textarea name="kronologi" rows="3" placeholder="Tuliskan hal yang ingin Anda sampaikan..." class="w-full rounded bg-[#f2f2f2] border-0 text-xs p-3.5 text-neutral-800 focus:ring-1 focus:ring-neutral-400 leading-relaxed"></textarea>
-                        <p class="text-[10px] text-neutral-400 mt-1">Hindari nama asli dan alamat lengkap.</p>
-                    </div>
+                    <x-textarea
+                        id="draf_kronologi"
+                        name="kronologi"
+                        label="Kronologi awal"
+                        rows="3"
+                        placeholder="Tuliskan hal yang ingin Anda sampaikan…"
+                        helper="Hindari nama asli dan alamat lengkap. Lampiran dapat ditambahkan di langkah berikutnya."
+                    />
 
-                    <div class="pt-2">
-                        <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center rounded bg-[#10a349] hover:bg-[#0e8e40] text-white font-medium text-xs px-6 py-2.5 transition-colors">
-                            {{ auth()->check() && ! auth()->user()->isPelapor() ? 'Buka dashboard' : 'Lanjutkan laporan' }}
-                        </button>
-                        <p class="text-[10px] text-neutral-400 mt-1">Lampiran dapat ditambahkan nanti.</p>
-                    </div>
+                    <x-button type="submit" variant="primary" class="w-full sm:w-auto">
+                        {{ auth()->check() && ! auth()->user()->isPelapor() ? 'Buka dashboard' : 'Lanjutkan laporan' }}
+                    </x-button>
                 </form>
             </div>
         </div>
