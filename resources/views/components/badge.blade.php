@@ -1,6 +1,11 @@
-@props(['variant' => 'slate'])
+@props([
+    'variant' => 'slate',
+    'type' => null,
+    'label' => null,
+])
 
 @php
+$variant = $type ?? $variant;
 $variants = [
     'brand' => 'bg-brand-100 text-brand-800 ring-brand-500/20',
     'success' => 'bg-green-100 text-green-800 ring-green-500/20',
@@ -15,5 +20,5 @@ $classes = 'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-med
 @endphp
 
 <span {{ $attributes->merge(['class' => $classes]) }}>
-    {{ $slot }}
+    {{ $label ?? $slot }}
 </span>

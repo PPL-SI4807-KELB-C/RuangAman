@@ -1,8 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin\ArtikelController as AdminArtikelController;
 use App\Http\Controllers\Admin\KegiatanEdukasiController as AdminKegiatanEdukasiController;
+use App\Http\Controllers\Admin\KonselorController as AdminKonselorController;
+use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\InstansiBantuanController;
 use App\Http\Controllers\KegiatanEdukasiController;
+use App\Http\Controllers\KonselorProfilController;
 use App\Http\Controllers\LaporanKasusController;
 use App\Http\Controllers\PenangananKasusController;
 use App\Http\Controllers\PendaftaranKegiatanController;
@@ -20,14 +25,19 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('/register', 'showRegister')->name('register');
     Route::post('/register', 'register');
     Route::post('/logout', 'logout')->name('logout');
+    Route::post('/lacak/pesan', 'kirimPesan')->name('lacak.pesan');
+    Route::post('/lacak/tautkan', 'tautkanAkun')->name('lacak.tautkan');
 });
 
 /*
 |--------------------------------------------------------------------------
-| Pelacakan Publik Laporan Kasus (Tanpa Login - FR-14)
+| Pelaporan & Pelacakan Publik Laporan Kasus (Tanpa Login - FR-14)
 |--------------------------------------------------------------------------
 */
 Route::controller(LaporanKasusController::class)->group(function () {
+    Route::get('/laporan/create', 'create')->name('laporan.create');
+    Route::post('/laporan', 'store')->name('laporan.store');
+    Route::get('/laporan/sukses', 'success')->name('laporan.success');
     Route::get('/lacak', 'trackForm')->name('lacak.form');
     Route::get('/lacak/hasil', 'trackResult')->name('lacak.hasil');
 });
@@ -44,12 +54,9 @@ Route::middleware(['auth', 'pelapor'])->group(function () {
         Route::put('/', 'update')->name('update');
     });
 
-    // PBI-16: Manajemen Laporan Kasus (CRUD lengkap, mempertahankan nama rute eksisting)
+    // PBI-16: Manajemen Laporan Kasus (Detail, Edit, Batalkan, & Lampiran Privat)
     Route::controller(LaporanKasusController::class)->prefix('laporan')->name('laporan.')->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/create', 'create')->name('create');
-        Route::post('/', 'store')->name('store');
-        Route::get('/sukses', 'success')->name('success');
         Route::get('/{laporan}', 'show')->name('show');
         Route::get('/{laporan}/edit', 'edit')->name('edit');
         Route::put('/{laporan}', 'update')->name('update');
@@ -60,7 +67,7 @@ Route::middleware(['auth', 'pelapor'])->group(function () {
         Route::delete('/lampiran/{lampiran}', 'destroyLampiran')->name('lampiran.destroy');
     });
 
-    // PBI-05: Pendaftaran Kegiatan oleh Pelapor (Eksisting)
+    // PBI-05: Pendaftaran Kegiatan oleh Pelapor
     Route::post('/edukasi/kegiatan/{kegiatan}/daftar', [PendaftaranKegiatanController::class, 'store'])
         ->name('kegiatan.daftar');
 
@@ -73,7 +80,29 @@ Route::middleware(['auth', 'pelapor'])->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| PBI-04 & PBI-05: Modul Admin Kasus
+| PBI-07: Direktori Instansi Bantuan Publik (Dapat diakses tanpa login)
+|--------------------------------------------------------------------------
+*/
+Route::get('/instansi-bantuan', [InstansiBantuanController::class, 'publicDirectory'])->name('instansi.publik');
+
+/*
+|--------------------------------------------------------------------------
+| PBI-07: Manajemen Instansi Bantuan (CRUD Lengkap)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->controller(InstansiBantuanController::class)->group(function () {
+    Route::get('/instansi', 'index')->name('instansi.index');
+    Route::get('/instansi/create', 'create')->name('instansi.create');
+    Route::post('/instansi', 'store')->name('instansi.store');
+    Route::get('/instansi/{instansi}', 'show')->name('instansi.show');
+    Route::get('/instansi/{instansi}/edit', 'edit')->name('instansi.edit');
+    Route::put('/instansi/{instansi}', 'update')->name('instansi.update');
+    Route::delete('/instansi/{instansi}', 'destroy')->name('instansi.destroy');
+});
+
+/*
+|--------------------------------------------------------------------------
+| PBI-04, PBI-05, PBI-07, PBI-10, PBI-13: Modul Admin Kasus
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'admin.kasus'])->prefix('admin')->name('admin.')->group(function () {
@@ -84,6 +113,10 @@ Route::middleware(['auth', 'admin.kasus'])->prefix('admin')->name('admin.')->gro
     Route::resource('penanganan-kasus', PenangananKasusController::class)
         ->parameters(['penanganan-kasus' => 'penangananKasus']);
 
+    // PBI-10: Manajemen Artikel Edukasi (Admin Kasus)
+    Route::resource('artikel', AdminArtikelController::class);
+
+    // PBI-05: Manajemen Kegiatan/Webinar Edukasi (Admin Kasus)
     Route::resource('kegiatan-edukasi', AdminKegiatanEdukasiController::class)
         ->parameters(['kegiatan-edukasi' => 'kegiatan']);
 
@@ -92,6 +125,34 @@ Route::middleware(['auth', 'admin.kasus'])->prefix('admin')->name('admin.')->gro
 
     Route::patch('kegiatan-edukasi/{kegiatan}/pendaftaran/{pendaftaran}/verifikasi', [AdminKegiatanEdukasiController::class, 'verifikasiKehadiran'])
         ->name('kegiatan-edukasi.verifikasi-kehadiran');
+
+    // PBI-13: Manajemen Data Konselor/Psikolog (Admin Kasus)
+    Route::resource('konselor', AdminKonselorController::class)
+        ->parameters(['konselor' => 'konselor']);
+
+    // PBI-07: Manajemen Instansi Bantuan (Admin Kasus Prefix)
+    Route::resource('instansi', InstansiBantuanController::class)
+        ->parameters(['instansi' => 'instansi']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| PBI-13: Profil Konselor/Psikolog (Konselor)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'konselor'])->prefix('konselor')->name('konselor.')->group(function () {
+    Route::get('/profil', [KonselorProfilController::class, 'edit'])->name('profil.edit');
+    Route::put('/profil', [KonselorProfilController::class, 'update'])->name('profil.update');
+});
+
+/*
+|--------------------------------------------------------------------------
+| PBI-10: Artikel Edukasi (Publik & Pelapor)
+|--------------------------------------------------------------------------
+*/
+Route::controller(ArtikelController::class)->prefix('edukasi/artikel')->name('artikel.')->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/{artikel}', 'show')->name('show');
 });
 
 /*
