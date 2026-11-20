@@ -6,8 +6,6 @@
 <div class="mx-auto max-w-4xl px-4 sm:px-6 py-12">
 
     <div class="space-y-6">
-        <p class="text-xs text-neutral-400">Data contoh · Bukan laporan nyata</p>
-
         {{-- Success Check Icon --}}
         <div class="text-neutral-900">
             <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -33,7 +31,7 @@
             </div>
 
             <div class="pt-4 border-t border-neutral-300/60 flex items-center justify-between text-xs text-neutral-700">
-                <span>Alias: {{ session('alias', 'Pelapor A') }}</span>
+                <span>Alias: {{ session('alias', auth()->user()?->profilPelapor?->alias ?? auth()->user()?->nama_tampilan) }}</span>
                 <span class="inline-flex items-center gap-1.5 text-neutral-800">
                     <span class="h-2 w-2 rounded-full bg-amber-500"></span>
                     Menunggu peninjauan
@@ -51,9 +49,13 @@
 
         {{-- Actions --}}
         <div class="pt-2 flex flex-wrap items-center gap-4">
-            <a href="{{ route('lacak.hasil', ['kode_laporan' => $kode_laporan]) }}" class="inline-flex items-center justify-center rounded bg-[#10a349] hover:bg-[#0e8e40] text-white font-medium text-xs px-6 py-2.5 transition-colors">
-                Lacak laporan
-            </a>
+            <form method="POST" action="{{ route('lacak.cari') }}">
+                @csrf
+                <input type="hidden" name="kode_laporan" value="{{ $kode_laporan }}">
+                <button type="submit" class="inline-flex items-center justify-center rounded bg-[#10a349] hover:bg-[#0e8e40] text-white font-medium text-xs px-6 py-2.5 transition-colors">
+                    Lacak laporan
+                </button>
+            </form>
             <a href="{{ url('/') }}" class="text-xs text-neutral-700 hover:text-neutral-900">
                 Kembali ke beranda
             </a>

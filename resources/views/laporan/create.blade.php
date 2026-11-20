@@ -22,9 +22,6 @@
                 <p class="text-xs text-neutral-500 mt-2">
                     Ceritakan sebatas yang Anda siap bagikan. Kolom wajib ditandai dengan *.
                 </p>
-                <div class="mt-4 rounded bg-[#f2f2f2] px-3.5 py-2 text-[11px] text-neutral-600 border border-neutral-200/60">
-                    Data contoh · Isian ini menggambarkan laporan fiktif, bukan kasus nyata.
-                </div>
             </div>
 
             <form method="POST" action="{{ route('laporan.store') }}" enctype="multipart/form-data" class="space-y-6">
@@ -56,13 +53,13 @@
                     </div>
 
                     @php
-                        $selectedKat = old('kategori_kekerasan', request('kategori', 'Siber'));
+                        $selectedKat = old('kategori_kekerasan', $draf['kategori'] ?? null);
                     @endphp
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                         {{-- Siber / Digital --}}
                         <label class="flex items-center gap-2.5 rounded bg-[#f2f2f2] hover:bg-neutral-200/70 p-3 text-xs text-neutral-800 cursor-pointer border border-transparent has-[:checked]:border-neutral-400 transition-colors">
-                            <input type="radio" name="kategori_kekerasan" value="Siber" class="text-neutral-900 focus:ring-0" {{ $selectedKat === 'Siber' ? 'checked' : '' }}>
+                            <input type="radio" name="kategori_kekerasan" value="Siber" required class="text-neutral-900 focus:ring-0" {{ $selectedKat === 'Siber' ? 'checked' : '' }}>
                             <span>Kekerasan digital</span>
                         </label>
 
@@ -106,7 +103,7 @@
                         </label>
                         <p class="text-[11px] text-neutral-400">Anda dapat menyertakan waktu, konteks, dan bantuan yang dibutuhkan.</p>
                     </div>
-                    <textarea name="kronologi" rows="6" required class="w-full rounded bg-[#f2f2f2] border-0 text-xs p-3.5 text-neutral-800 focus:ring-1 focus:ring-neutral-400 leading-relaxed">{{ old('kronologi', request('kronologi', 'Saya menerima pesan yang mengancam untuk menyebarkan informasi pribadi saya tanpa persetujuan. Saya ingin mengetahui pilihan bantuan dan cara menyimpan bukti dengan aman.')) }}</textarea>
+                    <textarea name="kronologi" rows="6" required placeholder="Contoh: Saya menerima pesan yang mengancam akan menyebarkan informasi pribadi saya. Saya ingin tahu pilihan bantuan dan cara menyimpan bukti dengan aman." class="w-full rounded bg-[#f2f2f2] border-0 text-xs p-3.5 text-neutral-800 placeholder:text-neutral-400 focus:ring-1 focus:ring-neutral-400 leading-relaxed">{{ old('kronologi', $draf['kronologi'] ?? '') }}</textarea>
                     <p class="text-[11px] text-neutral-400">Hindari nama asli, alamat lengkap, atau nomor identitas.</p>
                 </div>
 

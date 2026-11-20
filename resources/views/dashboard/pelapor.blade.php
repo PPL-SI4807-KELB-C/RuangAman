@@ -113,9 +113,13 @@
                                                 {{ $laporan->updated_at?->translatedFormat('d M Y') }}
                                             </td>
                                             <td class="whitespace-nowrap px-6 py-4 text-right">
-                                                <a href="{{ route('lacak.hasil', ['kode_laporan' => $laporan->kode_laporan]) }}" class="text-xs font-medium text-neutral-700 hover:text-neutral-900 hover:underline">
-                                                    Lacak
-                                                </a>
+                                                <form method="POST" action="{{ route('lacak.cari') }}" class="inline">
+                                                    @csrf
+                                                    <input type="hidden" name="kode_laporan" value="{{ $laporan->kode_laporan }}">
+                                                    <button type="submit" class="text-xs font-medium text-neutral-700 hover:text-neutral-900 hover:underline">
+                                                        Lacak
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach
