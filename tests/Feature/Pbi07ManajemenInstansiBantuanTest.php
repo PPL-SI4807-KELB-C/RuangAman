@@ -48,6 +48,26 @@ class Pbi07ManajemenInstansiBantuanTest extends TestCase
     }
 
     #[Test]
+    public function pelapor_dan_konselor_tidak_dapat_mengelola_instansi(): void
+    {
+        $konselorUser = User::whereHas('role', fn ($query) => $query->where('nama_role', 'Konselor'))->firstOrFail();
+        $instansi = InstansiBantuan::query()->firstOrFail();
+        $jumlahAwal = InstansiBantuan::count();
+
+        foreach ([$this->pelaporUser, $konselorUser] as $user) {
+            $this->actingAs($user)->get(route('instansi.index'))->assertForbidden();
+            $this->actingAs($user)->get(route('instansi.create'))->assertForbidden();
+            $this->actingAs($user)->post(route('instansi.store'), ['nama_instansi' => 'Instansi Palsu'])->assertForbidden();
+            $this->actingAs($user)->put(route('instansi.update', $instansi), ['nama_instansi' => 'Diubah'])->assertForbidden();
+            $this->actingAs($user)->delete(route('instansi.destroy', $instansi))->assertForbidden();
+            $this->actingAs($user)->delete(route('admin.instansi.destroy', $instansi))->assertForbidden();
+        }
+
+        $this->assertSame($jumlahAwal, InstansiBantuan::count());
+        $this->assertNotSame('Diubah', $instansi->fresh()->nama_instansi);
+    }
+
+    #[Test]
     public function halaman_direktori_publik_dapat_diakses_oleh_siapa_saja_tanpa_login(): void
     {
         $response = $this->get(route('instansi.publik'));
