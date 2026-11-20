@@ -8,6 +8,12 @@
     <title>@yield('title', 'RuangAman — Layanan Pelaporan Kekerasan Berbasis Gender')</title>
     <meta name="description" content="RuangAman — Layanan pelaporan, konseling, dan penanganan kekerasan berbasis gender dengan aman dan terjaga.">
 
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#15803d">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-white text-neutral-900 antialiased font-sans selection:bg-neutral-200" x-data="quickExit('{{ route('logout') }}')" @keydown.escape.window="handleEscape()">
@@ -24,8 +30,8 @@
     <header class="w-full border-b border-neutral-200 bg-white sticky top-0 z-40" x-data="{ mobileMenuOpen: false }">
         <div class="mx-auto max-w-6xl flex items-center justify-between gap-6 px-4 sm:px-6 py-4">
             {{-- Logo --}}
-            <a href="{{ url('/') }}" class="shrink-0 whitespace-nowrap text-xl font-bold tracking-tight text-neutral-900 hover:opacity-90">
-                RuangAman
+            <a href="{{ url('/') }}" class="shrink-0 whitespace-nowrap rounded hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2" aria-label="RuangAman — beranda">
+                <x-logo />
             </a>
 
             {{-- Center Navigation Links --}}
@@ -201,7 +207,7 @@
     <footer class="w-full border-t border-neutral-200 bg-white py-12">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div>
-                <p class="text-base font-bold text-neutral-900">RuangAman</p>
+                <x-logo size="sm" />
                 <p class="text-xs text-neutral-600 mt-1">Pelaporan dan pendampingan kekerasan berbasis gender.</p>
             </div>
             <nav class="flex flex-wrap gap-x-5 gap-y-2 text-xs text-neutral-600" aria-label="Tautan informasi">

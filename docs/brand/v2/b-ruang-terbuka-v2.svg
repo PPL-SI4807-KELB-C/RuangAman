@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <title>RuangAman</title>
+  <path d="M152 50H108A58 58 0 0 0 50 108V148A58 58 0 0 0 108 206H148A58 58 0 0 0 206 148V104" fill="none" stroke="#000" stroke-width="32" stroke-linecap="round"/>
+  <circle cx="128" cy="128" r="30" fill="#000"/>
+</svg>
