@@ -45,3 +45,6 @@ Thumbs.db
 # Agent skills & tooling
 .agents/
 skills-lock.json
+
+# Arsip zip tidak boleh masuk repo (mis. salinan proyek tak sengaja)
+/*.zip
