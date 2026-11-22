@@ -4,6 +4,17 @@ Semua perubahan tercatat dalam format standar changelog.
 
 ---
 
+## [PBI-10, PBI-11] - 2026-11-22
+
+### Ditambahkan (Added)
+- **PBI-11 Manajemen Kategori Artikel (CRUD lengkap, Admin Kasus)**: `Admin\KategoriArtikelController`, `KategoriArtikelPolicy`, `Store/UpdateKategoriArtikelRequest`, view `admin/kategori-artikel/*`, rute `admin.kategori-artikel.*`, gate `kelola-kategori-artikel`, dan menu "Kategori Artikel". Nama kategori wajib unik; kategori bawaan "Umum" tidak dapat diganti nama/dihapus; kategori yang dipakai artikel tidak dapat dihapus.
+- **Tes**: `Pbi11ManajemenKategoriArtikelTest` dan `Pbi10ManajemenArtikelEdukasiTest` (CRUD, validasi, RBAC 403, fallback kategori).
+
+### Diubah (Changed)
+- **PBI-10 kini mandiri dari PBI-11**: `kategori_id` pada artikel bersifat opsional; bila kosong, artikel otomatis masuk kategori bawaan "Umum" (`KategoriArtikel::default()`, juga di-seed).
+
+---
+
 ## [PBI-01, PBI-02, PBI-03] - 2026-11-18
 
 ### Ditambahkan (Added)
