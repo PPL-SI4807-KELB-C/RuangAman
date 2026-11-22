@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ArtikelController as AdminArtikelController;
+use App\Http\Controllers\Admin\KategoriArtikelController as AdminKategoriArtikelController;
 use App\Http\Controllers\Admin\GlosariumKbgController as AdminGlosariumKbgController;
 use App\Http\Controllers\Admin\HalamanInformasiController as AdminHalamanInformasiController;
 use App\Http\Controllers\Admin\KegiatanEdukasiController as AdminKegiatanEdukasiController;
@@ -130,7 +131,7 @@ Route::middleware(['auth', 'admin.kasus'])->controller(InstansiBantuanController
 
 /*
 |--------------------------------------------------------------------------
-| PBI-04, PBI-05, PBI-07, PBI-10, PBI-13: Modul Admin Kasus
+| PBI-04, PBI-05, PBI-07, PBI-10, PBI-11, PBI-13: Modul Admin Kasus
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'admin.kasus'])->prefix('admin')->name('admin.')->group(function () {
@@ -155,6 +156,11 @@ Route::middleware(['auth', 'admin.kasus'])->prefix('admin')->name('admin.')->gro
 
     Route::resource('artikel', AdminArtikelController::class)
         ->parameters(['artikel' => 'artikel']);
+
+    // PBI-11: Manajemen Kategori Artikel (tanpa halaman detail terpisah).
+    Route::resource('kategori-artikel', AdminKategoriArtikelController::class)
+        ->parameters(['kategori-artikel' => 'kategori'])
+        ->except(['show']);
 
     Route::resource('instansi', InstansiBantuanController::class)
         ->parameters(['instansi' => 'instansi']);

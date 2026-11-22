@@ -85,6 +85,7 @@ class DatabaseSeeder extends Seeder
      * @var list<string>
      */
     private const KATEGORI_ARTIKEL = [
+        'Umum',
         'Pencegahan',
         'Pemulihan',
         'Hukum dan Hak Korban',

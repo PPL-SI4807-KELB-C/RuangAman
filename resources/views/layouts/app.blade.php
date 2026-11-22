@@ -71,6 +71,7 @@
                             <div class="my-1.5 border-t border-neutral-200/70"></div>
                             <p class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Tata Kelola Konten</p>
                             <a href="{{ route('admin.artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.artikel.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Artikel Edukasi</a>
+                            <a href="{{ route('admin.kategori-artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.kategori-artikel.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Kategori Artikel</a>
                             <a href="{{ route('admin.halaman-informasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.halaman-informasi.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Halaman Informasi</a>
                             <a href="{{ route('admin.glosarium.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.glosarium.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Glosarium KBG</a>
                             <a href="{{ route('admin.pengumuman.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.pengumuman.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Pengumuman</a>
@@ -169,6 +170,7 @@
                         <a href="{{ route('instansi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Instansi Bantuan</a>
                         <p class="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Tata Kelola Konten</p>
                         <a href="{{ route('admin.artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Artikel Edukasi</a>
+                        <a href="{{ route('admin.kategori-artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Kategori Artikel</a>
                         <a href="{{ route('admin.halaman-informasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Halaman Informasi</a>
                         <a href="{{ route('admin.glosarium.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Glosarium KBG</a>
                         <a href="{{ route('admin.pengumuman.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Pengumuman</a>

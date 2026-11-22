@@ -20,7 +20,8 @@ abstract class ArtikelRequest extends FormRequest
     protected function baseRules(): array
     {
         return [
-            'kategori_id' => ['required', 'integer', 'exists:kategori_artikel,kategori_id'],
+            // Opsional: bila kosong, service memakai kategori bawaan "Umum" (independensi PBI-10 dari PBI-11).
+            'kategori_id' => ['nullable', 'integer', 'exists:kategori_artikel,kategori_id'],
             'judul' => ['required', 'string', 'max:255'],
             'isi' => ['required', 'string'],
             'status_publikasi' => ['required', Rule::in(array_keys(Artikel::STATUS_OPTIONS))],
@@ -33,7 +34,6 @@ abstract class ArtikelRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'kategori_id.required' => 'Kategori artikel wajib dipilih.',
             'kategori_id.integer' => 'Kategori artikel tidak valid.',
             'kategori_id.exists' => 'Kategori artikel tidak ditemukan.',
             'judul.required' => 'Judul artikel wajib diisi.',

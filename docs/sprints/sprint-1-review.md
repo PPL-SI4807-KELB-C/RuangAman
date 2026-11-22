@@ -13,7 +13,7 @@ Dokumen ini merangkum hasil **PKBC Sprint 1** dan hasil verifikasi terhadap isi 
 | Sprint Goal | Fondasi aplikasi + PBI Sprint 1: auth/RBAC, pelaporan kasus & lampiran, konten edukasi dasar, instansi bantuan, data konselor. |
 | Status Jira | 11 dari 11 issue berstatus **Done** (100%) |
 | Verifikasi repo | 154 tes lulus (610 assertion), lint PHP bersih (lihat bagian 3) |
-| Temuan | 1 PBI belum selaras dengan status Done di Jira (PBI-11), 1 PBI minim tes (PBI-10). Lihat bagian 4. |
+| Temuan | Temuan PBI-10 dan PBI-11 sudah ditutup lewat PR #10 (CRUD kategori + tes). Sisa temuan di bagian 4. |
 
 ---
 
@@ -29,8 +29,8 @@ Jumlah tes dihitung dari fungsi `test_*` pada berkas tes yang memuat PBI tersebu
 | PKBC-11 | PBI-03 Pengumuman | Ghalib | Done | 11 | - |
 | PKBC-12 | PBI-04 Status & Penugasan Kasus | Glen | Done | 11 | - |
 | PKBC-15 | PBI-07 Instansi Bantuan | Haqi | Done | 13 | - |
-| PKBC-18 | PBI-10 Artikel Edukasi | Niky | Done | 2 (`ArtikelHalamanTest`) | Hanya uji pembukaan halaman publik dan admin; CRUD admin belum diuji. |
-| PKBC-19 | PBI-11 Kategori Artikel | Niky | Done | 0 | **Belum selaras.** Di `develop` hanya ada model `KategoriArtikel`; belum ada route, controller, view, request, policy, maupun tes untuk CRUD kategori. |
+| PKBC-18 | PBI-10 Artikel Edukasi | Niky | Done | 2 (`ArtikelHalamanTest`) + 8 (`Pbi10ManajemenArtikelEdukasiTest`) | CRUD admin, validasi, RBAC 403 teruji. Kategori opsional (default "Umum") sehingga mandiri dari PBI-11. |
+| PKBC-19 | PBI-11 Kategori Artikel | Niky | Done | 9 (`Pbi11ManajemenKategoriArtikelTest`) | CRUD lengkap untuk Admin Kasus (403 untuk peran lain); kategori bawaan "Umum" terlindungi; kategori terpakai tidak dapat dihapus. |
 | PKBC-21 | PBI-13 Data Konselor | Altaf | Done | 17 | - |
 | PKBC-24 | PBI-16 Laporan Kasus & Lampiran | Fauzi | Done | 21 | Tes baru berjalan setelah berkas diganti namanya (bagian 3). |
 | PKBC-25 | PBI-17 Mode Anonim & Profil Pelapor | Fauzi | Done | 9 | - |
@@ -63,8 +63,8 @@ CI GitHub Actions memakai MySQL 8, sehingga hasilnya perlu dikonfirmasi pada Pul
 
 | # | Temuan | Usulan tindak lanjut | Usulan PIC |
 | :-: | :--- | :--- | :--- |
-| 1 | **PBI-11 (PKBC-19)** berstatus Done tetapi CRUD kategori artikel belum ada di `develop`. | Konfirmasi apakah pekerjaannya ada di cabang lokal yang belum di-push. Bila belum, buka kembali PKBC-19 dan bawa ke Sprint 2 (CRUD + tes `Pbi11...Test`). | Niky |
-| 2 | **PBI-10 (PKBC-18)** hanya memiliki 2 tes. | Tambah `Pbi10ManajemenArtikelEdukasiTest` (CRUD, validasi, RBAC 403). | Niky |
+| 1 | ~~PBI-11 (PKBC-19) belum ada CRUD.~~ **Selesai** (PR #10). | - | Niky |
+| 2 | ~~PBI-10 (PKBC-18) minim tes.~~ **Selesai** (PR #10). | - | Niky |
 | 3 | Sejumlah commit tidak memuat issue key Jira, sehingga tidak muncul di panel Development: `1fe8ce9` ("PBI-07 Pembuatan Create & Read"), `a782c1e` ("feat: implement PBI-10 article management"), `d3cd42b` ("PBI 16-17 Fauzi"), `b83f9c6` ("PKBC - 21"), `399b8a5`, `0e31a4b`, `d526ee3` ("fitur pbi pelaporan", "update", "update 2"), `e46f990` ("feat(pbi-07): ..."). | Mulai Sprint 2, wajib `[PKBC-XX]` di pesan commit dan judul PR. Jangan menulis ulang riwayat `develop` untuk memperbaikinya. | Seluruh tim |
 | 4 | `CONTRIBUTING.md` menyatakan `main` terkunci, tetapi proteksi branch belum aktif. | Aktifkan branch protection untuk `main` (wajib PR; opsional wajib 1 review). | Admin repo |
 | 5 | Banyak branch fitur lama masih ada di remote. | Hapus branch yang sudah ter-merge setelah masing-masing PIC mengonfirmasi. | Masing-masing PIC |
@@ -81,6 +81,5 @@ CI GitHub Actions memakai MySQL 8, sehingga hasilnya perlu dikonfirmasi pada Pul
 - Template PR, panduan kontribusi, dan CI sudah tersedia sejak awal sprint.
 
 **Perlu diperbaiki**
-- Status Done di Jira perlu diverifikasi terhadap `develop` sebelum ditutup (kasus PBI-11).
 - Konvensi issue key belum dipatuhi semua commit, sehingga pelacakan di Jira tidak lengkap.
 - Berkas tes yang tidak mengikuti penamaan `*Test.php` diam-diam tidak dijalankan.

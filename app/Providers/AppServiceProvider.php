@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Artikel;
 use App\Models\GlosariumKbg;
+use App\Models\KategoriArtikel;
 use App\Models\HalamanInformasi;
 use App\Models\KegiatanEdukasi;
 use App\Models\Konselor;
@@ -15,6 +16,7 @@ use App\Models\StatusKasus;
 use App\Models\User;
 use App\Policies\ArtikelPolicy;
 use App\Policies\GlosariumKbgPolicy;
+use App\Policies\KategoriArtikelPolicy;
 use App\Policies\HalamanInformasiPolicy;
 use App\Policies\KegiatanEdukasiPolicy;
 use App\Policies\KonselorPolicy;
@@ -48,6 +50,7 @@ class AppServiceProvider extends ServiceProvider
         GlosariumKbg::class => GlosariumKbgPolicy::class,
         Pengumuman::class => PengumumanPolicy::class,
         Artikel::class => ArtikelPolicy::class,
+        KategoriArtikel::class => KategoriArtikelPolicy::class,
     ];
 
     /**
@@ -71,6 +74,7 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::policy(LaporanKasus::class, LaporanKasusPolicy::class);
         Gate::policy(Artikel::class, ArtikelPolicy::class);
+        Gate::policy(KategoriArtikel::class, KategoriArtikelPolicy::class);
         Gate::policy(StatusKasus::class, StatusKasusPolicy::class);
         Gate::policy(PenangananKasus::class, PenangananKasusPolicy::class);
         Gate::policy(KegiatanEdukasi::class, KegiatanEdukasiPolicy::class);
@@ -89,6 +93,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('kelola-glosarium', fn (User $user) => $user->isAdminKasus() || $user->hasPermission('kelola-glosarium'));
         Gate::define('kelola-pengumuman', fn (User $user) => $user->isAdminKasus() || $user->hasPermission('kelola-pengumuman'));
         Gate::define('kelola-artikel', fn (User $user) => $user->isAdminKasus() || $user->hasPermission('kelola-artikel'));
+        Gate::define('kelola-kategori-artikel', fn (User $user) => $user->isAdminKasus() || $user->hasPermission('kelola-kategori-artikel'));
         Gate::define('daftar-kegiatan', fn (User $user) => $user->isPelapor() && $user->hasPermission('daftar-kegiatan'));
 
         // Batasi percobaan pelacakan kode & pengiriman pesan publik (cegah tebak kode dan spam).

@@ -15,12 +15,6 @@
         </div>
     @endif
 
-    @if (empty($kategoriOptions))
-        <x-alert variant="warning" title="Kategori belum tersedia">
-            Data kategori perlu disediakan melalui seeder atau modul PBI-11 sebelum artikel dapat disimpan.
-        </x-alert>
-    @endif
-
     <x-input
         name="judul"
         label="Judul Artikel"
@@ -36,10 +30,9 @@
             label="Kategori Artikel"
             :options="$kategoriOptions"
             :value="$artikel->kategori_id"
-            placeholder="Pilih kategori"
-            helper="Kategori merupakan data referensi dari PBI-11."
+            placeholder="Umum (bawaan)"
+            helper="Opsional. Bila dikosongkan, artikel masuk ke kategori Umum."
             :error="$errors->first('kategori_id')"
-            required
         />
 
         <x-select
