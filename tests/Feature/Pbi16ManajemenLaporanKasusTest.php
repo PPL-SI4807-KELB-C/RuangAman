@@ -137,10 +137,29 @@ class Pbi16ManajemenLaporanKasusTest extends TestCase
     {
         $this->pelapor->profilPelapor()->update(['preferensi_anonim' => false]);
 
-        $this->actingAs($this->pelapor)
+        $html = $this->actingAs($this->pelapor)
             ->get(route('laporan.create'))
             ->assertOk()
-            ->assertSee('mode_anonim: false,', false);
+            ->getContent();
+
+        $this->assertFalse($this->checkboxModeAnonimTercentang($html));
+
+        $this->pelapor->profilPelapor()->update(['preferensi_anonim' => true]);
+        $this->pelapor->unsetRelation('profilPelapor');
+
+        $html = $this->actingAs($this->pelapor)
+            ->get(route('laporan.create'))
+            ->assertOk()
+            ->getContent();
+
+        $this->assertTrue($this->checkboxModeAnonimTercentang($html));
+    }
+
+    private function checkboxModeAnonimTercentang(string $html): bool
+    {
+        $this->assertSame(1, preg_match('/<input\s[^>]*type="checkbox"[^>]*name="mode_anonim"[^>]*>/s', $html, $m));
+
+        return (bool) preg_match('/\schecked(\s|=|>)/', $m[0]);
     }
 
     // ---------------------------------------------------------------- read

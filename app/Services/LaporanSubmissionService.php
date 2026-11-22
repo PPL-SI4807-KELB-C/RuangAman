@@ -120,8 +120,11 @@ class LaporanSubmissionService
 
     private function generateKodeLaporan(): string
     {
+        // Format sesuai acceptance criteria PBI-16 dan SECURITY.md: RA-YYYY-XXXXXX.
+        $prefix = 'RA-'.now()->year.'-';
+
         do {
-            $code = Str::upper(Str::random(6));
+            $code = $prefix.Str::upper(Str::random(6));
         } while (LaporanKasus::query()->where('kode_laporan', $code)->exists());
 
         return $code;
