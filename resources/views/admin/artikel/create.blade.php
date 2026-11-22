@@ -7,8 +7,8 @@
     <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <p class="text-xs font-semibold uppercase tracking-wider text-brand-700">PBI-10 · Niky</p>
-            <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-900">Tambah Artikel Edukasi</h1>
-            <p class="mt-1 text-sm text-slate-500">Tulis konten edukasi KBG yang aman, informatif, dan tidak menghakimi.</p>
+            <h1 class="mt-1 text-2xl font-extrabold tracking-tight text-neutral-900">Tambah Artikel Edukasi</h1>
+            <p class="mt-1 text-sm text-neutral-600">Tulis konten edukasi KBG yang aman, informatif, dan tidak menghakimi.</p>
         </div>
         <x-button href="{{ route('admin.artikel.index') }}" variant="secondary" size="sm">
             &larr; Kembali ke Daftar
@@ -21,7 +21,7 @@
 
             @include('admin.artikel._form')
 
-            <div class="flex flex-col-reverse gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:justify-end">
+            <div class="flex flex-col-reverse gap-3 border-t border-neutral-200/70 pt-5 sm:flex-row sm:justify-end">
                 <x-button href="{{ route('admin.artikel.index') }}" variant="secondary" size="md">
                     Batal
                 </x-button>

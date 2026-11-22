@@ -3,19 +3,16 @@
 @section('title', $title)
 
 @section('content')
-<div class="mx-auto max-w-3xl space-y-6">
-    <div class="flex items-center justify-between">
-        <div>
-            <div class="flex items-center gap-2 text-sm text-slate-500">
-                <a href="{{ route('admin.penanganan-kasus.index') }}" class="hover:text-brand-600">Penugasan Kasus</a>
-                <span>/</span>
-                <span class="text-slate-700">Tugaskan Kasus</span>
-            </div>
-            <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-900">Penugasan Kasus Baru</h1>
-        </div>
-        <x-button href="{{ route('admin.penanganan-kasus.index') }}" variant="secondary" size="sm">
-            Kembali
-        </x-button>
+<div class="mx-auto max-w-6xl px-4 sm:px-6 py-10 space-y-8">
+    <div>
+        <a href="{{ route('admin.penanganan-kasus.index') }}" class="inline-flex items-center gap-1.5 text-xs text-neutral-600 transition-colors hover:text-neutral-900">
+            <span aria-hidden="true">&larr;</span>
+            <span>Kembali ke daftar</span>
+        </a>
+        <h1 class="mt-5 text-2xl font-extrabold tracking-tight text-neutral-900">Penugasan Kasus Baru</h1>
+        <p class="mt-1.5 text-xs text-neutral-600 leading-relaxed">
+            Pilih laporan kasus dan petugas pendamping atau Admin Kasus yang akan menanganinya.
+        </p>
     </div>
 
     @if ($laporanList->isEmpty())
@@ -25,22 +22,21 @@
         </x-alert>
     @endif
 
-    <x-card>
-        <form method="POST" action="{{ route('admin.penanganan-kasus.store') }}">
+    <x-card class="lg:max-w-3xl">
+        <form method="POST" action="{{ route('admin.penanganan-kasus.store') }}" class="space-y-6">
             @csrf
 
             @include('penanganan-kasus._form')
 
-            <div class="mt-6 flex items-center justify-end gap-3 border-t border-slate-100 pt-5">
-                <x-button href="{{ route('admin.penanganan-kasus.index') }}" variant="secondary" size="md">
-                    Batal
-                </x-button>
+            <div class="flex flex-wrap items-center gap-5 border-t border-neutral-300/60 pt-5">
                 <x-button type="submit" variant="primary" size="md" :disabled="$laporanList->isEmpty()">
                     Simpan Penugasan
+                </x-button>
+                <x-button href="{{ route('admin.penanganan-kasus.index') }}" variant="ghost" size="md">
+                    Batal
                 </x-button>
             </div>
         </form>
     </x-card>
 </div>
 @endsection
-

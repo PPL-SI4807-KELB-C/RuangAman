@@ -6,80 +6,77 @@
 <div class="mx-auto max-w-md space-y-6">
 
     <div>
-        <h1 class="text-2xl font-bold text-neutral-900 tracking-tight">Daftar Pelapor</h1>
-        <p class="text-xs text-neutral-500 mt-1">
-            Gunakan alias/pseudonim. Nama asli dan identitas resmi tidak diwajibkan.
+        <h1 class="text-2xl font-extrabold tracking-tight text-neutral-900">Daftar sebagai Pelapor</h1>
+        <p class="mt-1.5 text-xs leading-relaxed text-neutral-600">
+            Gunakan alias. Nama asli dan identitas resmi tidak diperlukan.
         </p>
     </div>
 
-    <form method="POST" action="{{ route('register') }}" class="space-y-4">
-        @csrf
+    @if (session('draf_laporan'))
+        <x-alert variant="info">
+            Isian laporan Anda dari beranda tersimpan sementara dan akan muncul kembali di formulir laporan setelah Anda mendaftar.
+        </x-alert>
+    @endif
 
-        {{-- Alias / Nama Tampilan --}}
-        <div class="space-y-1">
-            <label class="block text-xs font-semibold text-neutral-800">Alias / Nama Tampilan *</label>
-            <input type="text" name="alias" value="{{ old('alias', old('nama_tampilan')) }}" required placeholder="Contoh: Pelapor A atau Bintang Laut" class="w-full rounded bg-[#f2f2f2] border-0 text-xs px-3.5 py-2.5 text-neutral-800 focus:ring-1 focus:ring-neutral-400">
-            <input type="hidden" name="nama_tampilan" id="hidden_nama_tampilan" value="{{ old('alias', 'Pelapor A') }}">
-            <p class="text-[11px] text-neutral-400">Nama yang akan digunakan di aplikasi. Jangan gunakan nama asli.</p>
-            @error('alias')
-                <p class="text-[11px] text-red-600 mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+    <x-card>
+        <form method="POST" action="{{ route('register') }}" class="space-y-5" x-data="{ alias: @js(old('alias', old('nama_tampilan', ''))) }">
+            @csrf
 
-        {{-- Email --}}
-        <div class="space-y-1">
-            <label class="block text-xs font-semibold text-neutral-800">Email Pribadi *</label>
-            <input type="email" name="email" value="{{ old('email') }}" required placeholder="nama@email.com" class="w-full rounded bg-[#f2f2f2] border-0 text-xs px-3.5 py-2.5 text-neutral-800 focus:ring-1 focus:ring-neutral-400">
-            <p class="text-[11px] text-neutral-400">Hanya untuk login dan reset sandi. Tidak akan ditampilkan ke publik atau konselor.</p>
-            @error('email')
-                <p class="text-[11px] text-red-600 mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+            <x-input
+                name="alias"
+                label="Alias"
+                :value="old('alias', old('nama_tampilan'))"
+                placeholder="Contoh: Bintang Laut"
+                helper="Nama yang terlihat di aplikasi. Jangan gunakan nama asli."
+                :error="$errors->first('alias') ?: $errors->first('nama_tampilan')"
+                x-model="alias"
+                autocomplete="nickname"
+                required
+            />
+            {{-- AuthController masih membutuhkan nama_tampilan; disamakan dengan alias. --}}
+            <input type="hidden" name="nama_tampilan" :value="alias">
 
-        {{-- Password --}}
-        <div class="space-y-1">
-            <label class="block text-xs font-semibold text-neutral-800">Kata Sandi *</label>
-            <input type="password" name="password" required placeholder="Minimal 8 karakter (huruf & angka)" class="w-full rounded bg-[#f2f2f2] border-0 text-xs px-3.5 py-2.5 text-neutral-800 focus:ring-1 focus:ring-neutral-400">
-            @error('password')
-                <p class="text-[11px] text-red-600 mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+            <x-input
+                name="email"
+                type="email"
+                label="Email pribadi"
+                placeholder="nama@email.com"
+                helper="Hanya untuk masuk dan mengatur ulang kata sandi. Tidak ditampilkan ke konselor."
+                autocomplete="email"
+                :error="$errors->first('email')"
+                required
+            />
 
-        {{-- Password Confirmation --}}
-        <div class="space-y-1">
-            <label class="block text-xs font-semibold text-neutral-800">Konfirmasi Kata Sandi *</label>
-            <input type="password" name="password_confirmation" required placeholder="Ketik ulang kata sandi" class="w-full rounded bg-[#f2f2f2] border-0 text-xs px-3.5 py-2.5 text-neutral-800 focus:ring-1 focus:ring-neutral-400">
-        </div>
+            <x-input
+                name="password"
+                type="password"
+                label="Kata sandi"
+                helper="Minimal 8 karakter, kombinasi huruf dan angka."
+                autocomplete="new-password"
+                :error="$errors->first('password')"
+                required
+            />
 
-        {{-- Privacy Notice Box (Figma Style) --}}
-        <div class="rounded bg-[#f2f2f2] p-3.5 text-[11px] text-neutral-600 border border-neutral-200/60 leading-relaxed">
-            Akun Anda akan secara otomatis terdaftar dengan role <strong>Pelapor</strong> dan preferensi <strong>Mode Anonim aktif</strong> secara bawaan sesuai prinsip UU TPKS dan UU PDP.
-        </div>
+            <x-input
+                name="password_confirmation"
+                type="password"
+                label="Konfirmasi kata sandi"
+                autocomplete="new-password"
+                required
+            />
 
-        {{-- Submit Button --}}
-        <div class="pt-2">
-            <button type="submit" class="w-full inline-flex items-center justify-center rounded bg-[#10a349] hover:bg-[#0e8e40] text-white font-medium text-xs py-2.5 transition-colors shadow-xs">
-                Daftar Akun Pelapor
-            </button>
-        </div>
-    </form>
+            <p class="rounded-lg bg-white px-3.5 py-3 text-[11px] leading-relaxed text-neutral-600 ring-1 ring-inset ring-neutral-300/70">
+                Akun terdaftar sebagai <strong>Pelapor</strong> dengan <strong>mode anonim aktif</strong> secara bawaan, sesuai prinsip UU TPKS dan UU PDP.
+            </p>
 
-    {{-- Switch to Login --}}
-    <div class="pt-4 border-t border-neutral-100 text-center text-xs text-neutral-600">
+            <x-button type="submit" variant="primary" class="w-full">Daftar akun pelapor</x-button>
+        </form>
+    </x-card>
+
+    <p class="text-center text-xs text-neutral-600">
         Sudah memiliki akun?
         <a href="{{ route('login') }}" class="font-semibold text-neutral-900 hover:underline">Masuk di sini</a>
-    </div>
+    </p>
 
 </div>
-
-<script>
-    // Keep nama_tampilan in sync with alias for AuthController requirement
-    const aliasInput = document.querySelector('input[name="alias"]');
-    const hiddenNama = document.getElementById('hidden_nama_tampilan');
-    if (aliasInput && hiddenNama) {
-        aliasInput.addEventListener('input', (e) => {
-            hiddenNama.value = e.target.value;
-        });
-    }
-</script>
 @endsection

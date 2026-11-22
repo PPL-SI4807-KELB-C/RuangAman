@@ -4,13 +4,11 @@ namespace App\Services;
 
 use App\Models\LampiranLaporan;
 use App\Models\LaporanKasus;
-use App\Models\Role;
 use App\Models\StatusKasus;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -22,14 +20,13 @@ class LaporanSubmissionService
      * @param  UploadedFile[]  $lampiran
      * @return array{laporan: LaporanKasus, kode_laporan: string}
      */
-    public function submit(?User $user, array $data, array $lampiran = []): array
+    public function submit(User $user, array $data, array $lampiran = []): array
     {
         return DB::transaction(function () use ($user, $data, $lampiran) {
             $pending = StatusKasus::query()->where('nama_status', 'Pending')->firstOrFail();
-            $effectiveUserId = $user?->user_id ?? $this->getOrCreateGuestUser()->user_id;
 
             $laporan = LaporanKasus::query()->create([
-                'user_id' => $effectiveUserId,
+                'user_id' => $user->user_id,
                 'status_id' => $pending->status_id,
                 'kode_laporan' => $this->generateKodeLaporan(),
                 'judul' => $data['judul'] ?? 'Laporan Kasus',
@@ -119,21 +116,6 @@ class LaporanSubmissionService
         DB::transaction(fn () => $lampiran->delete());
 
         Storage::disk('local')->delete($path);
-    }
-
-    private function getOrCreateGuestUser(): User
-    {
-        $rolePelapor = Role::query()->where('nama_role', 'Pelapor')->first();
-
-        return User::query()->firstOrCreate(
-            ['email' => 'tamu@ruangaman.test'],
-            [
-                'role_id' => $rolePelapor?->role_id ?? 3,
-                'nama_tampilan' => 'Pelapor Tamu (Anonim)',
-                'password_hash' => Hash::make(Str::random(32)),
-                'status' => 'aktif',
-            ]
-        );
     }
 
     private function generateKodeLaporan(): string

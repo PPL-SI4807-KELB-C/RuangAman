@@ -17,6 +17,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LaporanKasusController extends Controller
 {
+    public const SESSION_KODE_LACAK = 'lacak_kode_laporan';
+
+    public const SESSION_DRAF = 'draf_laporan';
+
+    private const KATEGORI = [
+        'Siber' => 'Kekerasan digital',
+        'Seksual' => 'Kekerasan seksual',
+        'Psikis' => 'Kekerasan psikis',
+        'Fisik' => 'Kekerasan fisik',
+        'Ekonomi' => 'Kekerasan ekonomi',
+        'Lainnya' => 'Belum yakin / lainnya',
+    ];
+
     public function __construct(
         private LaporanSubmissionService $submissionService,
     ) {
@@ -39,22 +52,16 @@ class LaporanKasusController extends Controller
 
     public function create(): View
     {
-        $profil = Auth::user()?->profilPelapor;
-        $alias = $profil?->alias ?? (Auth::user()?->nama_tampilan ?? 'Pelapor A');
+        $user = Auth::user();
+        $alias = $user->profilPelapor?->alias ?? $user->nama_tampilan;
 
         return view('laporan.create', [
             'title' => 'Buat Laporan — RuangAman',
             'alias' => $alias,
+            'draf' => session(self::SESSION_DRAF, []),
             // Nilai awal checkbox mode anonim mengikuti preferensi pada profil (PBI-17).
-            'defaultAnonim' => $profil?->preferensi_anonim ?? true,
-            'kategoriOptions' => [
-                'Siber' => 'Kekerasan digital',
-                'Seksual' => 'Kekerasan seksual',
-                'Psikis' => 'Kekerasan psikis',
-                'Fisik' => 'Kekerasan fisik',
-                'Ekonomi' => 'Kekerasan ekonomi',
-                'Lainnya' => 'Belum yakin / lainnya',
-            ],
+            'defaultAnonim' => $user->profilPelapor?->preferensi_anonim ?? true,
+            'kategoriOptions' => self::KATEGORI,
             'urgensiOptions' => [
                 'rendah' => 'Rendah',
                 'sedang' => 'Sedang',
@@ -66,35 +73,28 @@ class LaporanKasusController extends Controller
 
     public function store(StoreLaporanKasusRequest $request): RedirectResponse
     {
+        $user = $request->user();
+
         $result = $this->submissionService->submit(
-            Auth::user(),
+            $user,
             $request->validated(),
             $request->file('lampiran', [])
         );
 
-        // Mengambil kode_laporan secara aman baik $result berupa array maupun object Model
-        $kode = is_array($result)
-            ? ($result['kode_laporan'] ?? $result['laporan']?->kode_laporan ?? null)
-            : ($result->kode_laporan ?? null);
-
-        if (! $kode) {
-            return redirect()
-                ->route('laporan.index')
-                ->with('success', 'Laporan kasus berhasil dikirim.');
-        }
+        $request->session()->forget(self::SESSION_DRAF);
 
         return redirect()
             ->route('laporan.success')
-            ->with('kode_laporan', $kode)
-            ->with('alias', $request->input('alias', 'Pelapor A'));
+            ->with('kode_laporan', $result['kode_laporan'])
+            ->with('alias', $user->profilPelapor?->alias ?? $user->nama_tampilan);
     }
 
     public function success(): View|RedirectResponse
     {
         $kode = session('kode_laporan');
 
-        // Alih-alih abort(404), arahkan kembali ke daftar laporan jika session kosong/di-refresh
-        if (! $kode) {
+        // Session kosong (mis. halaman di-refresh): kembali ke daftar laporan milik pelapor.
+        if ($kode === null) {
             return redirect()->route('laporan.index');
         }
 
@@ -102,6 +102,28 @@ class LaporanKasusController extends Controller
             'title' => 'Laporan Anda telah diterima — RuangAman',
             'kode_laporan' => $kode,
         ]);
+    }
+
+    /**
+     * Simpan draf dari mini-form beranda di session (bukan di URL), lalu arahkan
+     * ke formulir laporan, dashboard, atau registrasi sesuai status pengguna.
+     */
+    public function simpanDraf(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'kategori' => ['nullable', 'string', 'in:' . implode(',', array_keys(self::KATEGORI))],
+            'kronologi' => ['nullable', 'string', 'max:5000'],
+        ]);
+
+        $request->session()->put(self::SESSION_DRAF, array_filter($data, fn ($v) => $v !== null && $v !== ''));
+
+        $user = $request->user();
+
+        if ($user?->isPelapor()) {
+            return redirect()->route('laporan.create');
+        }
+
+        return $user ? redirect()->route('dashboard') : redirect()->route('register');
     }
 
     public function show(LaporanKasus $laporan): View
@@ -179,18 +201,34 @@ class LaporanKasusController extends Controller
 
     public function trackForm(): View
     {
-        $dummyLaporan = LaporanKasus::query()->latest('created_at')->first();
-
         return view('laporan.track-result', [
             'title' => 'Lacak Laporan — RuangAman',
-            'laporan' => $dummyLaporan,
-            'kode_laporan' => $dummyLaporan?->kode_laporan ?? 'Q7M2K9',
+            'laporan' => null,
+            'kode_laporan' => null,
         ]);
     }
 
-    public function trackResult(Request $request): View
+    /**
+     * Terima kode lewat POST, simpan di session, lalu tampilkan hasil lewat GET
+     * tanpa kode di query string (tidak tercatat di riwayat peramban).
+     */
+    public function cariLaporan(Request $request): RedirectResponse
     {
-        $kode = $request->input('kode_laporan');
+        $request->validate([
+            'kode_laporan' => ['required', 'string', 'max:50'],
+        ]);
+
+        return $this->arahkanKeHasil($request->input('kode_laporan'));
+    }
+
+    public function trackResult(Request $request): View|RedirectResponse
+    {
+        $kode = $request->session()->get(self::SESSION_KODE_LACAK);
+
+        if ($kode === null) {
+            return redirect()->route('lacak.form')
+                ->withErrors(['kode_laporan' => 'Masukkan kode laporan untuk melihat statusnya.']);
+        }
 
         $laporan = LaporanKasus::query()
             ->where('kode_laporan', $kode)
@@ -200,7 +238,8 @@ class LaporanKasusController extends Controller
         return view('laporan.track-result', [
             'title' => 'Lacak Laporan — RuangAman',
             'laporan' => $laporan,
-            'kode_laporan' => $kode ?? 'Q7M2K9',
+            'kode_laporan' => $kode,
+            'tidakDitemukan' => $laporan === null,
         ]);
     }
 
@@ -223,7 +262,7 @@ class LaporanKasusController extends Controller
             'created_at' => now(),
         ]);
 
-        return redirect()->route('lacak.hasil', ['kode_laporan' => $laporan->kode_laporan])
+        return $this->arahkanKeHasil($laporan->kode_laporan)
             ->with('success', 'Pesan berhasil dikirim ke tim pendamping.');
     }
 
@@ -237,10 +276,27 @@ class LaporanKasusController extends Controller
             return redirect()->route('login')->with('error', 'Silakan masuk atau daftar terlebih dahulu untuk menautkan laporan ini.');
         }
 
+        if (! Auth::user()->isPelapor()) {
+            abort(403, 'Hanya Pelapor yang dapat menautkan laporan ke akunnya.');
+        }
+
         $laporan = LaporanKasus::query()->where('kode_laporan', $request->input('kode_laporan'))->firstOrFail();
+
+        if (! $laporan->bisaDitautkan()) {
+            return $this->arahkanKeHasil($laporan->kode_laporan)
+                ->with('error', 'Laporan ini sudah terhubung dengan akun lain sehingga tidak dapat ditautkan ulang.');
+        }
+
         $laporan->update(['user_id' => Auth::id()]);
 
-        return redirect()->route('lacak.hasil', ['kode_laporan' => $laporan->kode_laporan])
+        return $this->arahkanKeHasil($laporan->kode_laporan)
             ->with('success', 'Laporan berhasil ditautkan ke akun Anda. Riwayat sekarang tersimpan di dashboard.');
+    }
+
+    private function arahkanKeHasil(string $kode): RedirectResponse
+    {
+        session()->put(self::SESSION_KODE_LACAK, $kode);
+
+        return redirect()->route('lacak.hasil');
     }
 }

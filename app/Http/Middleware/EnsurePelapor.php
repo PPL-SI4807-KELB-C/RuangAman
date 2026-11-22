@@ -18,7 +18,7 @@ class EnsurePelapor
         $user = $request->user();
 
         if (! $user || ! $user->isPelapor()) {
-            abort(403, 'Akses ditolak. Fitur pendaftaran kegiatan hanya tersedia untuk Pelapor.');
+            abort(403, 'Akses ditolak. Fitur ini hanya tersedia untuk Pelapor.');
         }
 
         return $next($request);
