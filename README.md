@@ -116,9 +116,9 @@ Pengembangan mengikuti metodologi **Scrum** dalam 2 Sprint sesuai kalender perku
 * Penugasan & Status Kasus Inti        * Pengujian E2E, UAT, Deployment & Demo
 ```
 
-- **Sprint 1 (Week 6 – 10: 19 Oktober – 22 November 2026)**:
+- **Sprint 1 (Week 6 – 10: 19 Oktober – 22 November 2026)** — ✅ **Selesai** (11 dari 11 issue Jira berstatus Done; lihat [Sprint 1 Review](docs/sprints/sprint-1-review.md)):
   - Fokus: PBI Fondasi Bersama, PBI-01, PBI-02, PBI-03, PBI-04, PBI-07, PBI-10, PBI-11, PBI-13, PBI-16, PBI-17.
-- **Sprint 2 (Week 11 – 16: 23 November 2026 – 3 Januari 2027)**:
+- **Sprint 2 (Week 11 – 16: 23 November 2026 – 3 Januari 2027)** — 🔄 **Berjalan** (lihat [Sprint 2 Planning](docs/sprints/sprint-2-planning.md)):
   - Fokus: PBI-05, PBI-06, PBI-08, PBI-09, PBI-12, PBI-14, PBI-15, PBI-18, dan PBI Tim Integrasi Bersama.
 
 ---
@@ -241,6 +241,8 @@ Untuk mencegah konflik merge antar enam anggota:
 - [Arsitektur Sistem & Workflow Persetujuan (docs/architecture/)](docs/architecture/system-architecture.md)
 - [Kamus Data & Skema ERD 26 Tabel (docs/database/)](docs/database/data-dictionary.md)
 - [Detail Pembagian PBI & Jadwal Sprint (docs/sprints/)](docs/sprints/sprint-backlog.md)
+- [Sprint 1 Review: hasil, bukti pengujian, dan catatan perbaikan](docs/sprints/sprint-1-review.md)
+- [Sprint 2 Planning: backlog, status awal, dan Definition of Done](docs/sprints/sprint-2-planning.md)
 - [Artefak Desain: Use Case, ERD, Class Diagram & Mockup (docs/design/)](docs/design/index.md)
 - [Catatan Deviasi & Keputusan Skema (kamus data, Bagian 4)](docs/database/data-dictionary.md#4-catatan-deviasi-yang-disepakati)
 

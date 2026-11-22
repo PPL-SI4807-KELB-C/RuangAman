@@ -4,6 +4,25 @@ Semua perubahan tercatat dalam format standar changelog.
 
 ---
 
+## [Sprint 1: Penutupan] - 2026-11-22
+
+Ringkasan penutupan **PKBC Sprint 1** (11 dari 11 issue Done di Jira). Rincian hasil dan temuan ada di [docs/sprints/sprint-1-review.md](docs/sprints/sprint-1-review.md).
+
+### Ditambahkan (Added)
+- `docs/sprints/sprint-1-review.md`: hasil sprint, bukti pengujian, temuan, dan tindak lanjut.
+- `docs/sprints/sprint-2-planning.md`: backlog Sprint 2, usulan urutan kerja, Definition of Done, dan risiko.
+- Tautan kedua dokumen di `README.md` serta status Sprint 1 (Selesai) dan Sprint 2 (Berjalan) pada roadmap.
+
+### Diperbaiki (Fixed)
+- `tests/Feature/Pbi16ManajemenLaporanKasus.php` diganti nama menjadi `Pbi16ManajemenLaporanKasusTest.php`. Sebelumnya berkas ini tidak dimuat PHPUnit sehingga 21 tesnya tidak pernah berjalan di CI.
+- `app/Services/LaporanSubmissionService.php`: kode lacak laporan kembali berformat `RA-YYYY-XXXXXX` sesuai acceptance criteria PBI-16 dan `SECURITY.md` (sebelumnya hanya 6 karakter acak).
+- Tes preferensi mode anonim pada form laporan kini memeriksa atribut `checked` pada komponen `x-checkbox`, bukan state Alpine lama.
+
+### Dihapus (Removed)
+- `aad.zip` (arsip tak sengaja berisi salinan berkas proyek, 51 MB). Pola `/*.zip` ditambahkan ke `.gitignore`.
+
+---
+
 ## [PBI-01, PBI-02, PBI-03] - 2026-11-18
 
 ### Ditambahkan (Added)
