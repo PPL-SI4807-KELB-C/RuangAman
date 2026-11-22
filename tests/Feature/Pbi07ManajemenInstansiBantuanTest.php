@@ -35,7 +35,7 @@ class Pbi07ManajemenInstansiBantuanTest extends TestCase
         $response = $this->actingAs($this->adminUser)->get(route('instansi.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Manajemen instansi bantuan');
+        $response->assertSee('Manajemen Instansi Bantuan');
         $response->assertSee('Daftar instansi');
     }
 
@@ -45,6 +45,26 @@ class Pbi07ManajemenInstansiBantuanTest extends TestCase
         $response = $this->get(route('instansi.index'));
 
         $response->assertRedirect(route('login'));
+    }
+
+    #[Test]
+    public function pelapor_dan_konselor_tidak_dapat_mengelola_instansi(): void
+    {
+        $konselorUser = User::whereHas('role', fn ($query) => $query->where('nama_role', 'Konselor'))->firstOrFail();
+        $instansi = InstansiBantuan::query()->firstOrFail();
+        $jumlahAwal = InstansiBantuan::count();
+
+        foreach ([$this->pelaporUser, $konselorUser] as $user) {
+            $this->actingAs($user)->get(route('instansi.index'))->assertForbidden();
+            $this->actingAs($user)->get(route('instansi.create'))->assertForbidden();
+            $this->actingAs($user)->post(route('instansi.store'), ['nama_instansi' => 'Instansi Palsu'])->assertForbidden();
+            $this->actingAs($user)->put(route('instansi.update', $instansi), ['nama_instansi' => 'Diubah'])->assertForbidden();
+            $this->actingAs($user)->delete(route('instansi.destroy', $instansi))->assertForbidden();
+            $this->actingAs($user)->delete(route('admin.instansi.destroy', $instansi))->assertForbidden();
+        }
+
+        $this->assertSame($jumlahAwal, InstansiBantuan::count());
+        $this->assertNotSame('Diubah', $instansi->fresh()->nama_instansi);
     }
 
     #[Test]
@@ -63,8 +83,8 @@ class Pbi07ManajemenInstansiBantuanTest extends TestCase
         $response = $this->actingAs($this->adminUser)->get(route('instansi.create'));
 
         $response->assertStatus(200);
-        $response->assertSee('Tambah instansi bantuan');
-        $response->assertSee('Simpan instansi');
+        $response->assertSee('Tambah Instansi Bantuan');
+        $response->assertSee('Simpan Instansi');
     }
 
     #[Test]
@@ -138,7 +158,7 @@ class Pbi07ManajemenInstansiBantuanTest extends TestCase
         $response = $this->actingAs($this->adminUser)->get(route('instansi.edit', $instansi));
 
         $response->assertStatus(200);
-        $response->assertSee('Ubah instansi bantuan');
+        $response->assertSee('Ubah Instansi Bantuan');
         $response->assertSee($instansi->nama_instansi);
     }
 

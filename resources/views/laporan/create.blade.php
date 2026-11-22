@@ -1,258 +1,201 @@
 @extends('layouts.app')
 
-@section('title', $title ?? 'Buat Laporan Kasus — RuangAman')
+@section('title', 'Buat Laporan — RuangAman')
 
 @section('content')
-<div class="mx-auto max-w-4xl px-4 py-8 sm:px-6">
+<div class="mx-auto max-w-6xl px-4 sm:px-6 py-10 space-y-8">
 
-    {{-- Back Link --}}
-    <div class="mb-6">
-        <a href="{{ url('/') }}" class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 transition-colors hover:text-brand-700">
-            <span>&larr;</span>
-            <span>Kembali ke beranda</span>
-        </a>
-    </div>
+    <x-page-header
+        title="Buat laporan"
+        description="Ceritakan sebatas yang Anda siap bagikan. Kolom bertanda * wajib diisi."
+        :back="url('/')"
+        back-label="Kembali ke beranda"
+    />
 
-    @if ($errors->any())
-        <div class="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-            <p class="mb-1 font-semibold">Mohon periksa kembali isian formulir Anda:</p>
-            <ul class="list-disc space-y-1 pl-5">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start">
 
-    <form id="form-laporan" method="POST" action="{{ route('laporan.store') }}" enctype="multipart/form-data">
-        @csrf
-        <input type="hidden" name="step" id="input-step" value="{{ old('step', 1) }}">
+        <div class="lg:col-span-8 space-y-6">
+            @if ($errors->any())
+                <x-alert variant="danger" title="Laporan belum terkirim">
+                    Periksa kembali kolom yang ditandai di bawah ini.
+                </x-alert>
+            @endif
 
-        {{-- Stepper Navigasi --}}
-        <nav class="mb-8" aria-label="Progress">
-            <ol class="flex items-start gap-2 sm:gap-4">
-                @foreach (['Identitas & Anonimitas', 'Detail Kejadian', 'Kronologi & Bukti', 'Konfirmasi'] as $index => $label)
-                    @php $stepNumber = $index + 1; @endphp
-                    <li class="relative flex-1">
-                        <button type="button" onclick="goToStep({{ $stepNumber }})" class="relative z-10 flex w-full flex-col items-center text-center focus:outline-none">
-                            <div id="step-circle-{{ $stepNumber }}"
-                                 class="flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold transition {{ $stepNumber == 1 ? 'bg-brand-100 text-brand-700 ring-2 ring-brand-600' : 'bg-slate-100 text-slate-500' }}">
-                                {{ $stepNumber }}
-                            </div>
-                            <span id="step-label-{{ $stepNumber }}"
-                                  class="mt-1.5 text-xs font-medium transition {{ $stepNumber == 1 ? 'font-bold text-brand-700' : 'text-slate-500' }}">
-                                {{ $label }}
-                            </span>
-                        </button>
-                        @if (! $loop->last)
-                            <div id="step-line-{{ $stepNumber }}"
-                                 class="pointer-events-none absolute left-[calc(50%+1.25rem)] top-4 hidden h-0.5 w-[calc(100%-2.5rem)] -translate-y-1/2 bg-slate-200 transition sm:block"></div>
-                        @endif
-                    </li>
-                @endforeach
-            </ol>
-        </nav>
+            <form method="POST" action="{{ route('laporan.store') }}" enctype="multipart/form-data" class="space-y-6">
+                @csrf
 
-        {{-- Langkah 1: Identitas & Anonimitas --}}
-        <div id="step-panel-1" class="step-panel">
-            <x-card>
-                <h2 class="text-lg font-semibold text-slate-900">Identitas Pelapor</h2>
-                <p class="text-sm text-slate-600">Gunakan alias untuk melindungi identitas Anda.</p>
-
-                <div class="mt-5 space-y-4">
-                    <x-input name="alias" label="Alias Pelapor" value="{{ $alias ?? Auth::user()?->nama_tampilan ?? 'Pelapor A' }}" helper="Nama ini akan dilihat pihak penangan jika Mode Anonim nonaktif." readonly />
-
-                    <div class="rounded-lg border border-brand-200 bg-brand-50 p-4">
-                        <label class="flex cursor-pointer items-start gap-3">
-                            <input type="hidden" name="mode_anonim" value="0">
-                            <input type="checkbox"
-                                   id="mode_anonim"
-                                   name="mode_anonim"
-                                   value="1"
-                                   class="mt-1 h-5 w-5 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
-                                   @checked(old('mode_anonim', $defaultAnonim ?? true))>
+                {{-- 1. Identitas & anonimitas (PBI-17) --}}
+                <x-card header="Identitas & anonimitas">
+                    <div class="space-y-5">
+                        <div class="flex items-start gap-3">
+                            <svg class="mt-0.5 h-4 w-4 shrink-0 text-neutral-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
                             <div>
-                                <span class="block text-sm font-semibold text-slate-900">Aktifkan Mode Anonim</span>
-                                <span class="block text-sm text-slate-600">Identitas profil Anda disembunyikan dari konselor yang menangani kasus ini.</span>
+                                <p class="text-sm text-neutral-700">Dilaporkan sebagai <span class="font-semibold text-neutral-900">{{ $alias }}</span></p>
+                                <p class="mt-0.5 text-xs leading-relaxed text-neutral-600">
+                                    Alias dapat diubah di <a href="{{ route('profil-pelapor.edit') }}" class="font-medium text-neutral-900 underline">profil &amp; mode anonim</a>.
+                                </p>
                             </div>
-                        </label>
-                    </div>
-                </div>
+                        </div>
 
-                <div class="mt-6 flex justify-end">
-                    <x-button type="button" variant="primary" onclick="goToStep(2)">Lanjut</x-button>
-                </div>
-            </x-card>
+                        <div>
+                            <input type="hidden" name="mode_anonim" value="0">
+                            <x-checkbox name="mode_anonim" :checked="(bool) ($defaultAnonim ?? true)" :error="$errors->first('mode_anonim')">
+                                <span class="font-semibold text-neutral-900">Aktifkan mode anonim</span>
+                                — alias pun disembunyikan dari konselor yang menangani laporan ini.
+                            </x-checkbox>
+                        </div>
+                    </div>
+                </x-card>
+
+                {{-- 2. Detail kejadian --}}
+                <x-card header="Detail kejadian">
+                    <div class="space-y-6">
+                        <x-input
+                            name="judul"
+                            label="Judul singkat"
+                            placeholder="Ringkasan satu kalimat"
+                            :value="$draf['judul'] ?? null"
+                            :error="$errors->first('judul')"
+                            required
+                        />
+
+                        <x-radio-cards
+                            name="kategori_kekerasan"
+                            label="Kategori kejadian"
+                            helper="Pilih yang paling mendekati. Tidak apa-apa jika belum yakin."
+                            :options="$kategoriOptions"
+                            :value="$draf['kategori'] ?? null"
+                            :error="$errors->first('kategori_kekerasan')"
+                            required
+                        />
+
+                        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                            <x-input
+                                type="datetime-local"
+                                name="waktu_kejadian"
+                                label="Waktu kejadian (perkiraan)"
+                                :max="now()->format('Y-m-d\TH:i')"
+                                :error="$errors->first('waktu_kejadian')"
+                                required
+                            />
+                            <x-select
+                                name="tingkat_urgensi"
+                                label="Seberapa mendesak?"
+                                :options="$urgensiOptions"
+                                placeholder="Pilih tingkat"
+                                :error="$errors->first('tingkat_urgensi')"
+                                required
+                            />
+                        </div>
+
+                        <x-input
+                            name="lokasi_kejadian"
+                            label="Lokasi kejadian"
+                            placeholder="Kota, institusi, atau &quot;daring&quot;"
+                            helper="Cukup lokasi umum. Hindari alamat rumah lengkap."
+                            :error="$errors->first('lokasi_kejadian')"
+                            required
+                        />
+                    </div>
+                </x-card>
+
+                {{-- 3. Kronologi & bukti --}}
+                <x-card header="Kronologi & bukti">
+                    <div class="space-y-6">
+                        <x-textarea
+                            name="kronologi"
+                            label="Kronologi kejadian"
+                            rows="6"
+                            :value="$draf['kronologi'] ?? ''"
+                            placeholder="Ceritakan urutan kejadian dan bantuan yang Anda butuhkan."
+                            helper="Anda dapat menyertakan waktu, konteks, dan bantuan yang dibutuhkan. Hindari nama asli, alamat lengkap, atau nomor identitas."
+                            :error="$errors->first('kronologi')"
+                            required
+                        />
+
+                        {{-- Lampiran (opsional) --}}
+                        <div x-data="{ files: [] }">
+                            <label for="lampiran" class="block text-xs font-semibold text-neutral-800">Lampiran pendukung <span class="font-normal text-neutral-600">(opsional)</span></label>
+
+                            <div class="relative mt-1.5 rounded-lg border border-dashed bg-white p-6 text-center transition-colors hover:bg-neutral-50 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-neutral-900 {{ $errors->has('lampiran') || $errors->has('lampiran.*') ? 'border-safety-rose' : 'border-line-strong' }}">
+                                <input
+                                    type="file"
+                                    id="lampiran"
+                                    name="lampiran[]"
+                                    multiple
+                                    accept=".jpg,.jpeg,.png,.webp,.pdf,.mp3,.mp4,.mov"
+                                    aria-describedby="lampiran-help"
+                                    @change="files = Array.from($event.target.files).map(f => f.name)"
+                                    class="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                                >
+                                <svg class="mx-auto h-5 w-5 text-neutral-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <polyline points="17 8 12 3 7 8" />
+                                    <line x1="12" y1="3" x2="12" y2="15" />
+                                </svg>
+                                <p class="mt-2 text-sm font-medium text-neutral-800" x-text="files.length ? files.length + ' berkas dipilih' : 'Pilih berkas'">Pilih berkas</p>
+                                <p id="lampiran-help" class="mt-1 text-[11px] text-neutral-600">Gambar, PDF, audio, atau video · maksimal 5 berkas, 10 MB per berkas</p>
+                            </div>
+
+                            <ul x-show="files.length" x-cloak class="mt-2 space-y-1 text-[11px] text-neutral-600">
+                                <template x-for="nama in files" :key="nama">
+                                    <li class="truncate" x-text="nama"></li>
+                                </template>
+                            </ul>
+
+                            @if ($errors->has('lampiran') || $errors->has('lampiran.*'))
+                                <p class="mt-1.5 text-[11px] text-safety-rose">{{ $errors->first('lampiran') ?: $errors->first('lampiran.*') }}</p>
+                            @else
+                                <p class="mt-1.5 text-[11px] leading-relaxed text-neutral-600">Hanya unggah jika aman. Berkas disimpan privat dan hanya bisa diunduh oleh Anda.</p>
+                            @endif
+                        </div>
+                    </div>
+                </x-card>
+
+                {{-- 4. Persetujuan & kirim --}}
+                <x-card>
+                    <div class="space-y-5">
+                        <x-checkbox name="persetujuan" :error="$errors->first('persetujuan')" required>
+                            Saya memahami bahwa informasi ini akan ditinjau oleh tim RuangAman untuk penanganan laporan sesuai
+                            <a href="{{ route('halaman.show', 'kebijakan-privasi') }}" target="_blank" class="font-medium text-neutral-900 underline">kebijakan privasi</a>.
+                        </x-checkbox>
+
+                        <div class="flex flex-wrap items-center gap-5 border-t border-neutral-300/60 pt-5">
+                            <x-button type="submit" variant="primary">Kirim laporan</x-button>
+                            <x-button :href="url('/')" variant="ghost">Batalkan</x-button>
+                        </div>
+                        <p class="text-[11px] text-neutral-600">Setelah dikirim, Anda akan menerima kode laporan. Selama masih berstatus Pending, laporan dapat diubah atau dibatalkan dari <span class="font-medium">Laporan Saya</span>.</p>
+                    </div>
+                </x-card>
+            </form>
         </div>
 
-        {{-- Langkah 2: Detail Kejadian --}}
-        <div id="step-panel-2" class="step-panel hidden">
-            <x-card>
-                <h2 class="text-lg font-semibold text-slate-900">Detail Kejadian</h2>
-                <p class="text-sm text-slate-600">Ceritakan apa yang terjadi secara ringkas.</p>
-
-                <div class="mt-5 grid gap-4 sm:grid-cols-2">
-                    <div class="sm:col-span-2">
-                        <x-input id="judul" name="judul" label="Judul Laporan" placeholder="Ringkasan singkat kejadian" value="{{ old('judul') }}" :error="$errors->first('judul')" required />
-                    </div>
-                    <div class="sm:col-span-2">
-                        <x-select id="kategori_kekerasan" name="kategori_kekerasan" label="Kategori Kekerasan" :options="$kategoriOptions" :selected="old('kategori_kekerasan')" placeholder="Pilih kategori" :error="$errors->first('kategori_kekerasan')" required />
-                    </div>
-                    <x-input id="waktu_kejadian" name="waktu_kejadian" type="datetime-local" label="Waktu Kejadian" value="{{ old('waktu_kejadian') }}" :error="$errors->first('waktu_kejadian')" required />
-                    <x-select id="tingkat_urgensi" name="tingkat_urgensi" label="Tingkat Urgensi" :options="$urgensiOptions" :selected="old('tingkat_urgensi')" placeholder="Pilih tingkat" :error="$errors->first('tingkat_urgensi')" required />
-                    <div class="sm:col-span-2">
-                        <x-input id="lokasi_kejadian" name="lokasi_kejadian" label="Lokasi Kejadian" placeholder="Kota, institusi, atau alamat umum" value="{{ old('lokasi_kejadian') }}" :error="$errors->first('lokasi_kejadian')" required />
-                    </div>
-                </div>
-
-                <div class="mt-6 flex justify-between">
-                    <x-button type="button" variant="secondary" onclick="goToStep(1)">Kembali</x-button>
-                    <x-button type="button" variant="primary" onclick="goToStep(3)">Lanjut</x-button>
-                </div>
-            </x-card>
-        </div>
-
-        {{-- Langkah 3: Kronologi & Bukti --}}
-        <div id="step-panel-3" class="step-panel hidden">
-            <x-card>
-                <h2 class="text-lg font-semibold text-slate-900">Kronologi & Bukti</h2>
-                <p class="text-sm text-slate-600">Jelaskan kronologi secara lengkap. Lampiran bersifat opsional.</p>
-
-                <div class="mt-5 space-y-4">
-                    <x-textarea id="kronologi" name="kronologi" label="Kronologi Kejadian" placeholder="Ceritakan urutan kejadian, pelaku (jika diketahui), dan dampak yang dirasakan..." rows="6" :error="$errors->first('kronologi')" required>{{ old('kronologi') }}</x-textarea>
-
+        {{-- Panduan --}}
+        <aside class="lg:col-span-4">
+            <x-card header="Sebelum mengirim">
+                <dl class="space-y-4 text-xs leading-relaxed">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700">Lampiran Bukti <span class="font-normal text-slate-500">(opsional, maks. 5 file, masing-masing 10 MB)</span></label>
-                        <input type="file" name="lampiran[]" multiple accept=".jpg,.jpeg,.png,.webp,.pdf,.mp3,.mp4,.mov" class="mt-1 block w-full text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-brand-50 file:px-4 file:py-2 file:font-medium file:text-brand-700 hover:file:bg-brand-100">
-                        @if ($errors->has('lampiran.*'))
-                            <p class="mt-1 text-xs text-safety-rose">{{ $errors->first('lampiran.*') }}</p>
-                        @endif
-                    </div>
-                </div>
-
-                <div class="mt-6 flex justify-between">
-                    <x-button type="button" variant="secondary" onclick="goToStep(2)">Kembali</x-button>
-                    <x-button type="button" variant="primary" onclick="goToStep(4)">Lanjut</x-button>
-                </div>
-            </x-card>
-        </div>
-
-        {{-- Langkah 4: Konfirmasi Laporan --}}
-        <div id="step-panel-4" class="step-panel hidden">
-            <x-card>
-                <h2 class="text-lg font-semibold text-slate-900">Konfirmasi Laporan</h2>
-                <p class="text-sm text-slate-600">Periksa ringkasan sebelum mengirim.</p>
-
-                <div class="mt-5 space-y-3 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm">
-                    <div class="flex justify-between border-b border-slate-200 pb-2">
-                        <span class="text-slate-500">Mode Anonim</span>
-                        <span id="summary-anonim" class="font-medium text-slate-900">-</span>
-                    </div>
-                    <div class="flex justify-between border-b border-slate-200 pb-2">
-                        <span class="text-slate-500">Judul</span>
-                        <span id="summary-judul" class="font-medium text-slate-900">-</span>
-                    </div>
-                    <div class="flex justify-between border-b border-slate-200 pb-2">
-                        <span class="text-slate-500">Kategori</span>
-                        <span id="summary-kategori" class="font-medium text-slate-900">-</span>
-                    </div>
-                    <div class="flex justify-between border-b border-slate-200 pb-2">
-                        <span class="text-slate-500">Waktu</span>
-                        <span id="summary-waktu" class="font-medium text-slate-900">-</span>
-                    </div>
-                    <div class="flex justify-between border-b border-slate-200 pb-2">
-                        <span class="text-slate-500">Lokasi</span>
-                        <span id="summary-lokasi" class="font-medium text-slate-900">-</span>
-                    </div>
-                    <div class="flex justify-between border-b border-slate-200 pb-2">
-                        <span class="text-slate-500">Urgensi</span>
-                        <span id="summary-urgensi" class="font-medium text-slate-900">-</span>
+                        <dt class="font-semibold text-neutral-900">Tidak harus lengkap</dt>
+                        <dd class="mt-1 text-neutral-600">Anda tidak harus menceritakan semua detail untuk mulai mendapatkan arahan.</dd>
                     </div>
                     <div>
-                        <span class="text-slate-500">Kronologi</span>
-                        <p id="summary-kronologi" class="mt-1 whitespace-pre-wrap text-slate-900">-</p>
+                        <dt class="font-semibold text-neutral-900">Identitas tetap berupa alias</dt>
+                        <dd class="mt-1 text-neutral-600">Tidak ada permintaan KTP, nama lengkap, atau alamat rumah.</dd>
                     </div>
-                </div>
-
-                <div class="mt-5">
-                    <label class="flex cursor-pointer items-start gap-3">
-                        <input type="checkbox" name="persetujuan" value="1" class="mt-1 h-5 w-5 rounded border-slate-300 text-brand-600 focus:ring-brand-500" @checked(old('persetujuan')) required>
-                        <span class="text-sm text-slate-700">Saya menyatakan bahwa informasi yang saya berikan adalah benar dan saya memahami bahwa laporan palsu dapat dikenakan sanksi hukum.</span>
-                    </label>
-                </div>
-
-                <div class="mt-6 flex justify-between">
-                    <x-button type="button" variant="secondary" onclick="goToStep(3)">Kembali</x-button>
-                    <x-button type="submit" variant="primary">Kirim Laporan</x-button>
-                </div>
+                    <div>
+                        <dt class="font-semibold text-neutral-900">Tidak diteruskan otomatis</dt>
+                        <dd class="mt-1 text-neutral-600">Pilihan rujukan dan pendampingan dibahas dengan persetujuan Anda.</dd>
+                    </div>
+                </dl>
+                <x-slot:footer>
+                    <p class="text-[11px] leading-relaxed text-neutral-600">Jika belum siap, Anda dapat berhenti kapan saja. Pastikan perangkat tetap aman.</p>
+                </x-slot:footer>
             </x-card>
-        </div>
-    </form>
+        </aside>
+
+    </div>
 </div>
-
-<script>
-    function goToStep(targetStep) {
-        document.getElementById('input-step').value = targetStep;
-
-        for (let i = 1; i <= 4; i++) {
-            const panel = document.getElementById('step-panel-' + i);
-            const circle = document.getElementById('step-circle-' + i);
-            const label = document.getElementById('step-label-' + i);
-            const line = document.getElementById('step-line-' + i);
-
-            if (i === targetStep) {
-                panel.classList.remove('hidden');
-            } else {
-                panel.classList.add('hidden');
-            }
-
-            circle.className = 'flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold transition ';
-            label.className = 'mt-1.5 text-xs font-medium transition ';
-
-            if (targetStep > i) {
-                circle.className += 'bg-brand-600 text-white';
-                circle.innerHTML = '✓';
-                label.className += 'text-slate-700';
-                if (line) line.className = 'pointer-events-none absolute left-[calc(50%+1.25rem)] top-4 hidden h-0.5 w-[calc(100%-2.5rem)] -translate-y-1/2 bg-brand-600 transition sm:block';
-            } else if (targetStep === i) {
-                circle.className += 'bg-brand-100 text-brand-700 ring-2 ring-brand-600';
-                circle.innerHTML = i;
-                label.className += 'font-bold text-brand-700';
-                if (line) line.className = 'pointer-events-none absolute left-[calc(50%+1.25rem)] top-4 hidden h-0.5 w-[calc(100%-2.5rem)] -translate-y-1/2 bg-slate-200 transition sm:block';
-            } else {
-                circle.className += 'bg-slate-100 text-slate-500';
-                circle.innerHTML = i;
-                label.className += 'text-slate-500';
-                if (line) line.className = 'pointer-events-none absolute left-[calc(50%+1.25rem)] top-4 hidden h-0.5 w-[calc(100%-2.5rem)] -translate-y-1/2 bg-slate-200 transition sm:block';
-            }
-        }
-
-        if (targetStep === 4) {
-            const isAnonim = document.getElementById('mode_anonim')?.checked;
-            const judul = document.querySelector('[name="judul"]')?.value || '-';
-            const kategoriEl = document.querySelector('[name="kategori_kekerasan"]');
-            const kategori = kategoriEl?.options[kategoriEl.selectedIndex]?.text || kategoriEl?.value || '-';
-            const waktu = document.querySelector('[name="waktu_kejadian"]')?.value || '-';
-            const lokasi = document.querySelector('[name="lokasi_kejadian"]')?.value || '-';
-            const urgensiEl = document.querySelector('[name="tingkat_urgensi"]');
-            const urgensi = urgensiEl?.options[urgensiEl.selectedIndex]?.text || urgensiEl?.value || '-';
-            const kronologi = document.querySelector('[name="kronologi"]')?.value || '-';
-
-            document.getElementById('summary-anonim').textContent = isAnonim ? 'Aktif' : 'Nonaktif';
-            document.getElementById('summary-judul').textContent = judul;
-            document.getElementById('summary-kategori').textContent = kategori;
-            document.getElementById('summary-waktu').textContent = waktu.replace('T', ' ');
-            document.getElementById('summary-lokasi').textContent = lokasi;
-            document.getElementById('summary-urgensi').textContent = urgensi;
-            document.getElementById('summary-kronologi').textContent = kronologi;
-        }
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const initialStep = Number(document.getElementById('input-step').value) || 1;
-        goToStep(initialStep);
-    });
-</script>
 @endsection

@@ -79,6 +79,10 @@ abstract class KonselorRequest extends FormRequest
     public function withValidator(Validator $validator): void
     {
         $validator->after(function (Validator $validator): void {
+            if ($this instanceof UpdateKonselorRequest) {
+                return;
+            }
+
             if ($validator->errors()->isNotEmpty() || ! $this->filled('user_id')) {
                 return;
             }

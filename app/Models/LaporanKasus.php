@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class LaporanKasus extends Model
 {
+    /** Email akun anonim bersama peninggal laporan yang dulu dibuat tanpa login. */
+    public const AKUN_ANONIM_BERSAMA = 'tamu@ruangaman.test';
+
     public const KATEGORI = [
         'Fisik',
         'Psikis',
@@ -96,5 +99,13 @@ class LaporanKasus extends Model
         $status = $this->statusKasus?->nama_status ?? 'Pending';
 
         return strtolower($status) === 'pending';
+    }
+
+    /**
+     * Hanya laporan peninggal alur tanpa akun yang boleh diklaim; laporan milik Pelapor lain tidak bisa direbut.
+     */
+    public function bisaDitautkan(): bool
+    {
+        return $this->user?->email === self::AKUN_ANONIM_BERSAMA;
     }
 }

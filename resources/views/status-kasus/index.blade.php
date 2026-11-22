@@ -3,20 +3,20 @@
 @section('title', $title)
 
 @section('content')
-<div class="space-y-6">
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+<div class="mx-auto max-w-6xl px-4 sm:px-6 py-10 space-y-8">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-            <h1 class="text-2xl font-bold tracking-tight text-slate-900">Manajemen Status Kasus</h1>
-            <p class="mt-1 text-sm text-slate-500">Kelola master status kasus dalam alur penanganan laporan kekerasan berbasis gender.</p>
+            <h1 class="text-2xl font-extrabold tracking-tight text-neutral-900">Manajemen Status Kasus</h1>
+            <p class="mt-1.5 text-xs text-neutral-600 leading-relaxed max-w-2xl">
+                Kelola master status kasus dalam alur penanganan laporan kekerasan berbasis gender.
+            </p>
         </div>
-        <div>
-            <x-button href="{{ route('admin.status-kasus.create') }}" variant="primary" size="md">
-                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                <span>Tambah Status</span>
-            </x-button>
-        </div>
+        <x-button href="{{ route('admin.status-kasus.create') }}" variant="primary" size="md" class="shrink-0">
+            <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            <span>Tambah Status</span>
+        </x-button>
     </div>
 
     <!-- Search Box -->
@@ -25,7 +25,7 @@
             <div class="flex-1">
                 <div class="relative">
                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                        <svg class="h-4 w-4 text-slate-400" viewBox="0 0 20 20" fill="currentColor">
+                        <svg class="h-4 w-4 text-neutral-600" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                         </svg>
                     </div>
@@ -34,16 +34,16 @@
                         name="search"
                         value="{{ $search }}"
                         placeholder="Cari berdasarkan nama status atau deskripsi..."
-                        class="block w-full rounded-lg border border-slate-300 py-2.5 pl-9 pr-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                        class="block w-full rounded bg-white py-2.5 pl-9 pr-3 text-sm text-neutral-900 ring-1 ring-inset ring-line-strong placeholder:text-neutral-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
                     />
                 </div>
             </div>
-            <div class="flex gap-2">
-                <x-button type="submit" variant="secondary" size="md">
+            <div class="flex gap-3">
+                <x-button type="submit" variant="secondary" size="sm">
                     Cari
                 </x-button>
                 @if ($search !== '')
-                    <x-button href="{{ route('admin.status-kasus.index') }}" variant="ghost" size="md">
+                    <x-button href="{{ route('admin.status-kasus.index') }}" variant="ghost" size="sm">
                         Reset
                     </x-button>
                 @endif
@@ -52,25 +52,25 @@
     </x-card>
 
     <!-- Table Card -->
-    <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+    <div class="overflow-hidden rounded-xl border border-neutral-200/70 bg-white">
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm text-slate-600">
-                <thead class="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
+            <table class="w-full text-left text-sm text-neutral-600">
+                <thead class="border-b border-neutral-200 bg-surface text-[11px] uppercase tracking-wider text-neutral-600">
                     <tr>
-                        <th scope="col" class="px-6 py-3.5">ID</th>
-                        <th scope="col" class="px-6 py-3.5">Nama Status</th>
-                        <th scope="col" class="px-6 py-3.5">Deskripsi</th>
-                        <th scope="col" class="px-6 py-3.5 text-center">Laporan Terkait</th>
-                        <th scope="col" class="px-6 py-3.5 text-right">Aksi</th>
+                        <th scope="col" class="px-6 py-3.5 font-medium">ID</th>
+                        <th scope="col" class="px-6 py-3.5 font-medium">Nama Status</th>
+                        <th scope="col" class="px-6 py-3.5 font-medium">Deskripsi</th>
+                        <th scope="col" class="px-6 py-3.5 text-center font-medium">Laporan Terkait</th>
+                        <th scope="col" class="px-6 py-3.5 text-right font-medium">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
+                <tbody class="divide-y divide-neutral-200/70">
                     @forelse ($statusKasus as $item)
-                        <tr class="hover:bg-slate-50/75 transition">
-                            <td class="whitespace-nowrap px-6 py-4 font-mono text-xs text-slate-500">
+                        <tr class="transition-colors hover:bg-surface/70">
+                            <td class="whitespace-nowrap px-6 py-4 font-mono text-xs text-neutral-600">
                                 #{{ $item->status_id }}
                             </td>
-                            <td class="whitespace-nowrap px-6 py-4 font-medium text-slate-900">
+                            <td class="whitespace-nowrap px-6 py-4 font-medium text-neutral-900">
                                 @php
                                     $badgeVariant = match (strtolower($item->nama_status)) {
                                         'pending' => 'warning',
@@ -84,44 +84,42 @@
                                     {{ $item->nama_status }}
                                 </x-badge>
                             </td>
-                            <td class="px-6 py-4 text-slate-600">
+                            <td class="px-6 py-4 text-xs text-neutral-600">
                                 {{ $item->deskripsi ?: '-' }}
                             </td>
                             <td class="whitespace-nowrap px-6 py-4 text-center">
-                                <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700">
+                                <span class="inline-flex items-center rounded bg-surface px-2.5 py-0.5 text-xs font-semibold text-neutral-700">
                                     {{ $item->laporan_kasus_count }} laporan
                                 </span>
                             </td>
                             <td class="whitespace-nowrap px-6 py-4 text-right">
-                                <div class="inline-flex items-center gap-2">
+                                <div class="flex items-center justify-end gap-3 text-xs font-medium">
                                     <a
                                         href="{{ route('admin.status-kasus.edit', $item) }}"
-                                        class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                                        class="text-neutral-700 hover:text-neutral-900 hover:underline"
                                     >
                                         Ubah
                                     </a>
 
                                     @if ($item->laporan_kasus_count > 0)
-                                        <button
-                                            type="button"
-                                            disabled
-                                            title="Tidak dapat dihapus karena sedang digunakan oleh {{ $item->laporan_kasus_count }} laporan kasus"
-                                            class="inline-flex items-center rounded-lg border border-slate-200 bg-slate-100 px-2.5 py-1.5 text-xs font-medium text-slate-400 cursor-not-allowed"
+                                        <span
+                                            title="Tidak dapat dihapus karena masih digunakan oleh {{ $item->laporan_kasus_count }} laporan."
+                                            class="cursor-not-allowed text-neutral-600"
                                         >
                                             Hapus
-                                        </button>
+                                        </span>
                                     @else
                                         <button
                                             type="button"
                                             @click="$dispatch('open-confirm-modal', {
                                                 title: 'Hapus Status Kasus',
-                                                message: 'Apakah Anda yakin ingin menghapus status \'{{ $item->nama_status }}\'? Tindakan ini akan menghapus data status secara permanen.',
+                                                message: 'Apakah Anda yakin ingin menghapus status \'{{ $item->nama_status }}\'? Tindakan ini tidak dapat dibatalkan.',
                                                 action: '{{ route('admin.status-kasus.destroy', $item) }}',
                                                 method: 'DELETE',
-                                                confirmText: 'Ya, Hapus Status',
+                                                confirmText: 'Ya, Hapus',
                                                 confirmVariant: 'danger'
                                             })"
-                                            class="inline-flex items-center rounded-lg border border-red-200 bg-white px-2.5 py-1.5 text-xs font-medium text-red-600 shadow-sm hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                            class="text-safety-rose hover:underline"
                                         >
                                             Hapus
                                         </button>
@@ -131,14 +129,8 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-12 text-center text-slate-500">
-                                <svg class="mx-auto h-12 w-12 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                                <p class="mt-2 text-sm font-medium text-slate-700">Tidak ada data status kasus.</p>
-                                @if ($search !== '')
-                                    <p class="mt-1 text-xs text-slate-500">Coba ubah kata kunci pencarian Anda.</p>
-                                @endif
+                            <td colspan="5" class="px-6 py-10 text-center text-sm text-neutral-600">
+                                Belum ada data status kasus yang sesuai.
                             </td>
                         </tr>
                     @endforelse
@@ -147,11 +139,10 @@
         </div>
 
         @if ($statusKasus->hasPages())
-            <div class="border-t border-slate-200 px-6 py-4">
+            <div class="border-t border-neutral-200/70 bg-surface/40 px-6 py-4">
                 {{ $statusKasus->links() }}
             </div>
         @endif
     </div>
 </div>
 @endsection
-
