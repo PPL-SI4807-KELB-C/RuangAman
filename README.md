@@ -226,7 +226,7 @@ Untuk mencegah konflik merge antar enam anggota:
    - `develop`: Tempat integrasi sprint aktif.
    - `feature/PBI-<nomor>-<nama-fitur>`: Branch pengerjaan fitur individu (contoh: `feature/PBI-16-laporan-kasus`).
    - `bugfix/<nama-perbaikan>`: Branch perbaikan issue.
-2. **Commit Convention**: Mengikuti *Conventional Commits* (contoh: `feat(PBI-16): implement case report submission form with anonymous toggle`).
+2. **Commit Convention**: Mengikuti *Conventional Commits* (contoh: `feat(PBI-16): implement case report submission form with anonymous toggle`). Sertakan issue key Jira `PKBC-<angka>` di branch, commit, dan judul PR; lihat [Panduan Commit Jira](docs/panduan-commit-jira.md).
 3. **Pull Request (PR)**:
    - Setiap PR wajib mencantumkan referensi PBI, deskripsi perubahan, checklist pengujian, dan disetujui minimal 1 reviewer sebelum di-merge ke `develop`.
    - Lihat panduan lengkap di [CONTRIBUTING.md](CONTRIBUTING.md).
