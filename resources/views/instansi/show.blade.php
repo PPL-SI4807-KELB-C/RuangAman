@@ -89,5 +89,116 @@
         </div>
     </div>
 
+    {{-- PBI-08: Layanan Bantuan --}}
+    <x-card>
+        <x-slot:header>
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-base font-semibold text-neutral-900">Layanan Bantuan</h3>
+                    <p class="text-xs text-neutral-600">Jenis pendampingan dan dukungan yang disediakan oleh instansi ini.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <x-button :href="route('instansi.layanan.index', $instansi)" variant="secondary" size="sm">
+                        Kelola Layanan
+                    </x-button>
+                    <x-button :href="route('instansi.layanan.create', $instansi)" variant="primary" size="sm">
+                        + Tambah Layanan
+                    </x-button>
+                </div>
+            </div>
+        </x-slot:header>
+
+        @if ($instansi->layananBantuan->isNotEmpty())
+            <div class="divide-y divide-neutral-200/70">
+                @foreach ($instansi->layananBantuan as $layanan)
+                    <div class="flex items-start justify-between py-3.5 first:pt-0 last:pb-0">
+                        <div class="space-y-1">
+                            <h4 class="text-sm font-semibold text-neutral-900">{{ $layanan->nama_layanan }}</h4>
+                            @if ($layanan->deskripsi)
+                                <p class="text-xs text-neutral-600 leading-relaxed">{{ $layanan->deskripsi }}</p>
+                            @endif
+                        </div>
+                        <div class="flex items-center gap-3 text-xs font-medium ml-4 shrink-0">
+                            <a href="{{ route('instansi.layanan.edit', [$instansi, $layanan]) }}" class="text-neutral-700 hover:text-neutral-900 hover:underline">Ubah</a>
+                            <button
+                                type="button"
+                                @click="$dispatch('open-confirm-modal', {{ Js::from([
+                                    'title'          => 'Hapus Layanan',
+                                    'message'        => 'Hapus layanan "' . $layanan->nama_layanan . '" secara permanen?',
+                                    'action'         => route('instansi.layanan.destroy', [$instansi, $layanan]),
+                                    'method'         => 'DELETE',
+                                    'confirmText'    => 'Ya, Hapus',
+                                    'confirmVariant' => 'danger',
+                                ]) }})"
+                                class="text-safety-rose hover:underline"
+                            >
+                                Hapus
+                            </button>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <p class="text-xs text-neutral-600 py-2">Belum ada layanan bantuan yang ditambahkan untuk instansi ini.</p>
+        @endif
+    </x-card>
+
+    {{-- PBI-08: Kontak Bantuan --}}
+    <x-card>
+        <x-slot:header>
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-base font-semibold text-neutral-900">Kontak Bantuan</h3>
+                    <p class="text-xs text-neutral-600">Saluran komunikasi yang dapat dihubungi penyintas atau masyarakat.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <x-button :href="route('instansi.kontak.index', $instansi)" variant="secondary" size="sm">
+                        Kelola Kontak
+                    </x-button>
+                    <x-button :href="route('instansi.kontak.create', $instansi)" variant="primary" size="sm">
+                        + Tambah Kontak
+                    </x-button>
+                </div>
+            </div>
+        </x-slot:header>
+
+        @if ($instansi->kontakBantuan->isNotEmpty())
+            <div class="divide-y divide-neutral-200/70">
+                @foreach ($instansi->kontakBantuan as $kontak)
+                    <div class="flex items-start justify-between py-3.5 first:pt-0 last:pb-0">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <x-badge variant="slate">{{ $kontak->label_jenis_kontak }}</x-badge>
+                                <span class="text-sm font-semibold text-neutral-900">{{ $kontak->nilai_kontak }}</span>
+                            </div>
+                            @if ($kontak->keterangan)
+                                <p class="text-xs text-neutral-600 leading-relaxed">{{ $kontak->keterangan }}</p>
+                            @endif
+                        </div>
+                        <div class="flex items-center gap-3 text-xs font-medium ml-4 shrink-0">
+                            <a href="{{ route('instansi.kontak.edit', [$instansi, $kontak]) }}" class="text-neutral-700 hover:text-neutral-900 hover:underline">Ubah</a>
+                            <button
+                                type="button"
+                                @click="$dispatch('open-confirm-modal', {{ Js::from([
+                                    'title'          => 'Hapus Kontak',
+                                    'message'        => 'Hapus kontak "' . $kontak->nilai_kontak . '" secara permanen?',
+                                    'action'         => route('instansi.kontak.destroy', [$instansi, $kontak]),
+                                    'method'         => 'DELETE',
+                                    'confirmText'    => 'Ya, Hapus',
+                                    'confirmVariant' => 'danger',
+                                ]) }})"
+                                class="text-safety-rose hover:underline"
+                            >
+                                Hapus
+                            </button>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <p class="text-xs text-neutral-600 py-2">Belum ada kontak bantuan yang ditambahkan untuk instansi ini.</p>
+        @endif
+    </x-card>
+
 </div>
 @endsection
