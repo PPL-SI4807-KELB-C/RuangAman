@@ -20,12 +20,14 @@ class LayananKontakBantuanSeeder extends Seeder
             [
                 'nama_instansi' => 'Pusat Bantuan Harmoni',
                 'layanan' => [
-                    ['nama_layanan' => 'Konseling Psikologis', 'deskripsi' => 'Sesi konseling individual bersama psikolog terlatih untuk membantu pemulihan emosional.'],
-                    ['nama_layanan' => 'Pendampingan Hukum',   'deskripsi' => 'Bantuan hukum gratis meliputi konsultasi dan pendampingan pelaporan ke penegak hukum.'],
+                    ['nama_layanan' => 'Pendampingan psikologis', 'deskripsi' => 'Dukungan awal untuk memahami kebutuhan dan pilihan pemulihan.'],
+                    ['nama_layanan' => 'Pendampingan hukum',      'deskripsi' => 'Informasi hak dan pilihan langkah hukum sesuai kebutuhan penyintas.'],
+                    ['nama_layanan' => 'Rujukan layanan lanjutan', 'deskripsi' => 'Informasi rujukan ke lembaga dengan pendampingan yang sesuai.'],
                 ],
                 'kontak' => [
-                    ['jenis_kontak' => 'telepon',  'nilai_kontak' => '021-5555-0101', 'keterangan' => 'Senin–Jumat, 08.00–17.00 WIB'],
-                    ['jenis_kontak' => 'email',    'nilai_kontak' => 'info@harmoni.example.org', 'keterangan' => null],
+                    ['jenis_kontak' => 'email',    'nilai_kontak' => 'bantuan@harmoni.example.org', 'keterangan' => 'Untuk informasi awal'],
+                    ['jenis_kontak' => 'telepon',  'nilai_kontak' => '(021) 0000 0000',            'keterangan' => 'Senin–Jumat, 09.00–16.00 WIB'],
+                    ['jenis_kontak' => 'website',  'nilai_kontak' => 'https://harmoni.example.org', 'keterangan' => 'Informasi resmi instansi'],
                 ],
             ],
             [

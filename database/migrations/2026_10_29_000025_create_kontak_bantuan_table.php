@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('kontak_bantuan', function (Blueprint $table) {
             $table->bigIncrements('kontak_id');
             $table->unsignedBigInteger('instansi_id');
-            $table->enum('jenis_kontak', ['telepon', 'whatsapp', 'email', 'hotline']);
+            $table->enum('jenis_kontak', ['telepon', 'whatsapp', 'email', 'hotline', 'website']);
             $table->string('nilai_kontak', 150);
             $table->string('keterangan', 200)->nullable();
             $table->timestamps();

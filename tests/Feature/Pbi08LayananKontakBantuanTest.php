@@ -48,7 +48,7 @@ class Pbi08LayananKontakBantuanTest extends TestCase
     // =========================================================================
 
     #[Test]
-    public function admin_dapat_melihat_daftar_layanan(): void
+    public function admin_dapat_melihat_daftar_layanan_dan_kontak(): void
     {
         $layanan = LayananBantuan::create([
             'instansi_id'  => $this->instansi->instansi_id,
@@ -60,7 +60,7 @@ class Pbi08LayananKontakBantuanTest extends TestCase
             ->get(route('instansi.layanan.index', $this->instansi));
 
         $response->assertStatus(200);
-        $response->assertSee('Layanan Bantuan');
+        $response->assertSee('Layanan &amp; kontak bantuan', false);
         $response->assertSee('Konseling Pengujian');
     }
 
@@ -71,8 +71,8 @@ class Pbi08LayananKontakBantuanTest extends TestCase
             ->get(route('instansi.layanan.create', $this->instansi));
 
         $response->assertStatus(200);
-        $response->assertSee('Tambah Layanan Bantuan');
-        $response->assertSee('Simpan Layanan');
+        $response->assertSee('Tambah layanan bantuan');
+        $response->assertSee('Simpan layanan');
     }
 
     #[Test]
@@ -92,35 +92,20 @@ class Pbi08LayananKontakBantuanTest extends TestCase
         $this->assertDatabaseHas('layanan_bantuan', [
             'instansi_id'  => $this->instansi->instansi_id,
             'nama_layanan' => 'Pendampingan Medis',
+            'deskripsi'    => 'Bantuan rujukan medis dan visum.',
         ]);
     }
 
     #[Test]
-    public function validasi_gagal_jika_nama_layanan_kosong(): void
+    public function validasi_gagal_jika_nama_layanan_atau_deskripsi_kosong(): void
     {
         $response = $this->actingAs($this->adminUser)
             ->post(route('instansi.layanan.store', $this->instansi), [
                 'nama_layanan' => '',
+                'deskripsi'    => '',
             ]);
 
-        $response->assertSessionHasErrors('nama_layanan');
-    }
-
-    #[Test]
-    public function admin_dapat_melihat_detail_layanan(): void
-    {
-        $layanan = LayananBantuan::create([
-            'instansi_id'  => $this->instansi->instansi_id,
-            'nama_layanan' => 'Layanan Detail Tes',
-            'deskripsi'    => 'Keterangan detail.',
-        ]);
-
-        $response = $this->actingAs($this->adminUser)
-            ->get(route('instansi.layanan.show', [$this->instansi, $layanan]));
-
-        $response->assertStatus(200);
-        $response->assertSee('Layanan Detail Tes');
-        $response->assertSee('Keterangan detail.');
+        $response->assertSessionHasErrors(['nama_layanan', 'deskripsi']);
     }
 
     #[Test]
@@ -129,15 +114,16 @@ class Pbi08LayananKontakBantuanTest extends TestCase
         $layanan = LayananBantuan::create([
             'instansi_id'  => $this->instansi->instansi_id,
             'nama_layanan' => 'Layanan Edit Tes',
-            'deskripsi'    => null,
+            'deskripsi'    => 'Deskripsi awal.',
         ]);
 
         $response = $this->actingAs($this->adminUser)
             ->get(route('instansi.layanan.edit', [$this->instansi, $layanan]));
 
         $response->assertStatus(200);
-        $response->assertSee('Ubah Layanan Bantuan');
+        $response->assertSee('Ubah layanan bantuan');
         $response->assertSee('Layanan Edit Tes');
+        $response->assertSee('Simpan perubahan');
     }
 
     #[Test]
@@ -146,7 +132,7 @@ class Pbi08LayananKontakBantuanTest extends TestCase
         $layanan = LayananBantuan::create([
             'instansi_id'  => $this->instansi->instansi_id,
             'nama_layanan' => 'Layanan Sebelum Update',
-            'deskripsi'    => null,
+            'deskripsi'    => 'Deskripsi awal.',
         ]);
 
         $response = $this->actingAs($this->adminUser)
@@ -161,6 +147,7 @@ class Pbi08LayananKontakBantuanTest extends TestCase
         $this->assertDatabaseHas('layanan_bantuan', [
             'layanan_id'   => $layanan->layanan_id,
             'nama_layanan' => 'Layanan Sesudah Update',
+            'deskripsi'    => 'Deskripsi berhasil diperbarui.',
         ]);
     }
 
@@ -170,7 +157,7 @@ class Pbi08LayananKontakBantuanTest extends TestCase
         $layanan = LayananBantuan::create([
             'instansi_id'  => $this->instansi->instansi_id,
             'nama_layanan' => 'Layanan Akan Dihapus',
-            'deskripsi'    => null,
+            'deskripsi'    => 'Akan dihapus.',
         ]);
 
         $response = $this->actingAs($this->adminUser)
@@ -197,11 +184,11 @@ class Pbi08LayananKontakBantuanTest extends TestCase
         $layananLain = LayananBantuan::create([
             'instansi_id'  => $instansiLain->instansi_id,
             'nama_layanan' => 'Layanan Instansi Lain',
-            'deskripsi'    => null,
+            'deskripsi'    => 'Deskripsi pihak ketiga.',
         ]);
 
         $this->actingAs($this->adminUser)
-            ->get(route('instansi.layanan.show', [$this->instansi, $layananLain]))
+            ->get(route('instansi.layanan.edit', [$this->instansi, $layananLain]))
             ->assertNotFound();
     }
 
@@ -210,7 +197,7 @@ class Pbi08LayananKontakBantuanTest extends TestCase
     // =========================================================================
 
     #[Test]
-    public function admin_dapat_melihat_daftar_kontak(): void
+    public function admin_dapat_melihat_daftar_kontak_di_halaman_gabungan(): void
     {
         $kontak = KontakBantuan::create([
             'instansi_id'  => $this->instansi->instansi_id,
@@ -223,7 +210,7 @@ class Pbi08LayananKontakBantuanTest extends TestCase
             ->get(route('instansi.kontak.index', $this->instansi));
 
         $response->assertStatus(200);
-        $response->assertSee('Kontak Bantuan');
+        $response->assertSee('Kontak bantuan');
         $response->assertSee('021-9999-8888');
     }
 
@@ -234,8 +221,8 @@ class Pbi08LayananKontakBantuanTest extends TestCase
             ->get(route('instansi.kontak.create', $this->instansi));
 
         $response->assertStatus(200);
-        $response->assertSee('Tambah Kontak Bantuan');
-        $response->assertSee('Simpan Kontak');
+        $response->assertSee('Tambah kontak bantuan');
+        $response->assertSee('Simpan kontak');
     }
 
     #[Test]
@@ -257,6 +244,29 @@ class Pbi08LayananKontakBantuanTest extends TestCase
             'instansi_id'  => $this->instansi->instansi_id,
             'jenis_kontak' => 'whatsapp',
             'nilai_kontak' => '0812-3456-7890',
+            'keterangan'   => 'Layanan pesan 24 jam',
+        ]);
+    }
+
+    #[Test]
+    public function admin_dapat_menyimpan_kontak_jenis_website(): void
+    {
+        $payload = [
+            'jenis_kontak' => 'website',
+            'nilai_kontak' => 'https://harmoni.example.org',
+            'keterangan'   => 'Informasi resmi instansi',
+        ];
+
+        $response = $this->actingAs($this->adminUser)
+            ->post(route('instansi.kontak.store', $this->instansi), $payload);
+
+        $response->assertRedirect(route('instansi.kontak.index', $this->instansi));
+        $response->assertSessionHas('success', 'Kontak bantuan berhasil ditambahkan.');
+
+        $this->assertDatabaseHas('kontak_bantuan', [
+            'instansi_id'  => $this->instansi->instansi_id,
+            'jenis_kontak' => 'website',
+            'nilai_kontak' => 'https://harmoni.example.org',
         ]);
     }
 
@@ -265,29 +275,11 @@ class Pbi08LayananKontakBantuanTest extends TestCase
     {
         $response = $this->actingAs($this->adminUser)
             ->post(route('instansi.kontak.store', $this->instansi), [
-                'jenis_kontak' => 'telegram', // Tidak ada dalam enum telepon, whatsapp, email, hotline
+                'jenis_kontak' => 'telegram', // Tidak ada dalam enum telepon, whatsapp, email, hotline, website
                 'nilai_kontak' => '0812-0000-0000',
             ]);
 
         $response->assertSessionHasErrors('jenis_kontak');
-    }
-
-    #[Test]
-    public function admin_dapat_melihat_detail_kontak(): void
-    {
-        $kontak = KontakBantuan::create([
-            'instansi_id'  => $this->instansi->instansi_id,
-            'jenis_kontak' => 'email',
-            'nilai_kontak' => 'kontak@bantuan.test',
-            'keterangan'   => 'Alamat surel resmi',
-        ]);
-
-        $response = $this->actingAs($this->adminUser)
-            ->get(route('instansi.kontak.show', [$this->instansi, $kontak]));
-
-        $response->assertStatus(200);
-        $response->assertSee('kontak@bantuan.test');
-        $response->assertSee('Alamat surel resmi');
     }
 
     #[Test]
@@ -304,8 +296,9 @@ class Pbi08LayananKontakBantuanTest extends TestCase
             ->get(route('instansi.kontak.edit', [$this->instansi, $kontak]));
 
         $response->assertStatus(200);
-        $response->assertSee('Ubah Kontak Bantuan');
+        $response->assertSee('Ubah kontak bantuan');
         $response->assertSee('1500-111');
+        $response->assertSee('Simpan perubahan');
     }
 
     #[Test]
@@ -374,7 +367,7 @@ class Pbi08LayananKontakBantuanTest extends TestCase
         ]);
 
         $this->actingAs($this->adminUser)
-            ->get(route('instansi.kontak.show', [$this->instansi, $kontakLain]))
+            ->get(route('instansi.kontak.edit', [$this->instansi, $kontakLain]))
             ->assertNotFound();
     }
 
@@ -405,7 +398,10 @@ class Pbi08LayananKontakBantuanTest extends TestCase
                 ->assertForbidden();
 
             $this->actingAs($user)
-                ->post(route('instansi.layanan.store', $this->instansi), ['nama_layanan' => 'Ilegal'])
+                ->post(route('instansi.layanan.store', $this->instansi), [
+                    'nama_layanan' => 'Ilegal',
+                    'deskripsi'    => 'Deskripsi ilegal',
+                ])
                 ->assertForbidden();
 
             $this->actingAs($user)
@@ -417,7 +413,10 @@ class Pbi08LayananKontakBantuanTest extends TestCase
                 ->assertForbidden();
 
             $this->actingAs($user)
-                ->post(route('instansi.kontak.store', $this->instansi), ['jenis_kontak' => 'telepon', 'nilai_kontak' => '021-000'])
+                ->post(route('instansi.kontak.store', $this->instansi), [
+                    'jenis_kontak' => 'telepon',
+                    'nilai_kontak' => '021-000',
+                ])
                 ->assertForbidden();
         }
     }

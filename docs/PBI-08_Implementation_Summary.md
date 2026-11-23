@@ -1,6 +1,6 @@
 # PBI-08 Manajemen Layanan dan Kontak Bantuan - Implementasi Summary
 
-## Status Implementasi: ✅ SELESAI (CRUD Backend Lengkap + Integrasi Instansi + Siap Merge develop)
+## Status Implementasi: ✅ SELESAI (CRUD Backend Lengkap + UI Figma Exact 100% + Siap Merge develop)
 
 **Implementasi tanggal:** 23 November 2026  
 **Developer:** Muhammad Haqi Aqilla  
@@ -23,9 +23,9 @@
 - Route key name: `kontak_id`
 - Table: `kontak_bantuan`
 - Fillable attributes: `instansi_id`, `jenis_kontak`, `nilai_kontak`, `keterangan`
-- Casts: `jenis_kontak` as string (enum: `telepon`, `whatsapp`, `email`, `hotline`)
+- Casts: `jenis_kontak` as string (enum: `telepon`, `whatsapp`, `email`, `hotline`, `website`)
 - Relationship: `BelongsTo` ke `InstansiBantuan`
-- Accessor: `label_jenis_kontak` untuk label human-readable
+- Accessor: `label_jenis_kontak` untuk label human-readable (`Telepon`, `WhatsApp`, `Email`, `Hotline`, `Situs web`)
 
 ✅ **File:** `app/Models/InstansiBantuan.php`
 - Diperbarui dengan relasi `layananBantuan()` dan `kontakBantuan()` (keduanya `HasMany`).
@@ -34,29 +34,26 @@
 
 ### 2. Controller
 ✅ **File:** `app/Http/Controllers/LayananBantuanController.php`
-- `index(InstansiBantuan $instansi)`: Menampilkan daftar seluruh layanan milik instansi terkait.
-- `create(InstansiBantuan $instansi)`: Form tambah layanan baru.
-- `store(Request $request, InstansiBantuan $instansi)`: Validasi & simpan layanan baru ke database.
-- `show(InstansiBantuan $instansi, LayananBantuan $layanan)`: Tampilkan detail layanan dengan proteksi scope instansi (404 jika cross-instansi).
-- `edit(InstansiBantuan $instansi, LayananBantuan $layanan)`: Form ubah layanan.
+- `index(InstansiBantuan $instansi)`: Menampilkan antarmuka tunggal terpadu Layanan & Kontak untuk instansi terpilih beserta dropdown instansi switcher.
+- `create(InstansiBantuan $instansi)`: Form tambah layanan baru (layout 2 kolom Figma dengan sidebar panduan).
+- `store(Request $request, InstansiBantuan $instansi)`: Validasi (`nama_layanan` & `deskripsi` required) & simpan layanan baru ke database.
+- `show(InstansiBantuan $instansi, LayananBantuan $layanan)`: Detail layanan dengan proteksi scope instansi (404 jika cross-instansi).
+- `edit(InstansiBantuan $instansi, LayananBantuan $layanan)`: Form ubah layanan sesuai Figma.
 - `update(Request $request, InstansiBantuan $instansi, LayananBantuan $layanan)`: Validasi & simpan pembaruan layanan.
 - `destroy(InstansiBantuan $instansi, LayananBantuan $layanan)`: Hapus layanan secara permanen.
 
 ✅ **File:** `app/Http/Controllers/KontakBantuanController.php`
-- `index(InstansiBantuan $instansi)`: Menampilkan daftar seluruh kontak milik instansi terkait.
-- `create(InstansiBantuan $instansi)`: Form tambah kontak baru.
-- `store(Request $request, InstansiBantuan $instansi)`: Validasi & simpan kontak baru ke database (`jenis_kontak` divalidasi `in:telepon,whatsapp,email,hotline`).
-- `show(InstansiBantuan $instansi, KontakBantuan $kontak)`: Tampilkan detail kontak dengan proteksi scope instansi (404 jika cross-instansi).
-- `edit(InstansiBantuan $instansi, KontakBantuan $kontak)`: Form ubah kontak.
+- `index(InstansiBantuan $instansi)`: Render halaman terpadu Layanan & Kontak.
+- `create(InstansiBantuan $instansi)`: Form tambah kontak baru sesuai Figma.
+- `store(Request $request, InstansiBantuan $instansi)`: Validasi & simpan kontak baru (`jenis_kontak` divalidasi `in:telepon,whatsapp,email,hotline,website`).
+- `show(InstansiBantuan $instansi, KontakBantuan $kontak)`: Detail kontak dengan proteksi scope instansi (404 jika cross-instansi).
+- `edit(InstansiBantuan $instansi, KontakBantuan $kontak)`: Form ubah kontak sesuai Figma.
 - `update(Request $request, InstansiBantuan $instansi, KontakBantuan $kontak)`: Validasi & simpan pembaruan kontak.
 - `destroy(InstansiBantuan $instansi, KontakBantuan $kontak)`: Hapus kontak secara permanen.
 
-✅ **File:** `app/Http/Controllers/InstansiBantuanController.php`
-- Diperbarui agar eager-load `layananBantuan` dan `kontakBantuan` pada method `show()` dan `publicDirectory()`.
-
 ---
 
-### 3. Routes
+### 3. Rute (Routes)
 ✅ **File:** `routes/web.php`
 - Mendukung kedua skema route name untuk fleksibilitas dan kompatibilitas penuh:
   - `/instansi/{instansi}/layanan` & `/instansi/{instansi}/kontak` (`instansi.layanan.*` & `instansi.kontak.*`)
@@ -65,34 +62,42 @@
 
 ---
 
-### 4. Views & Integrasi UI
-- Placeholder views dibuat fungsional dan bersih, siap diperbarui setelah UI Figma dikirimkan:
-  - `resources/views/layanan/index.blade.php`
-  - `resources/views/layanan/create.blade.php`
-  - `resources/views/layanan/edit.blade.php`
-  - `resources/views/layanan/show.blade.php`
-  - `resources/views/kontak/index.blade.php`
-  - `resources/views/kontak/create.blade.php`
-  - `resources/views/kontak/edit.blade.php`
-  - `resources/views/kontak/show.blade.php`
-- Halaman detail instansi (`resources/views/instansi/show.blade.php`) diintegrasikan dengan bagian Layanan Bantuan dan Kontak Bantuan lengkap dengan aksi tambah/kelola/ubah/hapus konfirmasi modal.
-- Direktori publik (`resources/views/instansi/public.blade.php`) menampilkan badge layanan dan informasi kontak untuk setiap instansi aktif.
+### 4. Views & Antarmuka Sesuai Desain Figma (100% Exact)
+✅ **File:** `resources/views/layanan/index.blade.php`
+- Halaman terpadu **Layanan & kontak bantuan** sesuai rancangan Figma:
+  - Breadcrumb: `Ruang admin / Instansi bantuan / Layanan & kontak`
+  - Instansi Selector Banner: Dropdown switcher instansi interaktif dengan info alamat dan status instansi (`#166534`).
+  - Section 1: Tabel Layanan bantuan dengan kolom `NAMA LAYANAN`, `DESKRIPSI`, dan tombol aksi `Ubah` & `Hapus`.
+  - Section 2: Tabel Kontak bantuan dengan kolom `JENIS KONTAK`, `NILAI KONTAK`, `KETERANGAN`, dan tombol aksi `Ubah` & `Hapus`.
+  - Modal Konfirmasi Hapus Alpine.js Figma Exact:
+    - Overlay `#1C1917` opacity 30%
+    - Dialog `#FAF9F7` rounded 12px
+    - Target detail & nama instansi
+    - Kotak peringatan `#EDECE9` dengan teks peringatan tindakan tidak dapat dibatalkan
+    - Tombol `Batal` (`#EDECE9`) dan `Ya, hapus layanan` / `Ya, hapus kontak` (`#B42318`).
+
+✅ **File:** `resources/views/layanan/create.blade.php` & `resources/views/layanan/edit.blade.php`
+- Layout 2 kolom: Form kiri (704px) + Sidebar panduan kanan (320px).
+- Kotak informasi instansi (read-only, `#EDECE9`).
+- Input `Nama layanan *` dan textarea `Deskripsi *` dengan helper text.
+- Tombol aksi `Simpan layanan` / `Simpan perubahan` (`#16A34A`) dan `Batal` (`#EDECE9`).
+
+✅ **File:** `resources/views/kontak/create.blade.php` & `resources/views/kontak/edit.blade.php`
+- Layout 2 kolom Figma: Form kiri (704px) + Sidebar informasi kontak kanan (320px).
+- Kotak informasi instansi (read-only, `#EDECE9`).
+- Pilihan `Jenis kontak *` (Telepon, WhatsApp, Email, Hotline, Situs web).
+- Input `Nilai kontak *` dan textarea `Keterangan (opsional)` dengan helper text.
+- Tombol aksi `Simpan kontak` / `Simpan perubahan` (`#16A34A`) dan `Batal` (`#EDECE9`).
 
 ---
 
 ### 5. Seeder Database
 ✅ **File:** `database/seeders/LayananKontakBantuanSeeder.php`
-- Mengisi data realistis layanan dan kontak untuk 4 instansi bawaan (Pusat Bantuan Harmoni, Yayasan Ruang Pulih, Lembaga Advokasi Nusantara, Rumah Perlindungan Sejati).
-- Terdaftar di `database/seeders/DatabaseSeeder.php`.
+- Mengisi data realistis sesuai sampel Figma (Pendampingan psikologis, Pendampingan hukum, Rujukan layanan lanjutan, Email, Telepon, Situs web).
+- Terdaftar di `DatabaseSeeder.php`.
 
 ---
 
 ### 6. Feature Tests
 ✅ **File:** `tests/Feature/Pbi08LayananKontakBantuanTest.php`
-- 19 test cases komprehensif:
-  - CRUD Layanan Bantuan (Index, Create, Store, Validasi, Show, Edit, Update, Destroy)
-  - Scope isolation Layanan Bantuan (404 jika diakses dari instansi berbeda)
-  - CRUD Kontak Bantuan (Index, Create, Store, Validasi enum jenis kontak, Show, Edit, Update, Destroy)
-  - Scope isolation Kontak Bantuan (404 jika diakses dari instansi berbeda)
-  - Akses tamu ditolak (redirect login)
-  - Akses non-admin (Pelapor dan Konselor) ditolak (403 Forbidden)
+- 20 test cases komprehensif menguji seluruh alur CRUD, validasi, otorisasi, dan scope isolation.

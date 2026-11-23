@@ -13,19 +13,23 @@ class KontakBantuanController extends Controller
     /**
      * Valid contact types (mirrors the DB enum).
      */
-    private const JENIS_KONTAK = ['telepon', 'whatsapp', 'email', 'hotline'];
+    private const JENIS_KONTAK = ['telepon', 'whatsapp', 'email', 'hotline', 'website'];
 
     /**
      * Display a listing of the contacts for the given institution.
      */
     public function index(InstansiBantuan $instansi): View
     {
+        $allInstansi = InstansiBantuan::orderBy('nama_instansi', 'asc')->get();
+        $layanans = $instansi->layananBantuan()->orderBy('created_at', 'desc')->get();
         $kontaks = $instansi->kontakBantuan()->orderBy('created_at', 'desc')->get();
 
-        return view('kontak.index', [
-            'title'    => 'Kontak Bantuan — ' . $instansi->nama_instansi,
-            'instansi' => $instansi,
-            'kontaks'  => $kontaks,
+        return view('layanan.index', [
+            'title'       => 'Layanan & Kontak Bantuan — ' . $instansi->nama_instansi,
+            'instansi'    => $instansi,
+            'allInstansi' => $allInstansi,
+            'layanans'    => $layanans,
+            'kontaks'     => $kontaks,
         ]);
     }
 

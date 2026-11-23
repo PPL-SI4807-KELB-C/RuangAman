@@ -81,11 +81,12 @@ class KontakBantuan extends Model
     public function getLabelJenisKontakAttribute(): string
     {
         return match ($this->jenis_kontak) {
-            'telepon'  => 'Telepon',
-            'whatsapp' => 'WhatsApp',
-            'email'    => 'Email',
-            'hotline'  => 'Hotline',
-            default    => ucfirst($this->jenis_kontak),
+            'telepon'   => 'Telepon',
+            'whatsapp'  => 'WhatsApp',
+            'email'     => 'Email',
+            'hotline'   => 'Hotline',
+            'website'   => 'Situs web',
+            default     => ucfirst($this->jenis_kontak),
         };
     }
 }

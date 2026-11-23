@@ -15,12 +15,16 @@ class LayananBantuanController extends Controller
      */
     public function index(InstansiBantuan $instansi): View
     {
+        $allInstansi = InstansiBantuan::orderBy('nama_instansi', 'asc')->get();
         $layanans = $instansi->layananBantuan()->orderBy('created_at', 'desc')->get();
+        $kontaks = $instansi->kontakBantuan()->orderBy('created_at', 'desc')->get();
 
         return view('layanan.index', [
-            'title'   => 'Layanan Bantuan — ' . $instansi->nama_instansi,
-            'instansi' => $instansi,
-            'layanans' => $layanans,
+            'title'       => 'Layanan & Kontak Bantuan — ' . $instansi->nama_instansi,
+            'instansi'    => $instansi,
+            'allInstansi' => $allInstansi,
+            'layanans'    => $layanans,
+            'kontaks'     => $kontaks,
         ]);
     }
 
@@ -42,10 +46,11 @@ class LayananBantuanController extends Controller
     {
         $validated = $request->validate([
             'nama_layanan' => 'required|string|max:150',
-            'deskripsi'    => 'nullable|string',
+            'deskripsi'    => 'required|string',
         ], [
             'nama_layanan.required' => 'Nama layanan harus diisi.',
             'nama_layanan.max'      => 'Nama layanan maksimal 150 karakter.',
+            'deskripsi.required'    => 'Deskripsi layanan harus diisi.',
         ]);
 
         $instansi->layananBantuan()->create($validated);
@@ -92,10 +97,11 @@ class LayananBantuanController extends Controller
 
         $validated = $request->validate([
             'nama_layanan' => 'required|string|max:150',
-            'deskripsi'    => 'nullable|string',
+            'deskripsi'    => 'required|string',
         ], [
             'nama_layanan.required' => 'Nama layanan harus diisi.',
             'nama_layanan.max'      => 'Nama layanan maksimal 150 karakter.',
+            'deskripsi.required'    => 'Deskripsi layanan harus diisi.',
         ]);
 
         $layanan->update($validated);
