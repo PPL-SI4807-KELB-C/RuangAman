@@ -77,6 +77,8 @@ Kami menerapkan modifikasi alur **Git Flow** yang disederhanakan:
 
 ---
 
+> **Penting:** Agar commit terbaca di Jira, nama branch, pesan commit, dan judul PR wajib memuat issue key `PKBC-<angka>`. Lihat [Panduan Commit agar Terbaca di Jira](docs/panduan-commit-jira.md).
+
 ## 3. Konvensi Pesan Commit (Conventional Commits)
 
 Format commit:
