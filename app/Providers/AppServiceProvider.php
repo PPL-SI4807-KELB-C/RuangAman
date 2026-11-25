@@ -9,6 +9,7 @@ use App\Models\HalamanInformasi;
 use App\Models\KegiatanEdukasi;
 use App\Models\Konselor;
 use App\Models\LaporanKasus;
+use App\Models\LogPenanganan;
 use App\Models\PenangananKasus;
 use App\Models\PendaftaranKegiatan;
 use App\Models\Pengumuman;
@@ -21,6 +22,7 @@ use App\Policies\HalamanInformasiPolicy;
 use App\Policies\KegiatanEdukasiPolicy;
 use App\Policies\KonselorPolicy;
 use App\Policies\LaporanKasusPolicy;
+use App\Policies\LogPenangananPolicy;
 use App\Policies\PenangananKasusPolicy;
 use App\Policies\PendaftaranKegiatanPolicy;
 use App\Policies\PengumumanPolicy;
@@ -45,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
         PendaftaranKegiatan::class => PendaftaranKegiatanPolicy::class,
         StatusKasus::class => StatusKasusPolicy::class,
         PenangananKasus::class => PenangananKasusPolicy::class,
+        LogPenanganan::class => LogPenangananPolicy::class,
         Konselor::class => KonselorPolicy::class,
         HalamanInformasi::class => HalamanInformasiPolicy::class,
         GlosariumKbg::class => GlosariumKbgPolicy::class,
@@ -77,6 +80,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(KategoriArtikel::class, KategoriArtikelPolicy::class);
         Gate::policy(StatusKasus::class, StatusKasusPolicy::class);
         Gate::policy(PenangananKasus::class, PenangananKasusPolicy::class);
+        Gate::policy(LogPenanganan::class, LogPenangananPolicy::class);
         Gate::policy(KegiatanEdukasi::class, KegiatanEdukasiPolicy::class);
         Gate::policy(PendaftaranKegiatan::class, PendaftaranKegiatanPolicy::class);
         Gate::policy(Konselor::class, KonselorPolicy::class);
@@ -87,6 +91,8 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('kelola-status-kasus', fn (User $user) => $user->isAdminKasus() || $user->hasPermission('kelola-status-kasus'));
         Gate::define('kelola-penugasan-kasus', fn (User $user) => $user->isAdminKasus() || $user->hasPermission('kelola-penugasan-kasus'));
+        Gate::define('akses-log-penanganan', fn (User $user) => ! $user->isPelapor() && ($user->isAdminKasus() || $user->isKonselor()));
+        Gate::define('kelola-log-manual', fn (User $user) => ! $user->isPelapor() && ($user->role?->permissions()->where('nama_permission', 'kelola-log-manual')->exists() ?? false));
         Gate::define('kelola-kegiatan', fn (User $user) => $user->isAdminKasus() || $user->hasPermission('kelola-kegiatan'));
         Gate::define('kelola-konselor', fn (User $user) => $user->isAdminKasus() || $user->hasPermission('kelola-konselor'));
         Gate::define('kelola-halaman-informasi', fn (User $user) => $user->isAdminKasus() || $user->hasPermission('kelola-halaman-informasi'));

@@ -65,6 +65,7 @@
                             <p class="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Penanganan Kasus</p>
                             <a href="{{ route('admin.status-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.status-kasus.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Status Kasus</a>
                             <a href="{{ route('admin.penanganan-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.penanganan-kasus.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Penugasan Kasus</a>
+                            <a href="{{ route('log-penanganan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('log-penanganan.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Log Penanganan</a>
                             <a href="{{ route('admin.kegiatan-edukasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.kegiatan-edukasi.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Kegiatan Edukasi</a>
                             <a href="{{ route('admin.konselor.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.konselor.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Data Konselor</a>
                             <a href="{{ route('instansi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('instansi.*') && !request()->routeIs('instansi.publik') || request()->routeIs('admin.instansi.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Instansi Bantuan</a>
@@ -103,6 +104,7 @@
                                 <a href="{{ route('profil-pelapor.edit') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('profil-pelapor.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Profil &amp; mode anonim</a>
                             @endif
                             @if (Auth::user()->isKonselor())
+                                <a href="{{ route('log-penanganan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('log-penanganan.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Log Penanganan</a>
                                 <a href="{{ route('konselor.profil.edit') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Profil Saya</a>
                             @endif
                             <form method="POST" action="{{ route('logout') }}" class="mt-1 border-t border-neutral-200/70 pt-1.5">
@@ -156,6 +158,7 @@
                         <a href="{{ route('profil-pelapor.edit') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Profil &amp; mode anonim</a>
                     @endif
                     @if (Auth::user()->isKonselor())
+                        <a href="{{ route('log-penanganan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Log Penanganan</a>
                         <a href="{{ route('konselor.profil.edit') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Profil Saya</a>
                     @endif
                 @endauth
@@ -165,6 +168,7 @@
                         <p class="px-3 pb-1 pt-1 text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Penanganan Kasus</p>
                         <a href="{{ route('admin.status-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Status Kasus</a>
                         <a href="{{ route('admin.penanganan-kasus.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Penugasan Kasus</a>
+                        <a href="{{ route('log-penanganan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Log Penanganan</a>
                         <a href="{{ route('admin.kegiatan-edukasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Kegiatan Edukasi</a>
                         <a href="{{ route('admin.konselor.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Data Konselor</a>
                         <a href="{{ route('instansi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Instansi Bantuan</a>

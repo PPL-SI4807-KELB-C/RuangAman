@@ -16,6 +16,7 @@ use App\Http\Controllers\InstansiBantuanController;
 use App\Http\Controllers\KegiatanEdukasiController;
 use App\Http\Controllers\KonselorProfilController;
 use App\Http\Controllers\LaporanKasusController;
+use App\Http\Controllers\LogPenangananController;
 use App\Http\Controllers\PenangananKasusController;
 use App\Http\Controllers\PengumumanPublikController;
 use App\Http\Controllers\PendaftaranKegiatanController;
@@ -247,6 +248,16 @@ Route::get('/glosarium', [GlosariumController::class, 'index'])->name('glosarium
 Route::get('/halaman/{slug}', [HalamanInformasiPublikController::class, 'show'])
     ->where('slug', '[A-Za-z0-9\-_]+')
     ->name('halaman.show');
+
+/*
+|--------------------------------------------------------------------------
+| PBI-06: Log Penanganan Kasus (Admin Kasus & Konselor)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'petugas.kasus'])->group(function () {
+    Route::resource('log-penanganan', LogPenangananController::class)
+        ->parameters(['log-penanganan' => 'logPenanganan']);
+});
 
 /*
 |--------------------------------------------------------------------------
