@@ -4,6 +4,15 @@ Semua perubahan tercatat dalam format standar changelog.
 
 ---
 
+## [PKBC-8: Aturan Commit] - 2026-11-25
+
+### Diubah (Changed)
+- `CONTRIBUTING.md`: nama branch, pesan commit (`[PKBC-XX] tipe(lingkup): deskripsi`), dan judul PR kini wajib memuat issue key Jira `PKBC-XX` (sebelumnya memakai `PBI-XX`), selaras dengan `docs/panduan-commit-jira.md` dan Definition of Done Sprint 2. Contoh commit, alur kerja, dan langkah memperbarui status Jira ikut disesuaikan.
+- `README.md`: contoh commit memakai issue key.
+- `.github/PULL_REQUEST_TEMPLATE.md`: kolom "Issue Jira Terkait" (`PKBC-XX`) menggantikan referensi `Fixes #`/`PBI-XX`.
+
+---
+
 ## [PBI-10, PBI-11] - 2026-11-22
 
 ### Ditambahkan (Added)
