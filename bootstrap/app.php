@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin.kasus' => \App\Http\Middleware\EnsureAdminKasus::class,
             'konselor' => \App\Http\Middleware\EnsureKonselor::class,
             'pelapor' => \App\Http\Middleware\EnsurePelapor::class,
+            'petugas.kasus' => \App\Http\Middleware\EnsurePetugasKasus::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

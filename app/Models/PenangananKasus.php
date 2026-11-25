@@ -59,4 +59,19 @@ class PenangananKasus extends Model
     {
         return $this->hasMany(LogPenanganan::class, 'penanganan_id', 'penanganan_id');
     }
+
+    /**
+     * Memeriksa apakah penanganan kasus masih aktif (belum memiliki tanggal selesai
+     * dan status laporan terkait bukan Selesai atau Ditolak).
+     */
+    public function isKasusAktif(): bool
+    {
+        if ($this->tanggal_selesai !== null) {
+            return false;
+        }
+
+        $namaStatus = strtolower((string) $this->laporanKasus?->statusKasus?->nama_status);
+
+        return ! in_array($namaStatus, ['selesai', 'ditolak'], true);
+    }
 }
