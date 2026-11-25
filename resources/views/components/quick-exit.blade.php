@@ -1,46 +1,21 @@
-<!-- Tombol Keluar Cepat (FR-28). Layout wajib memuat <meta name="csrf-token" content="{{ csrf_token() }}">. -->
-@props([
-    'logoutUrl' => '/logout',
-    'redirectTo' => 'https://www.google.com',
-])
+{{-- Tombol Keluar Cepat (FR-28). Perilakunya ada di Alpine.data('quickExit') pada resources/js/app.js;
+     elemen <body> pada layout memuat x-data="quickExit" dan menangani Esc dua kali.
+     Sengaja dibuat paling kontras di header (hitam, min 44px) agar mudah ditemukan saat panik. --}}
+@props(['label' => 'Keluar cepat'])
 
-<div
-    x-data="{
-        armed: false,
-        armTimer: null,
-        handleEscape() {
-            if (this.armed) {
-                this.quickExit();
-                return;
-            }
-            this.armed = true;
-            clearTimeout(this.armTimer);
-            this.armTimer = setTimeout(() => { this.armed = false; }, 1200);
-        },
-        quickExit() {
-            sessionStorage.clear();
-            const leave = () => window.location.replace('{{ $redirectTo }}');
-            const token = document.querySelector('meta[name=csrf-token]')?.content;
-            if (!token) {
-                return leave();
-            }
-            fetch('{{ $logoutUrl }}', {
-                method: 'POST',
-                headers: { 'X-CSRF-TOKEN': token, 'Accept': 'application/json' },
-                keepalive: true,
-            }).catch(() => {}).finally(leave);
-        }
-    }"
-    @keydown.escape.window="handleEscape()"
-    class="fixed bottom-4 right-4 z-50">
-    <button
-        @click="quickExit()"
-        type="button"
-        class="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 px-4 rounded-full shadow-lg transition duration-200 focus:outline-none focus:ring-4 focus:ring-red-300"
-        title="Keluar cepat: klik tombol atau tekan Esc dua kali untuk mengakhiri sesi dan pindah ke situs netral">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
-        </svg>
-        <span>Keluar Cepat (ESC ×2)</span>
-    </button>
-</div>
+<button
+    type="button"
+    @click="exitNow()"
+    {{ $attributes->merge(['class' => 'inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-lg bg-neutral-900 px-4 text-sm font-semibold text-white transition-colors hover:bg-neutral-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2']) }}
+    title="Pindah seketika ke situs netral. Pintasan: tekan Esc dua kali."
+    aria-label="{{ $label }} — pindah seketika ke situs netral"
+    aria-keyshortcuts="Escape Escape"
+>
+    <span>{{ $label }}</span>
+    <kbd class="hidden rounded bg-white/15 px-1.5 py-0.5 font-sans text-[12px] font-medium text-white md:inline" aria-hidden="true">Esc×2</kbd>
+    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+        <polyline points="16 17 21 12 16 7" />
+        <line x1="21" y1="12" x2="9" y2="12" />
+    </svg>
+</button>

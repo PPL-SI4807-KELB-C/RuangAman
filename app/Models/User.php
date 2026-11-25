@@ -55,6 +55,11 @@ class User extends Authenticatable
         return $this->hasOne(ProfilPelapor::class, 'user_id', 'user_id');
     }
 
+    public function konselor(): HasOne
+    {
+        return $this->hasOne(Konselor::class, 'user_id', 'user_id');
+    }
+
     public function laporanKasus(): HasMany
     {
         return $this->hasMany(LaporanKasus::class, 'user_id', 'user_id');
@@ -63,6 +68,16 @@ class User extends Authenticatable
     public function penangananKasus(): HasMany
     {
         return $this->hasMany(PenangananKasus::class, 'petugas_id', 'user_id');
+    }
+
+    public function pendaftaranKegiatan(): HasMany
+    {
+        return $this->hasMany(PendaftaranKegiatan::class, 'user_id', 'user_id');
+    }
+
+    public function artikel(): HasMany
+    {
+        return $this->hasMany(Artikel::class, 'penulis_id', 'user_id');
     }
 
     /**
@@ -91,6 +106,22 @@ class User extends Authenticatable
     public function isAdminKasus(): bool
     {
         return $this->hasRole('Admin Kasus');
+    }
+
+    /**
+     * Memeriksa apakah user adalah Pelapor.
+     */
+    public function isPelapor(): bool
+    {
+        return $this->hasRole('Pelapor');
+    }
+
+    /**
+     * Memeriksa apakah user adalah Konselor/Psikolog.
+     */
+    public function isKonselor(): bool
+    {
+        return $this->hasRole('Konselor');
     }
 
     /**

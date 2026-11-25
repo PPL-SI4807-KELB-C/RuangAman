@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 256">
+  <path d="M203.2 125.4A80 80 0 0 1 52.8 125.4" fill="none" stroke="#000" stroke-width="32" stroke-linecap="round"/>
+  <circle cx="128" cy="92" r="32" fill="#000"/>
+  <text x="290" y="164" font-family="Inter, Segoe UI, sans-serif" font-size="104" font-weight="800" letter-spacing="-3" fill="#000">RuangAman</text>
+</svg>

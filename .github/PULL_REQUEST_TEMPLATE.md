@@ -1,7 +1,8 @@
 ## 📌 Ringkasan Perubahan (Pull Request Summary)
 Jelaskan apa yang ditambahkan, diubah, atau diperbaiki dalam PR ini.
 
-- **Nomor PBI / Issue Terkait**: Fixes # (atau PBI-XX)
+- **Issue Jira Terkait**: PKBC-XX (wajib; samakan dengan judul PR dan nama branch)
+- **Nomor PBI**: PBI-XX (bila ada)
 - **PIC / Author**: @username
 - **Target Branch**: `develop`
 

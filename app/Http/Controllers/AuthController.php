@@ -28,7 +28,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/')->with('success', 'Selamat datang kembali.');
+            return redirect()->intended(route('dashboard'))->with('success', 'Selamat datang kembali.');
         }
 
         return back()->withErrors([
@@ -43,6 +43,11 @@ class AuthController extends Controller
 
     public function register(Request $request): RedirectResponse
     {
+        // Formulir hanya meminta alias; nama tampilan disamakan bila tidak dikirim (mis. JavaScript nonaktif).
+        if (blank($request->input('nama_tampilan'))) {
+            $request->merge(['nama_tampilan' => $request->input('alias')]);
+        }
+
         $data = $request->validate([
             'nama_tampilan' => ['required', 'string', 'max:100'],
             'email' => ['required', 'email', 'max:150', 'unique:users,email'],
@@ -69,7 +74,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect('/')->with('success', 'Akun berhasil dibuat. Selamat datang di RuangAman.');
+        return redirect()->route('dashboard')->with('success', 'Akun berhasil dibuat. Selamat datang di RuangAman.');
     }
 
     public function logout(Request $request): RedirectResponse

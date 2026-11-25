@@ -18,7 +18,7 @@ $total = count($steps);
             <li class="relative flex-1">
                 <div class="flex flex-col items-center text-center">
                     <div class="flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold
-                        {{ $isCompleted ? 'bg-brand-600 text-white' : ($isCurrent ? 'bg-brand-100 text-brand-700 ring-2 ring-brand-600' : 'bg-slate-100 text-slate-500') }}">
+                        {{ $isCompleted ? 'bg-brand-600 text-white' : ($isCurrent ? 'bg-brand-100 text-brand-700 ring-2 ring-brand-600' : 'bg-neutral-100 text-neutral-600') }}">
                         @if ($isCompleted)
                             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
@@ -28,13 +28,13 @@ $total = count($steps);
                         @endif
                     </div>
                     <span class="mt-1.5 text-xs font-medium
-                        {{ $isCurrent ? 'text-brand-700' : ($isCompleted ? 'text-slate-700' : 'text-slate-500') }}">
+                        {{ $isCurrent ? 'text-brand-700' : ($isCompleted ? 'text-neutral-700' : 'text-neutral-600') }}">
                         {{ $label }}
                     </span>
                 </div>
                 @if (! $loop->last)
                     <div class="absolute left-1/2 top-4 hidden h-0.5 w-[calc(100%-1rem)] -translate-y-1/2 sm:block
-                        {{ $isCompleted ? 'bg-brand-600' : 'bg-slate-200' }}">
+                        {{ $isCompleted ? 'bg-brand-600' : 'bg-neutral-200' }}">
                     </div>
                 @endif
             </li>

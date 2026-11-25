@@ -5,38 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', config('app.name'))</title>
+    <title>@yield('title', 'RuangAman — Masuk / Daftar')</title>
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#15803d">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
-    <x-quick-exit />
+<body class="flex min-h-screen flex-col bg-white text-neutral-900 antialiased font-sans selection:bg-neutral-200" x-data="quickExit('{{ route('logout') }}')" @keydown.escape.window="handleEscape()">
 
-    <div class="flex min-h-screen flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-        <div class="mb-6 text-center">
-            <a href="{{ url('/') }}" class="inline-flex items-center gap-2 text-brand-700" aria-label="RuangAman Beranda">
-                <svg class="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                    <path d="M12 3l7 4v6c0 5.55-3.84 10.74-9 12-5.16-1.26-9-6.45-9-12V7l7-4z" />
-                    <path d="M9 12l2 2 4-4" />
-                </svg>
-                <span class="text-2xl font-bold tracking-tight">RuangAman</span>
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-neutral-900 focus:px-4 focus:py-2 focus:text-xs focus:font-medium focus:text-white">Lompat ke konten utama</a>
+
+    {{-- Banner keselamatan + kontak darurat --}}
+    <x-safety-banner />
+
+    {{-- Header ringkas --}}
+    <header class="w-full border-b border-neutral-200 bg-white">
+        <div class="mx-auto max-w-6xl flex items-center justify-between px-4 sm:px-6 py-4">
+            <a href="{{ url('/') }}" class="rounded hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2" aria-label="RuangAman — beranda">
+                <x-logo />
             </a>
-        </div>
 
+            <div class="flex items-center gap-4">
+                <a href="{{ url('/') }}" class="hidden text-xs text-neutral-600 hover:text-neutral-900 sm:inline">
+                    &larr; Kembali ke beranda
+                </a>
+                <x-quick-exit />
+            </div>
+        </div>
+    </header>
+
+    {{-- Konten --}}
+    <main id="main-content" class="w-full flex-1 py-12 px-4 sm:px-6">
         @if (session('success'))
-            <x-alert variant="success" class="mb-4 w-full max-w-md">
-                {{ session('success') }}
-            </x-alert>
+            <div class="mx-auto max-w-md mb-6">
+                <x-alert variant="success" role="status">{{ session('success') }}</x-alert>
+            </div>
         @endif
         @if (session('error'))
-            <x-alert variant="danger" class="mb-4 w-full max-w-md">
-                {{ session('error') }}
-            </x-alert>
+            <div class="mx-auto max-w-md mb-6">
+                <x-alert variant="danger">{{ session('error') }}</x-alert>
+            </div>
         @endif
 
-        <div class="w-full max-w-md">
-            @yield('content')
+        @yield('content')
+    </main>
+
+    {{-- Footer --}}
+    <footer class="w-full border-t border-neutral-200 bg-white py-8">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-neutral-600">
+            <p>RuangAman · Layanan pelaporan dan pendampingan kekerasan berbasis gender.</p>
+            <a href="{{ route('halaman.show', 'kebijakan-privasi') }}" class="hover:text-neutral-900 hover:underline">Kebijakan privasi</a>
         </div>
-    </div>
+    </footer>
+
 </body>
 </html>
