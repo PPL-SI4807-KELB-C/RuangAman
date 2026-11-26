@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\InstansiBantuan;
-use App\Models\Role;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -30,13 +29,14 @@ class Pbi07ManajemenInstansiBantuanTest extends TestCase
     }
 
     #[Test]
-    public function halaman_index_manajemen_instansi_dapat_diakses_oleh_user_terautentikasi(): void
+    public function halaman_index_manajemen_instansi_dapat_diakses_oleh_admin_kasus(): void
     {
         $response = $this->actingAs($this->adminUser)->get(route('instansi.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Manajemen Instansi Bantuan');
+        $response->assertSee('Manajemen instansi bantuan');
         $response->assertSee('Daftar instansi');
+        $response->assertSee('+ &nbsp;Tambah instansi', false);
     }
 
     #[Test]
@@ -78,13 +78,42 @@ class Pbi07ManajemenInstansiBantuanTest extends TestCase
     }
 
     #[Test]
+    public function halaman_detail_direktori_publik_dapat_diakses_untuk_instansi_aktif(): void
+    {
+        $instansiAktif = InstansiBantuan::where('status', 'aktif')->firstOrFail();
+
+        $response = $this->get(route('instansi.publik.show', $instansiAktif));
+
+        $response->assertStatus(200);
+        $response->assertSee($instansiAktif->nama_instansi);
+        $response->assertSee('ALAMAT INSTANSI');
+        $response->assertSee('Layanan yang tersedia');
+        $response->assertSee('Hubungi instansi');
+        $response->assertSee('Utamakan kenyamanan dan keselamatan Anda.');
+    }
+
+    #[Test]
+    public function halaman_detail_direktori_publik_mengembalikan_404_untuk_instansi_nonaktif(): void
+    {
+        $instansiNonaktif = InstansiBantuan::create([
+            'nama_instansi' => 'Instansi Nonaktif Publik',
+            'alamat' => 'Jl. Tertutup No. 1',
+            'deskripsi' => 'Tidak boleh tampil di publik.',
+            'status' => 'nonaktif',
+        ]);
+
+        $this->get(route('instansi.publik.show', $instansiNonaktif))
+            ->assertNotFound();
+    }
+
+    #[Test]
     public function halaman_tambah_instansi_dapat_diakses(): void
     {
         $response = $this->actingAs($this->adminUser)->get(route('instansi.create'));
 
         $response->assertStatus(200);
-        $response->assertSee('Tambah Instansi Bantuan');
-        $response->assertSee('Simpan Instansi');
+        $response->assertSee('Tambah instansi bantuan');
+        $response->assertSee('Simpan instansi');
     }
 
     #[Test]
@@ -148,6 +177,7 @@ class Pbi07ManajemenInstansiBantuanTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee($instansi->nama_instansi);
         $response->assertSee('Detail instansi bantuan');
+        $response->assertSee('Ubah instansi');
     }
 
     #[Test]
@@ -158,8 +188,9 @@ class Pbi07ManajemenInstansiBantuanTest extends TestCase
         $response = $this->actingAs($this->adminUser)->get(route('instansi.edit', $instansi));
 
         $response->assertStatus(200);
-        $response->assertSee('Ubah Instansi Bantuan');
+        $response->assertSee('Ubah instansi bantuan');
         $response->assertSee($instansi->nama_instansi);
+        $response->assertSee('Simpan perubahan');
     }
 
     #[Test]
