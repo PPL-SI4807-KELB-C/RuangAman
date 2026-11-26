@@ -113,6 +113,7 @@ Route::middleware(['auth', 'pelapor'])->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::get('/instansi-bantuan', [InstansiBantuanController::class, 'publicDirectory'])->name('instansi.publik');
+Route::get('/instansi-bantuan/{instansi}', [InstansiBantuanController::class, 'publicShow'])->name('instansi.publik.show');
 
 /*
 |--------------------------------------------------------------------------

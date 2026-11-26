@@ -3,31 +3,37 @@
 @section('title', $title)
 
 @section('content')
-<div class="mx-auto max-w-6xl px-4 sm:px-6 py-10 space-y-8">
+<div class="w-full bg-[#FAF9F7] min-h-[calc(100vh-160px)]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+        {{-- Back Link --}}
+        <div class="mb-5">
+            <a href="{{ route('instansi.index') }}" class="text-[13px] text-[#686563] hover:text-[#1C1917] font-normal transition inline-flex items-center gap-1.5">
+                <span aria-hidden="true">←</span>
+                <span>Kembali ke daftar instansi</span>
+            </a>
+        </div>
 
-    <x-page-header
-        title="Tambah Instansi Bantuan"
-        description="Lengkapi profil lembaga yang akan ditampilkan pada direktori bantuan publik. Kolom bertanda * wajib diisi."
-        :back="route('instansi.index')"
-        back-label="Kembali ke daftar"
-    />
+        {{-- Page Header --}}
+        <div class="mb-8">
+            <h1 class="text-[36px] font-medium text-[#1C1917] leading-tight">
+                Tambah instansi bantuan
+            </h1>
+            <p class="text-base text-[#686563] font-normal mt-2">
+                Lengkapi informasi instansi. Kolom bertanda * wajib diisi.
+            </p>
+        </div>
 
-    <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
-        <x-card class="lg:col-span-8">
-            <form method="POST" action="{{ route('instansi.store') }}" class="space-y-6">
-                @csrf
+        {{-- Two Column Content --}}
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div class="lg:col-span-8">
+                <form action="{{ route('instansi.store') }}" method="POST" class="space-y-6">
+                    @csrf
+                    @include('instansi._form', ['submitLabel' => 'Simpan instansi'])
+                </form>
+            </div>
 
-                @include('instansi._form', ['instansi' => new \App\Models\InstansiBantuan()])
-
-                <div class="flex flex-wrap items-center gap-5 border-t border-neutral-300/60 pt-5">
-                    <x-button type="submit" variant="primary">Simpan Instansi</x-button>
-                    <x-button :href="route('instansi.index')" variant="ghost">Batal</x-button>
-                </div>
-            </form>
-        </x-card>
-
-        @include('instansi._sidebar')
+            @include('instansi._sidebar')
+        </div>
     </div>
-
 </div>
 @endsection
