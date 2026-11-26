@@ -73,6 +73,7 @@
                             <p class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Tata Kelola Konten</p>
                             <a href="{{ route('admin.artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.artikel.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Artikel Edukasi</a>
                             <a href="{{ route('admin.kategori-artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.kategori-artikel.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Kategori Artikel</a>
+                            <a href="{{ route('admin.feedback-artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.feedback-artikel.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Feedback Artikel</a>
                             <a href="{{ route('admin.halaman-informasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.halaman-informasi.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Halaman Informasi</a>
                             <a href="{{ route('admin.glosarium.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.glosarium.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Glosarium KBG</a>
                             <a href="{{ route('admin.pengumuman.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.pengumuman.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Pengumuman</a>
@@ -101,6 +102,7 @@
                             @if (Auth::user()->isPelapor())
                                 <a href="{{ route('laporan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('laporan.index', 'laporan.show', 'laporan.edit') ? 'bg-neutral-50 text-neutral-900' : '' }}">Laporan Saya</a>
                                 <a href="{{ route('pendaftaran-kegiatan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Pendaftaran Saya</a>
+                                <a href="{{ route('feedback-saya.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('feedback-saya.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Feedback Saya</a>
                                 <a href="{{ route('profil-pelapor.edit') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('profil-pelapor.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Profil &amp; mode anonim</a>
                             @endif
                             @if (Auth::user()->isKonselor())
@@ -155,6 +157,7 @@
                         <a href="{{ route('laporan.create') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Pelaporan</a>
                         <a href="{{ route('laporan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Laporan Saya</a>
                         <a href="{{ route('pendaftaran-kegiatan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Pendaftaran Saya</a>
+                        <a href="{{ route('feedback-saya.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Feedback Saya</a>
                         <a href="{{ route('profil-pelapor.edit') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Profil &amp; mode anonim</a>
                     @endif
                     @if (Auth::user()->isKonselor())
@@ -175,6 +178,7 @@
                         <p class="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Tata Kelola Konten</p>
                         <a href="{{ route('admin.artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Artikel Edukasi</a>
                         <a href="{{ route('admin.kategori-artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Kategori Artikel</a>
+                        <a href="{{ route('admin.feedback-artikel.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Feedback Artikel</a>
                         <a href="{{ route('admin.halaman-informasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Halaman Informasi</a>
                         <a href="{{ route('admin.glosarium.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Glosarium KBG</a>
                         <a href="{{ route('admin.pengumuman.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Pengumuman</a>

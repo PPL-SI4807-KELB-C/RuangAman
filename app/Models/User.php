@@ -80,6 +80,11 @@ class User extends Authenticatable
         return $this->hasMany(Artikel::class, 'penulis_id', 'user_id');
     }
 
+    public function feedbackArtikel(): HasMany
+    {
+        return $this->hasMany(FeedbackArtikel::class, 'user_id', 'user_id');
+    }
+
     public function logPenanganan(): HasMany
     {
         return $this->hasMany(LogPenanganan::class, 'user_id', 'user_id');

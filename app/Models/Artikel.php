@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class Artikel extends Model
@@ -50,6 +51,11 @@ class Artikel extends Model
     public function penulis(): BelongsTo
     {
         return $this->belongsTo(User::class, 'penulis_id', 'user_id');
+    }
+
+    public function feedbackArtikel(): HasMany
+    {
+        return $this->hasMany(FeedbackArtikel::class, 'artikel_id', 'artikel_id');
     }
 
     /**
