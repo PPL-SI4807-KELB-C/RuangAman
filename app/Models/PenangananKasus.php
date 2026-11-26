@@ -74,4 +74,12 @@ class PenangananKasus extends Model
 
         return ! in_array($namaStatus, ['selesai', 'ditolak'], true);
     }
+
+    /**
+     * Memeriksa apakah penugasan penanganan kasus telah selesai berdasarkan tanggal selesai.
+     */
+    public function isSelesai(): bool
+    {
+        return $this->tanggal_selesai !== null;
+    }
 }
