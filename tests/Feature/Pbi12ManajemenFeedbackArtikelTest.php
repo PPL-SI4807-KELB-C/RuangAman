@@ -8,6 +8,7 @@ use App\Models\KategoriArtikel;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -35,11 +36,13 @@ class Pbi12ManajemenFeedbackArtikelTest extends TestCase
 
     private function buatArtikel(array $override = []): Artikel
     {
+        $slug = $override['slug'] ?? 'artikel-uji-feedback-'.Str::lower(Str::random(10));
+
         return Artikel::create(array_merge([
             'kategori_id' => KategoriArtikel::default()->kategori_id,
             'penulis_id' => $this->admin->user_id,
             'judul' => 'Artikel Uji Feedback',
-            'slug' => 'artikel-uji-feedback',
+            'slug' => $slug,
             'isi' => 'Isi artikel edukasi untuk pengujian feedback.',
             'status_publikasi' => Artikel::STATUS_PUBLISHED,
         ], $override));
@@ -83,7 +86,7 @@ class Pbi12ManajemenFeedbackArtikelTest extends TestCase
     public function peran_yang_tidak_berwenang_mendapat_403(): void
     {
         $artikel = $this->buatArtikel();
-        $feedback = $this->buatFeedback();
+        $feedback = $this->buatFeedback(artikel: $artikel);
 
         foreach ([$this->konselor, $this->admin] as $user) {
             $this->actingAs($user);
@@ -198,8 +201,9 @@ class Pbi12ManajemenFeedbackArtikelTest extends TestCase
     #[Test]
     public function pelapor_hanya_melihat_feedback_miliknya_sendiri(): void
     {
-        $feedbackSendiri = $this->buatFeedback(isi: 'Feedback milik saya.');
-        $this->buatFeedback(user: $this->pelaporLain(), isi: 'Feedback milik pengguna lain.');
+        $artikel = $this->buatArtikel();
+        $this->buatFeedback(artikel: $artikel, isi: 'Feedback milik saya.');
+        $this->buatFeedback(user: $this->pelaporLain(), artikel: $artikel, isi: 'Feedback milik pengguna lain.');
         $this->actingAs($this->pelapor);
 
         $this->get(route('feedback-saya.index'))
