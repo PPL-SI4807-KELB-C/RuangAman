@@ -13,6 +13,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GlosariumController;
 use App\Http\Controllers\HalamanInformasiPublikController;
 use App\Http\Controllers\InstansiBantuanController;
+use App\Http\Controllers\KontakBantuanController;
+use App\Http\Controllers\LayananBantuanController;
 use App\Http\Controllers\KegiatanEdukasiController;
 use App\Http\Controllers\KonselorProfilController;
 use App\Http\Controllers\LaporanKasusController;
@@ -132,6 +134,19 @@ Route::middleware(['auth', 'admin.kasus'])->controller(InstansiBantuanController
 
 /*
 |--------------------------------------------------------------------------
+| PBI-08: Layanan & Kontak Bantuan (Root routes, nested under instansi)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'admin.kasus'])->prefix('instansi/{instansi}')->name('instansi.')->group(function () {
+    Route::resource('layanan', LayananBantuanController::class)
+        ->parameters(['layanan' => 'layanan']);
+
+    Route::resource('kontak', KontakBantuanController::class)
+        ->parameters(['kontak' => 'kontak']);
+});
+
+/*
+|--------------------------------------------------------------------------
 | PBI-04, PBI-05, PBI-07, PBI-10, PBI-11, PBI-13: Modul Admin Kasus
 |--------------------------------------------------------------------------
 */
@@ -165,6 +180,19 @@ Route::middleware(['auth', 'admin.kasus'])->prefix('admin')->name('admin.')->gro
 
     Route::resource('instansi', InstansiBantuanController::class)
         ->parameters(['instansi' => 'instansi']);
+
+    /*
+    |--------------------------------------------------------------------------
+    | PBI-08: Layanan & Kontak Bantuan (nested under instansi)
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('instansi/{instansi}')->name('instansi.')->group(function () {
+        Route::resource('layanan', LayananBantuanController::class)
+            ->parameters(['layanan' => 'layanan']);
+
+        Route::resource('kontak', KontakBantuanController::class)
+            ->parameters(['kontak' => 'kontak']);
+    });
 
     /*
     |--------------------------------------------------------------------------

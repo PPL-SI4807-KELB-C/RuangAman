@@ -46,6 +46,36 @@
                             <p class="mt-1.5 text-[11px] text-neutral-600">{{ $instansi->alamat }}</p>
                             <p class="mt-3 flex-1 text-xs leading-relaxed text-neutral-600">{{ $instansi->deskripsi }}</p>
 
+                            @if ($instansi->layananBantuan->isNotEmpty())
+                                <div class="mt-4 pt-3 border-t border-neutral-100">
+                                    <span class="text-[10px] font-semibold uppercase tracking-wider text-neutral-600">Layanan:</span>
+                                    <div class="mt-1.5 flex flex-wrap gap-1.5">
+                                        @foreach ($instansi->layananBantuan as $layanan)
+                                            <span class="inline-flex items-center rounded-md bg-brand-50 px-2 py-0.5 text-[11px] font-medium text-brand-700">
+                                                {{ $layanan->nama_layanan }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if ($instansi->kontakBantuan->isNotEmpty())
+                                <div class="mt-3 pt-3 border-t border-neutral-100">
+                                    <span class="text-[10px] font-semibold uppercase tracking-wider text-neutral-600">Kontak:</span>
+                                    <ul class="mt-1.5 space-y-1 text-xs text-neutral-700">
+                                        @foreach ($instansi->kontakBantuan as $kontak)
+                                            <li class="flex items-center gap-2">
+                                                <span class="font-medium text-neutral-900">{{ $kontak->label_jenis_kontak }}:</span>
+                                                <span>{{ $kontak->nilai_kontak }}</span>
+                                                @if ($kontak->keterangan)
+                                                    <span class="text-[11px] text-neutral-600">({{ $kontak->keterangan }})</span>
+                                                @endif
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
                             <div class="mt-5 border-t border-neutral-200/70 pt-4 text-xs">
                                 @if ($instansi->website)
                                     <a href="{{ $instansi->website }}" target="_blank" rel="noopener noreferrer" class="font-medium text-neutral-800 hover:text-brand-700 hover:underline">
