@@ -247,4 +247,59 @@ class Pbi04ManajemenStatusDanPenugasanKasusTest extends TestCase
         $deleteResponse->assertSessionHas('success');
         $this->assertDatabaseMissing('penanganan_kasus', ['penanganan_id' => $penanganan->penanganan_id]);
     }
+
+    public function test_admin_dapat_melihat_daftar_penugasan_kasus_berisi_data_aktif_dan_selesai(): void
+    {
+        $statusProses = StatusKasus::where('nama_status', 'Proses')->firstOrFail();
+
+        $laporanAktif = LaporanKasus::create([
+            'user_id' => $this->pelaporUser->user_id,
+            'status_id' => $statusProses->status_id,
+            'kode_laporan' => 'LAP-INDEX-001',
+            'judul' => 'Kasus Penugasan Aktif',
+            'kategori_kekerasan' => 'Psikis',
+            'lokasi_kejadian' => 'Bandung',
+            'kronologi' => 'Kronologi kasus aktif untuk uji render tabel index.',
+            'waktu_kejadian' => now(),
+            'tingkat_urgensi' => 'sedang',
+            'mode_anonim' => true,
+        ]);
+
+        $laporanSelesai = LaporanKasus::create([
+            'user_id' => $this->pelaporUser->user_id,
+            'status_id' => $statusProses->status_id,
+            'kode_laporan' => 'LAP-INDEX-002',
+            'judul' => 'Kasus Penugasan Selesai',
+            'kategori_kekerasan' => 'Fisik',
+            'lokasi_kejadian' => 'Jakarta',
+            'kronologi' => 'Kronologi kasus selesai untuk uji render tabel index.',
+            'waktu_kejadian' => now(),
+            'tingkat_urgensi' => 'tinggi',
+            'mode_anonim' => false,
+        ]);
+
+        PenangananKasus::create([
+            'laporan_id' => $laporanAktif->laporan_id,
+            'petugas_id' => $this->konselorUser->user_id,
+            'tanggal_mulai' => now()->format('Y-m-d'),
+            'tanggal_selesai' => null,
+            'catatan' => 'Pendampingan masih berlangsung.',
+        ]);
+
+        PenangananKasus::create([
+            'laporan_id' => $laporanSelesai->laporan_id,
+            'petugas_id' => $this->konselorUser->user_id,
+            'tanggal_mulai' => now()->subDay()->format('Y-m-d'),
+            'tanggal_selesai' => now()->format('Y-m-d'),
+            'catatan' => 'Pendampingan selesai.',
+        ]);
+
+        $response = $this->actingAs($this->adminUser)->get(route('admin.penanganan-kasus.index'));
+
+        $response->assertOk();
+        $response->assertSee('LAP-INDEX-001');
+        $response->assertSee('LAP-INDEX-002');
+        $response->assertSee('Sedang Ditangani');
+        $response->assertSee('Selesai');
+    }
 }
