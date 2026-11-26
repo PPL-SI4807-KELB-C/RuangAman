@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Artikel;
+use App\Models\FeedbackArtikel;
 use App\Models\KategoriArtikel;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -56,10 +57,18 @@ class ArtikelController extends Controller
             ->limit(3)
             ->get();
 
+        $feedbackList = FeedbackArtikel::query()
+            ->disetujui()
+            ->where('artikel_id', $artikel->artikel_id)
+            ->with(['user:user_id,nama_tampilan', 'user.profilPelapor:profil_id,user_id,alias'])
+            ->latest('created_at')
+            ->paginate(5);
+
         return view('artikel.show', [
             'title' => "{$artikel->judul} - Artikel Edukasi RuangAman",
             'artikel' => $artikel,
             'artikelTerkait' => $artikelTerkait,
+            'feedbackList' => $feedbackList,
         ]);
     }
 }

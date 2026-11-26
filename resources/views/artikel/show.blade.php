@@ -31,6 +31,63 @@
                     <div class="whitespace-pre-line text-base leading-8 text-neutral-700">{{ $artikel->isi }}</div>
                 </div>
             </article>
+
+            <section id="feedback" class="mt-8 scroll-mt-28 rounded-xl border border-neutral-200/70 bg-white p-6 sm:p-8" aria-labelledby="feedback-title">
+                <div class="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-wider text-brand-700">PBI-12 &middot; Niky</p>
+                        <h2 id="feedback-title" class="mt-1 text-xl font-extrabold tracking-tight text-neutral-900">Feedback Artikel</h2>
+                        <p class="mt-2 max-w-2xl text-sm leading-relaxed text-neutral-600">Bagikan tanggapan Anda tentang materi edukasi ini. Feedback akan ditampilkan setelah disetujui Admin Kasus. Jangan cantumkan identitas atau detail kasus pribadi.</p>
+                    </div>
+                    @can('beri-feedback')
+                        <x-button href="{{ route('feedback-saya.index') }}" variant="ghost" size="sm">Feedback Saya</x-button>
+                    @endcan
+                </div>
+
+                @if ($artikel->status_publikasi === \App\Models\Artikel::STATUS_PUBLISHED)
+                    @can('beri-feedback')
+                        <form method="POST" action="{{ route('feedback.store', $artikel) }}" class="mt-6 space-y-4 border-y border-neutral-200/70 py-6">
+                            @csrf
+                            <x-textarea
+                                name="isi_feedback"
+                                label="Tulis Feedback"
+                                placeholder="Apa yang Anda pelajari dari artikel ini?"
+                                rows="4"
+                                helper="Minimal 5 karakter, maksimal 2.000 karakter."
+                                :error="$errors->first('isi_feedback')"
+                                required
+                            />
+                            <div class="flex justify-end">
+                                <x-button type="submit" variant="primary" size="md">Kirim Feedback</x-button>
+                            </div>
+                        </form>
+                    @else
+                        <div class="mt-6 rounded-lg bg-surface px-4 py-4 text-sm text-neutral-700">
+                            Ingin memberikan feedback?
+                            <a href="{{ route('login') }}" class="font-semibold text-brand-700 hover:underline">Masuk ke akun Pelapor</a>
+                            terlebih dahulu.
+                        </div>
+                    @endcan
+                @endif
+
+                <div class="mt-6 space-y-5">
+                    @forelse ($feedbackList as $feedback)
+                        <article class="border-b border-neutral-200/70 pb-5 last:border-0 last:pb-0">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <p class="text-sm font-semibold text-neutral-900">{{ $feedback->namaPengaruhAman() }}</p>
+                                <time datetime="{{ $feedback->created_at?->toISOString() }}" class="text-xs text-neutral-600">{{ $feedback->created_at?->translatedFormat('d M Y') }}</time>
+                            </div>
+                            <p class="mt-2 whitespace-pre-line text-sm leading-relaxed text-neutral-700">{{ $feedback->isi_feedback }}</p>
+                        </article>
+                    @empty
+                        <p class="rounded-lg border border-dashed border-neutral-300 px-4 py-6 text-center text-sm text-neutral-600">Belum ada feedback yang disetujui untuk artikel ini.</p>
+                    @endforelse
+                </div>
+
+                @if ($feedbackList->hasPages())
+                    <div class="mt-6 border-t border-neutral-200/70 pt-4">{{ $feedbackList->links() }}</div>
+                @endif
+            </section>
         </main>
 
         <aside class="space-y-6 lg:col-span-4">

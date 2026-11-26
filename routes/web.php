@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ArtikelController as AdminArtikelController;
+use App\Http\Controllers\Admin\FeedbackArtikelController as AdminFeedbackArtikelController;
 use App\Http\Controllers\Admin\KategoriArtikelController as AdminKategoriArtikelController;
 use App\Http\Controllers\Admin\GlosariumKbgController as AdminGlosariumKbgController;
 use App\Http\Controllers\Admin\HalamanInformasiController as AdminHalamanInformasiController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Admin\PengumumanController as AdminPengumumanController
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FeedbackArtikelController;
 use App\Http\Controllers\GlosariumController;
 use App\Http\Controllers\HalamanInformasiPublikController;
 use App\Http\Controllers\InstansiBantuanController;
@@ -179,6 +181,14 @@ Route::middleware(['auth', 'admin.kasus'])->prefix('admin')->name('admin.')->gro
         ->parameters(['kategori-artikel' => 'kategori'])
         ->except(['show']);
 
+    // PBI-12: Moderasi Feedback Artikel (Niky).
+    Route::get('feedback-artikel', [AdminFeedbackArtikelController::class, 'index'])
+        ->name('feedback-artikel.index');
+    Route::get('feedback-artikel/{feedback}', [AdminFeedbackArtikelController::class, 'show'])
+        ->name('feedback-artikel.show');
+    Route::patch('feedback-artikel/{feedback}/moderasi', [AdminFeedbackArtikelController::class, 'moderate'])
+        ->name('feedback-artikel.moderasi');
+
     Route::resource('instansi', InstansiBantuanController::class)
         ->parameters(['instansi' => 'instansi']);
 
@@ -248,10 +258,22 @@ Route::controller(KegiatanEdukasiController::class)->group(function () {
 */
 Route::controller(ArtikelController::class)->prefix('artikel')->name('artikel.')->group(function () {
     Route::get('/', 'index')->name('index');
-    Route::get('/{slug}', 'show')->name('show');
+    Route::get('/{artikel:slug}', 'show')->name('show');
 });
 
 Route::middleware(['auth', 'pelapor'])->group(function () {
+    // PBI-12: Feedback artikel milik Pelapor (Niky).
+    Route::post('/artikel/{artikel}/feedback', [FeedbackArtikelController::class, 'store'])
+        ->name('feedback.store');
+    Route::get('/feedback-saya', [FeedbackArtikelController::class, 'index'])
+        ->name('feedback-saya.index');
+    Route::get('/feedback-saya/{feedback}/edit', [FeedbackArtikelController::class, 'edit'])
+        ->name('feedback-saya.edit');
+    Route::put('/feedback-saya/{feedback}', [FeedbackArtikelController::class, 'update'])
+        ->name('feedback-saya.update');
+    Route::delete('/feedback-saya/{feedback}', [FeedbackArtikelController::class, 'destroy'])
+        ->name('feedback-saya.destroy');
+
     Route::post('/edukasi/{kegiatan}/daftar', [PendaftaranKegiatanController::class, 'store'])
         ->name('kegiatan.daftar');
 

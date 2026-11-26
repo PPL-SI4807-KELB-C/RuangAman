@@ -13,7 +13,7 @@ class ArtikelPolicy
     }
 
     /**
-     * Artikel terpublikasi dapat dibaca publik; status lain khusus pengelola.
+     * Artikel terpublikasi dapat dibaca publik.
      */
     public function view(?User $user, Artikel $artikel): bool
     {
@@ -23,6 +23,15 @@ class ArtikelPolicy
 
         return $user !== null
             && ($user->isAdminKasus() || $user->hasPermission('kelola-artikel'));
+    }
+
+    /**
+     * Pelapor hanya dapat mengirim feedback pada artikel terpublikasi.
+     */
+    public function createFeedback(User $user, Artikel $artikel): bool
+    {
+        return $user->isPelapor()
+            && $artikel->status_publikasi === Artikel::STATUS_PUBLISHED;
     }
 
     public function create(User $user): bool
