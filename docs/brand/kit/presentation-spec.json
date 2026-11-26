@@ -1,0 +1,34 @@
+{
+  "brand": "RuangAman",
+  "tagline": "Ruang aman untuk bercerita",
+  "brief": "Layanan web pelaporan dan pendampingan kekerasan berbasis gender. Logo harus kalem, tepercaya, hangat, tidak menghakimi, dan diskret: tidak boleh terlihat seperti layanan kekerasan di tab browser karena korban bisa sedang diawasi.",
+  "adjectives": ["kalem", "tepercaya", "hangat", "diskret"],
+  "criteria": "Sukses: menghindari klise kategori (pita, tangan, perisai, siluet perempuan, rumah), jelas di 16 px, bekerja dalam satu warna, dan maknanya bisa dijelaskan dalam satu kalimat.",
+  "mockups": ["website", "favicon-tab", "app-icon", "badge", "business-card", "social"],
+  "nav": ["Lapor", "Lacak", "Edukasi"],
+  "brand_color": "#15803d",
+  "greyscale": false,
+  "designer": "Tim RuangAman",
+  "round": 2,
+  "concepts": [
+    {
+      "name": "Ruang terbuka",
+      "symbol": "ruangaman-symbol.svg",
+      "lockup": "ruangaman-lockup-horizontal.svg",
+      "symbol_on_tile": "web/ruangaman-symbol-app-icon.svg",
+      "tile_color": "#15803d",
+      "idea": "Sebuah ruang dengan satu sudut terbuka: Anda aman di dalamnya, dan selalu bebas untuk pergi.",
+      "rationale": [
+        "Selaras dengan fitur Keluar cepat dan prinsip kendali di tangan pengguna",
+        "Abstrak dan diskret: terlihat seperti ikon aplikasi biasa di tab browser",
+        "Dibangun dari satu radius (58) dan satu tebal garis (32) di grid 256"
+      ]
+    }
+  ],
+  "recommendation": "Ruang terbuka — paling khas RuangAman, kuat di 16 px, dan menjadi dasar sistem ikon (sudut terbuka sebagai motif).",
+  "next_steps": [
+    "Pasang logo di header, footer, dan favicon aplikasi",
+    "Cek merek dagang sebelum dipakai publik",
+    "Turunkan motif sudut terbuka ke ilustrasi dan ikon"
+  ]
+}

@@ -3,69 +3,66 @@
 @section('title', 'Laporan Anda telah diterima — RuangAman')
 
 @section('content')
-<div class="mx-auto max-w-4xl px-4 sm:px-6 py-12">
+<div class="mx-auto max-w-3xl px-4 sm:px-6 py-12 space-y-8">
 
-    <div class="space-y-6">
-        <p class="text-xs text-neutral-400">Data contoh · Bukan laporan nyata</p>
+    <div>
+        <svg class="h-7 w-7 text-brand-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <path d="m9 12 2 2 4-4" />
+        </svg>
+        <h1 class="mt-4 text-2xl font-extrabold tracking-tight text-neutral-900 sm:text-3xl">Laporan Anda telah diterima</h1>
+        <p class="mt-2 max-w-xl text-sm leading-relaxed text-neutral-600">
+            Terima kasih telah menyampaikan laporan. Anda dapat memeriksa perkembangannya dengan kode di bawah ini.
+        </p>
+    </div>
 
-        {{-- Success Check Icon --}}
-        <div class="text-neutral-900">
-            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10" />
-                <path d="m9 12 2 2 4-4" />
-            </svg>
-        </div>
+    <x-alert variant="danger" title="Jika Anda dalam bahaya sekarang">
+        Jangan menunggu tindak lanjut laporan. Hubungi
+        <a href="tel:112" class="font-semibold text-neutral-900 underline">112</a> (darurat) atau
+        <a href="tel:129" class="font-semibold text-neutral-900 underline">SAPA 129</a> (layanan pengaduan KemenPPPA).
+    </x-alert>
 
-        <div>
-            <h1 class="text-3xl font-extrabold text-neutral-900 tracking-tight">Laporan Anda telah diterima</h1>
-            <p class="text-xs text-neutral-600 mt-2 max-w-xl leading-relaxed">
-                Terima kasih telah menyampaikan laporan. Anda dapat memeriksa perkembangannya menggunakan kode di bawah ini.
-            </p>
-        </div>
-
-        {{-- Big Code Card (Figma Exact) --}}
-        <div class="rounded-xl bg-[#f2f2f2] p-8 space-y-6 border border-neutral-200/60 max-w-2xl">
+    {{-- Kode laporan --}}
+    <x-card>
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between" x-data="copyText(@js($kode_laporan))">
             <div>
-                <p class="text-[11px] text-neutral-500">Kode laporan Anda</p>
-                <p class="text-4xl sm:text-5xl font-extrabold text-neutral-900 tracking-wider font-mono mt-2" id="kode-teks">
-                    {{ $kode_laporan }}
-                </p>
+                <p class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Kode laporan Anda</p>
+                <p class="mt-2 font-mono text-4xl font-extrabold tracking-[0.2em] text-neutral-900 sm:text-5xl">{{ $kode_laporan }}</p>
             </div>
+            <x-button variant="secondary" @click="copy()" class="shrink-0">
+                <span x-text="copied ? 'Kode tersalin' : 'Salin kode'">Salin kode</span>
+            </x-button>
+        </div>
 
-            <div class="pt-4 border-t border-neutral-300/60 flex items-center justify-between text-xs text-neutral-700">
-                <span>Alias: {{ session('alias', 'Pelapor A') }}</span>
-                <span class="inline-flex items-center gap-1.5 text-neutral-800">
-                    <span class="h-2 w-2 rounded-full bg-amber-500"></span>
-                    Menunggu peninjauan
-                </span>
+        <x-slot:footer>
+            <div class="flex flex-wrap items-center justify-between gap-3 text-xs text-neutral-700">
+                <span>Alias: {{ session('alias', auth()->user()?->profilPelapor?->alias ?? auth()->user()?->nama_tampilan) }}</span>
+                <x-badge variant="warning">Menunggu peninjauan</x-badge>
             </div>
-        </div>
+        </x-slot:footer>
+    </x-card>
 
-        {{-- Warning Box & Instructions --}}
-        <div class="space-y-2 max-w-xl pt-2">
-            <h2 class="text-sm font-semibold text-neutral-900">Catat kode ini di tempat yang aman.</h2>
-            <p class="text-xs text-neutral-600 leading-relaxed">
-                Kode memberi akses ke laporan Anda. Jangan bagikan kepada orang lain. Tanpa akun, kode yang hilang tidak dapat dipulihkan lewat nama.
-            </p>
-        </div>
+    <div class="space-y-2">
+        <h2 class="text-sm font-semibold text-neutral-900">Simpan kode ini di tempat yang aman.</h2>
+        <p class="text-xs leading-relaxed text-neutral-600">
+            Kode memberi akses ke laporan Anda di halaman lacak. Jangan bagikan kepada orang lain. Jika kode hilang, riwayat laporan tetap tampil di dashboard akun Anda.
+        </p>
+    </div>
 
-        {{-- Actions --}}
-        <div class="pt-2 flex flex-wrap items-center gap-4">
-            <a href="{{ route('lacak.hasil', ['kode_laporan' => $kode_laporan]) }}" class="inline-flex items-center justify-center rounded bg-[#10a349] hover:bg-[#0e8e40] text-white font-medium text-xs px-6 py-2.5 transition-colors">
-                Lacak laporan
-            </a>
-            <a href="{{ url('/') }}" class="text-xs text-neutral-700 hover:text-neutral-900">
-                Kembali ke beranda
-            </a>
-        </div>
+    <div class="flex flex-wrap items-center gap-5">
+        <form method="POST" action="{{ route('lacak.cari') }}">
+            @csrf
+            <input type="hidden" name="kode_laporan" value="{{ $kode_laporan }}">
+            <x-button type="submit" variant="primary">Lacak laporan</x-button>
+        </form>
+        <x-button :href="route('dashboard')" variant="ghost">Ke dashboard</x-button>
+    </div>
 
-        {{-- What's Next --}}
-        <div class="pt-10 border-t border-neutral-100 max-w-xl space-y-2">
-            <h3 class="text-sm font-semibold text-neutral-900">Apa yang terjadi selanjutnya?</h3>
-            <p class="text-xs text-neutral-600 leading-relaxed">
-                Tim akan meninjau informasi yang Anda bagikan. Pembaruan dan pilihan pendampingan dapat dilihat melalui halaman pelacakan laporan.
-            </p>
-        </div>
+    <div class="space-y-2 border-t border-neutral-200/70 pt-8">
+        <h2 class="text-sm font-semibold text-neutral-900">Apa yang terjadi selanjutnya?</h2>
+        <p class="text-xs leading-relaxed text-neutral-600">
+            Tim akan meninjau informasi yang Anda bagikan. Pembaruan dan pilihan pendampingan dapat dilihat melalui halaman pelacakan laporan.
+        </p>
     </div>
 
 </div>

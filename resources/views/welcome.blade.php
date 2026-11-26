@@ -10,7 +10,7 @@
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             {{-- Hero Left Content --}}
             <div class="lg:col-span-7 space-y-6">
-                <p class="text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <p class="text-xs font-medium text-neutral-600 uppercase tracking-wider">
                     Pelaporan dan pendampingan
                 </p>
                 <h1 class="text-4xl sm:text-5xl font-extrabold text-neutral-900 tracking-tight leading-[1.15]">
@@ -22,7 +22,7 @@
                     Sampaikan pengalaman sesuai kesiapan Anda. Gunakan alias, pilih informasi yang ingin dibagikan, dan lacak tindak lanjutnya.
                 </p>
                 <div class="pt-2 flex flex-wrap items-center gap-4">
-                    <a href="{{ route('laporan.create') }}" class="inline-flex items-center justify-center rounded bg-[#10a349] hover:bg-[#0e8e40] text-white font-medium text-sm px-6 py-2.5 transition-colors shadow-xs">
+                    <a href="{{ auth()->user()?->isPelapor() ? route('laporan.create') : (auth()->check() ? route('dashboard') : route('register')) }}" class="inline-flex items-center justify-center rounded bg-brand-600 hover:bg-brand-700 text-white font-medium text-sm px-6 py-2.5 transition-colors shadow-xs">
                         Buat laporan
                     </a>
                     <a href="{{ route('lacak.form') }}" class="text-sm font-medium text-neutral-800 hover:text-neutral-900 hover:underline px-2 py-1">
@@ -33,7 +33,7 @@
 
             {{-- Hero Right Card (Abu-abu di dalam background putih) --}}
             <div class="lg:col-span-5">
-                <div class="rounded-xl bg-[#f2f2f2] p-6 sm:p-7 space-y-5 border border-neutral-200/60">
+                <div class="rounded-xl bg-surface p-6 sm:p-7 space-y-5 border border-neutral-200/60">
                     <div class="flex items-center gap-2 text-neutral-700">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
@@ -44,24 +44,51 @@
                     
                     <ul class="space-y-2 text-xs text-neutral-700">
                         <li>Tidak perlu nama asli.</li>
-                        <li>Tidak perlu membuat akun.</li>
+                        <li>Akun cukup memakai alias.</li>
                         <li>Lampiran bersifat opsional.</li>
                     </ul>
 
-                    <p class="text-[11px] leading-relaxed text-neutral-500 pt-3 border-t border-neutral-300/60">
+                    <p class="text-[11px] leading-relaxed text-neutral-600 pt-3 border-t border-neutral-300/60">
                         Bukan layanan darurat. Jika ada ancaman langsung, cari tempat aman dan bantuan setempat.
                     </p>
                 </div>
             </div>
         </div>
+
+        @if ($pengumumanTerbaru->isNotEmpty())
+            {{-- FR-31: pengumuman terbaru tampil di beranda --}}
+            <div class="mx-auto max-w-6xl px-4 sm:px-6 mt-14 sm:mt-16">
+                <div class="border-t border-neutral-300/60 pt-8">
+                    <div class="flex items-baseline justify-between gap-6">
+                        <p class="text-xs font-medium uppercase tracking-wider text-neutral-600">Pengumuman terbaru</p>
+                        <a href="{{ route('pengumuman.index') }}" class="text-sm font-medium text-neutral-800 hover:text-neutral-900 hover:underline">
+                            Semua pengumuman
+                        </a>
+                    </div>
+                    <ul class="mt-6 border-y border-neutral-200/70">
+                        @foreach ($pengumumanTerbaru as $item)
+                            <li class="border-t border-neutral-200/70 first:border-t-0">
+                                <a href="{{ route('pengumuman.show', $item) }}" class="group grid grid-cols-1 gap-x-6 gap-y-1 py-4 sm:grid-cols-[8rem_1fr]">
+                                    <span class="text-xs text-neutral-600">{{ $item->mulai_tayang->translatedFormat('d F Y') }}</span>
+                                    <span>
+                                        <span class="block text-sm font-semibold text-neutral-900 group-hover:text-brand-700">{{ $item->judul }}</span>
+                                        <span class="mt-1 line-clamp-1 text-xs leading-relaxed text-neutral-600">{{ $item->isi }}</span>
+                                    </span>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        @endif
     </section>
 
     {{-- SECTION 2: DUKUNGAN SESUAI KEBUTUHAN ANDA (ABU-ABU #f2f2f2 PENUH) --}}
-    <section id="layanan" class="w-full bg-[#f2f2f2] py-16 sm:py-20 border-y border-neutral-200/70">
+    <section id="layanan" class="w-full bg-surface py-16 sm:py-20 border-y border-neutral-200/70">
         <div class="mx-auto max-w-6xl px-4 sm:px-6">
             <div class="mb-12">
                 <h2 class="text-2xl font-bold text-neutral-900 tracking-tight">Dukungan sesuai kebutuhan Anda</h2>
-                <p class="text-xs text-neutral-500 mt-1">Anda dapat memulai dari layanan yang paling relevan.</p>
+                <p class="text-xs text-neutral-600 mt-1">Anda dapat memulai dari layanan yang paling relevan.</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -130,12 +157,12 @@
         <div class="mx-auto max-w-6xl px-4 sm:px-6">
             <div class="mb-12">
                 <h2 class="text-2xl font-bold text-neutral-900 tracking-tight">Alur pelaporan</h2>
-                <p class="text-xs text-neutral-500 mt-1">Tahapan yang dapat Anda ikuti, tanpa harus menceritakan semuanya sekaligus.</p>
+                <p class="text-xs text-neutral-600 mt-1">Tahapan yang dapat Anda ikuti, tanpa harus menceritakan semuanya sekaligus.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                 <div class="space-y-2">
-                    <span class="text-xs text-neutral-400 font-mono">01</span>
+                    <span class="text-xs text-neutral-600 font-mono">01</span>
                     <h3 class="text-sm font-semibold text-neutral-900">Sampaikan laporan</h3>
                     <p class="text-xs text-neutral-600 leading-relaxed">
                         Pilih kategori dan tulis kronologi sebatas yang nyaman Anda bagikan.
@@ -143,7 +170,7 @@
                 </div>
 
                 <div class="space-y-2">
-                    <span class="text-xs text-neutral-400 font-mono">02</span>
+                    <span class="text-xs text-neutral-600 font-mono">02</span>
                     <h3 class="text-sm font-semibold text-neutral-900">Simpan kode Anda</h3>
                     <p class="text-xs text-neutral-600 leading-relaxed">
                         Kode enam karakter digunakan untuk membuka perkembangan laporan.
@@ -151,7 +178,7 @@
                 </div>
 
                 <div class="space-y-2">
-                    <span class="text-xs text-neutral-400 font-mono">03</span>
+                    <span class="text-xs text-neutral-600 font-mono">03</span>
                     <h3 class="text-sm font-semibold text-neutral-900">Tentukan tindak lanjut</h3>
                     <p class="text-xs text-neutral-600 leading-relaxed">
                         Tim meninjau laporan. Pendampingan dilakukan dengan persetujuan Anda.
@@ -162,11 +189,11 @@
     </section>
 
     {{-- SECTION 4: PRIVASI SEJAK LANGKAH PERTAMA (ABU-ABU #f2f2f2 PENUH) --}}
-    <section class="w-full bg-[#f2f2f2] py-16 sm:py-20 border-y border-neutral-200/70">
+    <section class="w-full bg-surface py-16 sm:py-20 border-y border-neutral-200/70">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div class="lg:col-span-5 space-y-1">
                 <h2 class="text-2xl font-bold text-neutral-900 tracking-tight">Privasi sejak langkah pertama</h2>
-                <p class="text-xs text-neutral-500">Bagikan hanya yang diperlukan.</p>
+                <p class="text-xs text-neutral-600">Bagikan hanya yang diperlukan.</p>
             </div>
 
             <div class="lg:col-span-7 space-y-6">
@@ -192,14 +219,14 @@
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div class="lg:col-span-5 space-y-1">
                 <h2 class="text-2xl font-bold text-neutral-900 tracking-tight">Pertanyaan umum</h2>
-                <p class="text-xs text-neutral-500">Informasi sebelum melapor.</p>
+                <p class="text-xs text-neutral-600">Informasi sebelum melapor.</p>
             </div>
 
             <div class="lg:col-span-7 space-y-6">
                 <div class="space-y-1 border-b border-neutral-200 pb-5">
                     <h3 class="text-sm font-semibold text-neutral-900">Apakah saya harus menggunakan nama asli?</h3>
                     <p class="text-xs text-neutral-600 leading-relaxed">
-                        Tidak. Anda dapat menggunakan alias dan membuat laporan tanpa akun.
+                        Tidak. Anda cukup memakai alias. Akun Pelapor tetap diperlukan agar Anda dapat memantau status dan menerima pemberitahuan, sementara mode anonim menyembunyikan identitas Anda dari konselor.
                     </p>
                 </div>
 
@@ -220,7 +247,7 @@
                 <div class="space-y-1">
                     <h3 class="text-sm font-semibold text-neutral-900">Bagaimana jika kode laporan hilang?</h3>
                     <p class="text-xs text-neutral-600 leading-relaxed">
-                        Tanpa akun, akses tidak dapat dipulihkan lewat nama. Simpan kode dengan aman.
+                        Laporan yang Anda buat dari akun tersimpan di dashboard, sehingga tetap dapat dibuka meski kode lupa. Kode dipakai untuk membuka laporan lewat halaman lacak tanpa login, jadi simpan dengan aman.
                     </p>
                 </div>
             </div>
@@ -228,52 +255,51 @@
     </section>
 
     {{-- SECTION 6: MULAI LAPORAN (ABU-ABU #f2f2f2 PENUH DENGAN FORM PUTIH) --}}
-    <section class="w-full bg-[#f2f2f2] py-16 sm:py-20 border-t border-neutral-200/70">
+    <section class="w-full bg-surface py-16 sm:py-20 border-t border-neutral-200/70">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             <div class="lg:col-span-5 space-y-3">
                 <h2 class="text-2xl font-bold text-neutral-900 tracking-tight">Mulai laporan</h2>
                 <p class="text-xs text-neutral-600 leading-relaxed max-w-sm">
-                    Isi informasi awal, lalu lanjutkan ke formulir laporan lengkap.
+                    Buat akun alias lebih dulu, lalu lanjutkan ke formulir laporan lengkap. Alias dibawa otomatis dari profil Anda.
                 </p>
-                <p class="text-xs text-neutral-500">
-                    Tidak perlu nama asli atau akun.
+                <p class="text-xs text-neutral-600">
+                    Tanpa nama asli. Mode anonim menyembunyikan identitas Anda dari konselor.
                 </p>
             </div>
 
             <div class="lg:col-span-7">
-                <form action="{{ route('laporan.create') }}" method="GET" class="rounded-xl border border-neutral-200/80 bg-white p-6 sm:p-7 space-y-4 shadow-xs">
-                    <p class="text-[11px] text-neutral-400">Pratinjau formulir · Data contoh</p>
+                {{-- POST + session: kronologi tidak boleh masuk URL/riwayat peramban. --}}
+                <form action="{{ route('laporan.draf') }}" method="POST" class="rounded-xl border border-neutral-200/80 bg-white p-6 sm:p-7 space-y-5">
+                    @csrf
+                    <p class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Isian awal</p>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-medium text-neutral-800 mb-1">Alias</label>
-                            <input type="text" name="alias" value="Pelapor A" placeholder="Contoh: Pelapor A" class="w-full rounded bg-[#f2f2f2] border-0 text-xs px-3.5 py-2.5 text-neutral-800 focus:ring-1 focus:ring-neutral-400">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-neutral-800 mb-1">Kategori kejadian</label>
-                            <select name="kategori" class="w-full rounded bg-[#f2f2f2] border-0 text-xs px-3.5 py-2.5 text-neutral-800 focus:ring-1 focus:ring-neutral-400">
-                                <option value="Siber">Kekerasan digital</option>
-                                <option value="Seksual">Kekerasan seksual</option>
-                                <option value="Psikis">Kekerasan psikis</option>
-                                <option value="Fisik">Kekerasan fisik</option>
-                                <option value="Ekonomi">Kekerasan ekonomi</option>
-                                <option value="Lainnya">Belum yakin / lainnya</option>
-                            </select>
-                        </div>
-                    </div>
+                    <x-select
+                        id="draf_kategori"
+                        name="kategori"
+                        label="Kategori kejadian"
+                        placeholder="Pilih yang paling mendekati"
+                        :options="[
+                            'Siber' => 'Kekerasan digital',
+                            'Seksual' => 'Kekerasan seksual',
+                            'Psikis' => 'Kekerasan psikis',
+                            'Fisik' => 'Kekerasan fisik',
+                            'Ekonomi' => 'Kekerasan ekonomi',
+                            'Lainnya' => 'Belum yakin / lainnya',
+                        ]"
+                    />
 
-                    <div>
-                        <label class="block text-xs font-medium text-neutral-800 mb-1">Kronologi awal</label>
-                        <textarea name="kronologi" rows="3" placeholder="Tuliskan hal yang ingin Anda sampaikan..." class="w-full rounded bg-[#f2f2f2] border-0 text-xs p-3.5 text-neutral-800 focus:ring-1 focus:ring-neutral-400 leading-relaxed"></textarea>
-                        <p class="text-[10px] text-neutral-400 mt-1">Hindari nama asli dan alamat lengkap.</p>
-                    </div>
+                    <x-textarea
+                        id="draf_kronologi"
+                        name="kronologi"
+                        label="Kronologi awal"
+                        rows="3"
+                        placeholder="Tuliskan hal yang ingin Anda sampaikan…"
+                        helper="Hindari nama asli dan alamat lengkap. Lampiran dapat ditambahkan di langkah berikutnya."
+                    />
 
-                    <div class="pt-2">
-                        <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center rounded bg-[#10a349] hover:bg-[#0e8e40] text-white font-medium text-xs px-6 py-2.5 transition-colors">
-                            Lanjutkan laporan
-                        </button>
-                        <p class="text-[10px] text-neutral-400 mt-1">Lampiran dapat ditambahkan nanti.</p>
-                    </div>
+                    <x-button type="submit" variant="primary" class="w-full sm:w-auto">
+                        {{ auth()->check() && ! auth()->user()->isPelapor() ? 'Buka dashboard' : 'Lanjutkan laporan' }}
+                    </x-button>
                 </form>
             </div>
         </div>

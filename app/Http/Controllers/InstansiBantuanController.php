@@ -54,7 +54,7 @@ class InstansiBantuanController extends Controller
     {
         $search = $request->query('search');
 
-        $query = InstansiBantuan::where('status', 'aktif');
+        $query = InstansiBantuan::where('status', 'aktif')->with(['layananBantuan', 'kontakBantuan']);
 
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
@@ -118,6 +118,8 @@ class InstansiBantuanController extends Controller
      */
     public function show(InstansiBantuan $instansi): View
     {
+        $instansi->load(['layananBantuan', 'kontakBantuan']);
+
         return view('instansi.show', [
             'title' => $instansi->nama_instansi . ' - Detail Instansi Bantuan',
             'instansi' => $instansi,

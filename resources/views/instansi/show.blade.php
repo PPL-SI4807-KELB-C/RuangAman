@@ -1,179 +1,204 @@
-<x-layouts.app :title="$title">
-    <div class="w-full bg-[#FAF9F7] min-h-[calc(100vh-160px)]" x-data="{
-        deleteModalOpen: false,
-        openDeleteModal() {
-            this.deleteModalOpen = true;
-        },
-        closeDeleteModal() {
-            this.deleteModalOpen = false;
-        }
-    }">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-            {{-- Breadcrumb / Back --}}
-            <div class="mb-5">
-                <a href="{{ route('instansi.index') }}" class="text-[13px] text-[#686563] hover:text-[#1C1917] font-normal transition inline-flex items-center gap-1.5">
-                    <span>←</span>
-                    <span>Kembali ke daftar instansi</span>
-                </a>
-            </div>
+@extends('layouts.app')
 
-            {{-- Page Header --}}
-            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-8">
-                <div>
-                    <h1 class="text-[36px] font-medium text-[#1C1917] leading-tight">
-                        {{ $instansi->nama_instansi }}
-                    </h1>
-                    <p class="text-base text-[#686563] font-normal mt-2">
-                        Detail instansi bantuan
-                    </p>
+@section('title', $title)
+
+@section('content')
+<div class="mx-auto max-w-6xl px-4 sm:px-6 py-10 space-y-8">
+
+    <x-page-header
+        :title="$instansi->nama_instansi"
+        eyebrow="Detail instansi bantuan"
+        :back="route('instansi.index')"
+        back-label="Kembali ke daftar"
+    >
+        <x-slot:actions>
+            <x-button :href="route('instansi.edit', $instansi)" variant="primary">Ubah Instansi</x-button>
+            <x-button
+                variant="outline-danger"
+                @click="$dispatch('open-confirm-modal', {{ Js::from([
+                    'title' => 'Hapus Instansi Bantuan',
+                    'message' => 'Hapus permanen “' . $instansi->nama_instansi . '” dari daftar admin dan direktori publik? Jika hanya ingin menyembunyikannya, ubah status menjadi Nonaktif.',
+                    'action' => route('instansi.destroy', $instansi),
+                    'method' => 'DELETE',
+                    'confirmText' => 'Ya, Hapus Permanen',
+                    'confirmVariant' => 'danger',
+                ]) }})"
+            >
+                Hapus
+            </x-button>
+        </x-slot:actions>
+    </x-page-header>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <x-card class="lg:col-span-8">
+            <dl class="divide-y divide-neutral-300/60">
+                <div class="pb-5">
+                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Alamat</dt>
+                    <dd class="mt-1.5 text-sm leading-relaxed text-neutral-800">{{ $instansi->alamat }}</dd>
                 </div>
-                <div class="flex items-center gap-3 pt-1">
-                    <a href="{{ route('instansi.edit', $instansi) }}" 
-                       class="inline-flex items-center justify-center bg-[#16A34A] hover:bg-[#15803d] text-[#1C1917] text-sm font-medium rounded-[2px] px-6 py-3 transition">
-                        Ubah instansi
-                    </a>
-                    <button type="button" 
-                            @click="openDeleteModal()"
-                            class="inline-flex items-center justify-center bg-[#EDECE9] hover:bg-[#e4e2de] text-[#1C1917] text-sm font-medium rounded-[2px] px-6 py-3 transition">
-                        Hapus
-                    </button>
+                <div class="py-5">
+                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Deskripsi</dt>
+                    <dd class="mt-1.5 whitespace-pre-line text-sm leading-relaxed text-neutral-800">{{ $instansi->deskripsi }}</dd>
                 </div>
-            </div>
-
-            {{-- Two Column Content --}}
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                {{-- Main Content Column --}}
-                <div class="lg:col-span-8">
-                    {{-- Alamat --}}
-                    <div>
-                        <div class="text-[13px] font-medium text-[#686563] tracking-wide uppercase">
-                            ALAMAT
-                        </div>
-                        <div class="text-base text-[#1C1917] font-normal mt-2 leading-relaxed">
-                            {{ $instansi->alamat }}
-                        </div>
-                    </div>
-
-                    <div class="w-full h-px bg-[#DDDCD7] my-6"></div>
-
-                    {{-- Deskripsi --}}
-                    <div>
-                        <div class="text-[13px] font-medium text-[#686563] tracking-wide uppercase">
-                            DESKRIPSI
-                        </div>
-                        <div class="text-base text-[#1C1917] font-normal mt-2 leading-relaxed">
-                            {{ $instansi->deskripsi }}
-                        </div>
-                    </div>
-
-                    <div class="w-full h-px bg-[#DDDCD7] my-6"></div>
-
-                    {{-- Situs Web --}}
-                    <div>
-                        <div class="text-[13px] font-medium text-[#686563] tracking-wide uppercase">
-                            SITUS WEB
-                        </div>
-                        @if($instansi->website)
-                            <div class="mt-2">
-                                <a href="{{ $instansi->website }}" target="_blank" rel="noopener noreferrer" class="text-base text-[#1C1917] hover:underline inline-flex items-center gap-1.5 font-normal">
-                                    <span>{{ $instansi->website }}</span>
-                                    <span>↗</span>
-                                </a>
-                                <p class="text-[13px] text-[#686563] mt-1">
-                                    Membuka situs instansi di tab baru.
-                                </p>
-                            </div>
+                <div class="pt-5">
+                    <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Situs Web</dt>
+                    <dd class="mt-1.5 text-sm">
+                        @if ($instansi->website)
+                            <a href="{{ $instansi->website }}" target="_blank" rel="noopener noreferrer" class="break-all font-medium text-neutral-800 hover:text-brand-700 hover:underline">
+                                {{ $instansi->website }} <span aria-hidden="true">&nearr;</span>
+                                <span class="sr-only">(tab baru)</span>
+                            </a>
                         @else
-                            <div class="text-base text-[#686563] mt-2">—</div>
+                            <span class="text-neutral-600">Belum tersedia</span>
                         @endif
-                    </div>
-
-                    <div class="w-full h-px bg-[#DDDCD7] my-6"></div>
-
-                    {{-- Meta Info Row --}}
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-[13px] text-[#686563]">
-                        <div>
-                            ID instansi: INS-{{ str_pad($instansi->instansi_id, 3, '0', STR_PAD_LEFT) }}
-                        </div>
-                        <div>
-                            Dibuat: {{ $instansi->created_at ? $instansi->created_at->translatedFormat('d F Y') : '-' }}
-                        </div>
-                    </div>
-                    <div class="text-[13px] text-[#686563] mt-2">
-                        Terakhir diperbarui: {{ $instansi->updated_at ? $instansi->updated_at->translatedFormat('d F Y, H.i') . ' WIB' : '-' }}
-                    </div>
+                    </dd>
                 </div>
+            </dl>
+        </x-card>
 
-                {{-- Sidebar Column --}}
-                <div class="lg:col-span-4 lg:pl-4">
-                    <div class="bg-[#EDECE9] rounded-[12px] p-6 text-[#1C1917]">
-                        <h2 class="text-[20px] font-medium leading-snug">
-                            Status instansi
-                        </h2>
-                        <div class="mt-3">
-                            @if($instansi->status === 'aktif')
-                                <span class="inline-flex items-center px-3 py-1 rounded-[4px] bg-[#E5EFE4] text-[#166534] text-[13px] font-medium">
-                                    Aktif
-                                </span>
-                            @else
-                                <span class="inline-flex items-center px-3 py-1 rounded-[4px] bg-[#EDECE9] border border-[#DDDCD7] text-[#686563] text-[13px] font-medium">
-                                    Nonaktif
-                                </span>
-                            @endif
-                        </div>
-                        <p class="text-base text-[#686563] font-normal mt-3 leading-relaxed">
-                            @if($instansi->status === 'aktif')
-                                Instansi ini tampil di direktori publik dan dapat dilihat tanpa login.
-                            @else
-                                Instansi ini hanya terlihat oleh admin dan disembunyikan dari direktori publik.
-                            @endif
-                        </p>
-                    </div>
-
-                    <p class="text-[12px] text-[#686563] mt-4 px-1">
-                        Data contoh · Informasi instansi bersifat fiktif.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        {{-- Modal Hapus (Figma Exact) --}}
-        <div x-show="deleteModalOpen" 
-             x-transition.opacity
-             class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1C1917]/40" 
-             x-cloak>
-            <div class="bg-[#FAF9F7] rounded-[12px] w-full max-w-[560px] p-8 shadow-xl relative"
-                 @click.away="closeDeleteModal()"
-                 @keydown.escape.window="closeDeleteModal()">
-                <h2 class="text-[26px] font-medium text-[#1C1917] leading-tight">
-                    Hapus instansi bantuan?
-                </h2>
-                <div class="text-[18px] font-medium text-[#1C1917] mt-3">{{ $instansi->nama_instansi }}</div>
-                <p class="text-base text-[#686563] font-normal mt-2 leading-relaxed">
-                    Instansi akan dihapus dari daftar admin dan direktori publik. Tindakan ini tidak dapat dibatalkan.
+        <div class="space-y-6 lg:col-span-4">
+            <x-card header="Status">
+                <x-badge :variant="$instansi->status === 'aktif' ? 'success' : 'slate'">
+                    {{ $instansi->status === 'aktif' ? 'Aktif' : 'Nonaktif' }}
+                </x-badge>
+                <p class="mt-2 text-xs leading-relaxed text-neutral-600">
+                    @if ($instansi->status === 'aktif')
+                        Tampil di direktori publik dan dapat dilihat tanpa login.
+                    @else
+                        Disembunyikan dari direktori publik; hanya terlihat oleh admin.
+                    @endif
                 </p>
+            </x-card>
 
-                <div class="bg-[#EDECE9] rounded-[6px] p-4 text-[13px] text-[#686563] mt-5 leading-relaxed">
-                    Hanya ingin menyembunyikannya dari publik?<br/>
-                    Ubah status instansi menjadi Nonaktif.
-                </div>
-
-                <div class="flex items-center justify-end gap-3 mt-8">
-                    <button type="button" 
-                            @click="closeDeleteModal()"
-                            class="bg-[#EDECE9] hover:bg-[#e4e2de] text-[#1C1917] text-sm font-medium rounded-[2px] px-6 py-3 transition">
-                        Batal
-                    </button>
-                    <form action="{{ route('instansi.destroy', $instansi) }}" method="POST" class="inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" 
-                                class="bg-[#B42318] hover:bg-[#991b1b] text-white text-sm font-medium rounded-[2px] px-6 py-3 transition">
-                            Ya, hapus instansi
-                        </button>
-                    </form>
-                </div>
-            </div>
+            <x-card header="Riwayat">
+                <dl class="space-y-4 text-sm">
+                    <div>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">ID Instansi</dt>
+                        <dd class="mt-1.5 font-medium text-neutral-800">INS-{{ str_pad($instansi->instansi_id, 3, '0', STR_PAD_LEFT) }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Dibuat</dt>
+                        <dd class="mt-1.5 font-medium text-neutral-800">{{ $instansi->created_at?->translatedFormat('d F Y') ?? '—' }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-[11px] font-medium uppercase tracking-wider text-neutral-600">Terakhir Diperbarui</dt>
+                        <dd class="mt-1.5 font-medium text-neutral-800">{{ $instansi->updated_at ? $instansi->updated_at->translatedFormat('d F Y, H.i') . ' WIB' : '—' }}</dd>
+                    </div>
+                </dl>
+            </x-card>
         </div>
     </div>
-</x-layouts.app>
+
+    {{-- PBI-08: Layanan Bantuan --}}
+    <x-card>
+        <x-slot:header>
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-base font-semibold text-neutral-900">Layanan Bantuan</h3>
+                    <p class="text-xs text-neutral-600">Jenis pendampingan dan dukungan yang disediakan oleh instansi ini.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <x-button :href="route('instansi.layanan.index', $instansi)" variant="secondary" size="sm">
+                        Kelola Layanan
+                    </x-button>
+                    <x-button :href="route('instansi.layanan.create', $instansi)" variant="primary" size="sm">
+                        + Tambah Layanan
+                    </x-button>
+                </div>
+            </div>
+        </x-slot:header>
+
+        @if ($instansi->layananBantuan->isNotEmpty())
+            <div class="divide-y divide-neutral-200/70">
+                @foreach ($instansi->layananBantuan as $layanan)
+                    <div class="flex items-start justify-between py-3.5 first:pt-0 last:pb-0">
+                        <div class="space-y-1">
+                            <h4 class="text-sm font-semibold text-neutral-900">{{ $layanan->nama_layanan }}</h4>
+                            @if ($layanan->deskripsi)
+                                <p class="text-xs text-neutral-600 leading-relaxed">{{ $layanan->deskripsi }}</p>
+                            @endif
+                        </div>
+                        <div class="flex items-center gap-3 text-xs font-medium ml-4 shrink-0">
+                            <a href="{{ route('instansi.layanan.edit', [$instansi, $layanan]) }}" class="text-neutral-700 hover:text-neutral-900 hover:underline">Ubah</a>
+                            <button
+                                type="button"
+                                @click="$dispatch('open-confirm-modal', {{ Js::from([
+                                    'title'          => 'Hapus Layanan',
+                                    'message'        => 'Hapus layanan "' . $layanan->nama_layanan . '" secara permanen?',
+                                    'action'         => route('instansi.layanan.destroy', [$instansi, $layanan]),
+                                    'method'         => 'DELETE',
+                                    'confirmText'    => 'Ya, Hapus',
+                                    'confirmVariant' => 'danger',
+                                ]) }})"
+                                class="text-safety-rose hover:underline"
+                            >
+                                Hapus
+                            </button>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <p class="text-xs text-neutral-600 py-2">Belum ada layanan bantuan yang ditambahkan untuk instansi ini.</p>
+        @endif
+    </x-card>
+
+    {{-- PBI-08: Kontak Bantuan --}}
+    <x-card>
+        <x-slot:header>
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-base font-semibold text-neutral-900">Kontak Bantuan</h3>
+                    <p class="text-xs text-neutral-600">Saluran komunikasi yang dapat dihubungi penyintas atau masyarakat.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <x-button :href="route('instansi.kontak.index', $instansi)" variant="secondary" size="sm">
+                        Kelola Kontak
+                    </x-button>
+                    <x-button :href="route('instansi.kontak.create', $instansi)" variant="primary" size="sm">
+                        + Tambah Kontak
+                    </x-button>
+                </div>
+            </div>
+        </x-slot:header>
+
+        @if ($instansi->kontakBantuan->isNotEmpty())
+            <div class="divide-y divide-neutral-200/70">
+                @foreach ($instansi->kontakBantuan as $kontak)
+                    <div class="flex items-start justify-between py-3.5 first:pt-0 last:pb-0">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <x-badge variant="slate">{{ $kontak->label_jenis_kontak }}</x-badge>
+                                <span class="text-sm font-semibold text-neutral-900">{{ $kontak->nilai_kontak }}</span>
+                            </div>
+                            @if ($kontak->keterangan)
+                                <p class="text-xs text-neutral-600 leading-relaxed">{{ $kontak->keterangan }}</p>
+                            @endif
+                        </div>
+                        <div class="flex items-center gap-3 text-xs font-medium ml-4 shrink-0">
+                            <a href="{{ route('instansi.kontak.edit', [$instansi, $kontak]) }}" class="text-neutral-700 hover:text-neutral-900 hover:underline">Ubah</a>
+                            <button
+                                type="button"
+                                @click="$dispatch('open-confirm-modal', {{ Js::from([
+                                    'title'          => 'Hapus Kontak',
+                                    'message'        => 'Hapus kontak "' . $kontak->nilai_kontak . '" secara permanen?',
+                                    'action'         => route('instansi.kontak.destroy', [$instansi, $kontak]),
+                                    'method'         => 'DELETE',
+                                    'confirmText'    => 'Ya, Hapus',
+                                    'confirmVariant' => 'danger',
+                                ]) }})"
+                                class="text-safety-rose hover:underline"
+                            >
+                                Hapus
+                            </button>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <p class="text-xs text-neutral-600 py-2">Belum ada kontak bantuan yang ditambahkan untuk instansi ini.</p>
+        @endif
+    </x-card>
+
+</div>
+@endsection

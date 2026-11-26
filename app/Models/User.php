@@ -75,6 +75,16 @@ class User extends Authenticatable
         return $this->hasMany(PendaftaranKegiatan::class, 'user_id', 'user_id');
     }
 
+    public function artikel(): HasMany
+    {
+        return $this->hasMany(Artikel::class, 'penulis_id', 'user_id');
+    }
+
+    public function logPenanganan(): HasMany
+    {
+        return $this->hasMany(LogPenanganan::class, 'user_id', 'user_id');
+    }
+
     /**
      * Memeriksa apakah user memiliki role tertentu.
      *

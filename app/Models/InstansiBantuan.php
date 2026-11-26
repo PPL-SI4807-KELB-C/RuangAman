@@ -75,4 +75,12 @@ class InstansiBantuan extends Model
     {
         return $this->hasMany(LayananBantuan::class, 'instansi_id', 'instansi_id');
     }
+
+    /**
+     * Get the kontak bantuan associated with the institution.
+     */
+    public function kontakBantuan(): HasMany
+    {
+        return $this->hasMany(KontakBantuan::class, 'instansi_id', 'instansi_id');
+    }
 }

@@ -12,10 +12,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Hosting (Render, Railway, dsb.) meneruskan permintaan lewat reverse proxy HTTPS.
+        $middleware->trustProxies(at: '*');
+
         $middleware->alias([
             'admin.kasus' => \App\Http\Middleware\EnsureAdminKasus::class,
             'konselor' => \App\Http\Middleware\EnsureKonselor::class,
             'pelapor' => \App\Http\Middleware\EnsurePelapor::class,
+            'petugas.kasus' => \App\Http\Middleware\EnsurePetugasKasus::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

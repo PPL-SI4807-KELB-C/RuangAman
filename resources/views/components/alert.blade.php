@@ -1,37 +1,39 @@
 @props([
     'variant' => 'info',
-    'type' => null,
-    'message' => null,
     'title' => null,
+    'message' => null,
     'dismissible' => false,
+    'type' => null,
 ])
 
 @php
 $variant = $type ?? $variant;
-$variants = [
-    'info' => 'bg-blue-50 border-blue-400 text-blue-800',
-    'success' => 'bg-green-50 border-green-400 text-green-800',
-    'warning' => 'bg-amber-50 border-amber-400 text-amber-800',
-    'danger' => 'bg-red-50 border-safety-rose text-red-800',
-    'brand' => 'bg-brand-50 border-brand-400 text-brand-800',
+$dots = [
+    'info' => 'bg-safety-info',
+    'success' => 'bg-brand-600',
+    'warning' => 'bg-amber-500',
+    'danger' => 'bg-safety-rose',
+    'brand' => 'bg-brand-600',
 ];
-
-$classes = 'rounded-lg border-l-4 p-4 ' . ($variants[$variant] ?? $variants['info']);
+$dot = $dots[$variant] ?? $dots['info'];
 @endphp
 
-<div {{ $attributes->merge(['class' => $classes, 'role' => 'alert']) }}>
-    <div class="flex">
+<div {{ $attributes->merge(['class' => 'rounded-lg border border-neutral-200/70 bg-surface p-4', 'role' => 'alert']) }} @if ($dismissible) x-data="{ open: true }" x-show="open" @endif>
+    <div class="flex items-start gap-2.5">
+        <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full {{ $dot }}" aria-hidden="true"></span>
+
         <div class="flex-1">
             @if ($title)
-                <h3 class="text-sm font-semibold">{{ $title }}</h3>
+                <h3 class="text-xs font-semibold text-neutral-900">{{ $title }}</h3>
             @endif
-            <div class="text-sm {{ $title ? 'mt-1' : '' }}">
+            <div class="text-xs leading-relaxed text-neutral-600 {{ $title ? 'mt-1' : '' }}">
                 {{ $message ?? $slot }}
             </div>
         </div>
+
         @if ($dismissible)
-            <button type="button" class="ml-4 text-sm font-medium opacity-70 hover:opacity-100" aria-label="Tutup">
-                ×
+            <button type="button" @click="open = false" class="text-xs font-medium text-neutral-600 hover:text-neutral-900" aria-label="Tutup">
+                &times;
             </button>
         @endif
     </div>

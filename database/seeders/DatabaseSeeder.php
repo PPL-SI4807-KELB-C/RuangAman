@@ -85,6 +85,7 @@ class DatabaseSeeder extends Seeder
      * @var list<string>
      */
     private const KATEGORI_ARTIKEL = [
+        'Umum',
         'Pencegahan',
         'Pemulihan',
         'Hukum dan Hak Korban',
@@ -100,7 +101,12 @@ class DatabaseSeeder extends Seeder
         $this->seedAkunDemo($roles);
         $this->call(KonselorSeeder::class);
         $this->call(KegiatanEdukasiSeeder::class);
+        $this->call(HalamanInformasiSeeder::class);
+        $this->call(GlosariumKbgSeeder::class);
+        $this->call(PengumumanSeeder::class);
+        $this->call(ArtikelSeeder::class);
         $this->call(InstansiBantuanSeeder::class);
+        $this->call(LayananKontakBantuanSeeder::class);
     }
 
     /**
