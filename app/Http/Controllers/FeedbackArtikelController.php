@@ -11,9 +11,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-/**
- * PBI-12: CRUD feedback artikel milik Pelapor.
- */
 class FeedbackArtikelController extends Controller
 {
     public function __construct(
@@ -22,12 +19,15 @@ class FeedbackArtikelController extends Controller
 
     public function store(StoreFeedbackArtikelRequest $request, Artikel $artikel): RedirectResponse
     {
-        $this->authorize('create', $artikel);
+        $this->authorize('createFeedback', $artikel);
 
-        $this->feedbackService->buat($artikel, $request->user(), $request->validated());
+        $this->feedbackService->buat(
+            $artikel,
+            $request->user(),
+            $request->validated()
+        );
 
-        return redirect()
-            ->route('artikel.show', $artikel).'#feedback'
+        return redirect(route('artikel.show', $artikel).'#feedback')
             ->with('success', 'Feedback berhasil dikirim dan menunggu moderasi Admin Kasus.');
     }
 
@@ -67,8 +67,10 @@ class FeedbackArtikelController extends Controller
         ]);
     }
 
-    public function update(UpdateFeedbackArtikelRequest $request, FeedbackArtikel $feedback): RedirectResponse
-    {
+    public function update(
+        UpdateFeedbackArtikelRequest $request,
+        FeedbackArtikel $feedback
+    ): RedirectResponse {
         $this->authorize('update', $feedback);
 
         $this->feedbackService->perbarui($feedback, $request->validated());

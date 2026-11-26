@@ -8,7 +8,7 @@ class StoreFeedbackArtikelRequest extends FeedbackArtikelRequest
     {
         $artikel = $this->route('artikel');
 
-        return $this->user()?->can('create', $artikel) ?? false;
+        return $this->user()?->can('createFeedback', $artikel) ?? false;
     }
 
     /**

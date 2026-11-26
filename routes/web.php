@@ -229,7 +229,7 @@ Route::controller(KegiatanEdukasiController::class)->group(function () {
 */
 Route::controller(ArtikelController::class)->prefix('artikel')->name('artikel.')->group(function () {
     Route::get('/', 'index')->name('index');
-    Route::get('/{slug}', 'show')->name('show');
+    Route::get('/{artikel:slug}', 'show')->name('show');
 });
 
 Route::middleware(['auth', 'pelapor'])->group(function () {
