@@ -21,7 +21,9 @@ class Pbi18ManajemenNotifikasiTest extends TestCase
     use RefreshDatabase;
 
     private User $admin;
+
     private User $konselor;
+
     private User $pelapor;
 
     protected function setUp(): void

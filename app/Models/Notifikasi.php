@@ -12,8 +12,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Notifikasi extends Model
 {
     public const TIPE_STATUS_BERUBAH = 'status_berubah';
+
     public const TIPE_PENUGASAN_KASUS = 'penugasan_kasus';
+
     public const TIPE_JADWAL_KONSELING = 'jadwal_konseling';
+
     public const TIPE_KEGIATAN = 'kegiatan_diterima';
 
     /**

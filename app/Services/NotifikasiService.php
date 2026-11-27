@@ -152,7 +152,7 @@ class NotifikasiService
         try {
             Mail::raw(
                 "Halo,\n\nAda pemberitahuan baru di akun RuangAman Anda.\n\n"
-                ."Silakan masuk ke RuangAman untuk melihat detailnya: ".route('notifikasi.index')."\n\n"
+                .'Silakan masuk ke RuangAman untuk melihat detailnya: '.route('notifikasi.index')."\n\n"
                 ."Demi keamanan, detail kasus tidak dicantumkan pada email ini.\n\n— RuangAman",
                 function ($message) use ($user) {
                     $message->to($user->email)->subject('Pemberitahuan baru dari RuangAman');
