@@ -49,6 +49,7 @@
                 <a href="{{ route('instansi.publik') }}" class="whitespace-nowrap hover:text-neutral-900 transition-colors {{ request()->routeIs('instansi.publik') ? 'text-neutral-900 font-semibold' : '' }}">Instansi bantuan</a>
                 <a href="{{ route('glosarium.index') }}" class="whitespace-nowrap hover:text-neutral-900 transition-colors {{ request()->routeIs('glosarium.*') ? 'text-neutral-900 font-semibold' : '' }}">Glosarium</a>
                 <a href="{{ route('pengumuman.index') }}" class="whitespace-nowrap hover:text-neutral-900 transition-colors {{ request()->routeIs('pengumuman.*') ? 'text-neutral-900 font-semibold' : '' }}">Pengumuman</a>
+                <a href="{{ route('faq.index') }}" class="whitespace-nowrap hover:text-neutral-900 transition-colors {{ request()->routeIs('faq.*') ? 'text-neutral-900 font-semibold' : '' }}">Pusat bantuan</a>
 
                 @can('admin-kasus')
                     <div class="h-4 w-px shrink-0 bg-neutral-300"></div>
@@ -76,6 +77,7 @@
                             <a href="{{ route('admin.halaman-informasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.halaman-informasi.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Halaman Informasi</a>
                             <a href="{{ route('admin.glosarium.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.glosarium.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Glosarium KBG</a>
                             <a href="{{ route('admin.pengumuman.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.pengumuman.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">Pengumuman</a>
+                            <a href="{{ route('admin.faq.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('admin.faq.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">FAQ / Pusat Bantuan</a>
                         </div>
                     </div>
                 @endcan
@@ -148,6 +150,7 @@
                 <a href="{{ route('instansi.publik') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Instansi bantuan</a>
                 <a href="{{ route('glosarium.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Glosarium</a>
                 <a href="{{ route('pengumuman.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Pengumuman</a>
+                <a href="{{ route('faq.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Pusat bantuan</a>
 
                 @auth
                     <a href="{{ route('dashboard') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Dashboard Saya</a>
@@ -178,6 +181,7 @@
                         <a href="{{ route('admin.halaman-informasi.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Halaman Informasi</a>
                         <a href="{{ route('admin.glosarium.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Glosarium KBG</a>
                         <a href="{{ route('admin.pengumuman.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Pengumuman</a>
+                        <a href="{{ route('admin.faq.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">FAQ / Pusat Bantuan</a>
                     </div>
                 @endcan
 
@@ -230,6 +234,7 @@
                 <a href="{{ route('halaman.show', 'panduan-menggunakan-layanan') }}" class="hover:text-neutral-900 hover:underline">Panduan</a>
                 <a href="{{ route('halaman.show', 'kebijakan-privasi') }}" class="hover:text-neutral-900 hover:underline">Kebijakan privasi</a>
                 <a href="{{ route('instansi.publik') }}" class="hover:text-neutral-900 hover:underline">Instansi bantuan</a>
+                <a href="{{ route('faq.index') }}" class="hover:text-neutral-900 hover:underline">Pusat bantuan</a>
             </nav>
         </div>
     </footer>
