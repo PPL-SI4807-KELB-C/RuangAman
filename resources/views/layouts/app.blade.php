@@ -92,13 +92,17 @@
                            id="navbar-notifikasi"
                            title="Notifikasi"
                            aria-label="Notifikasi{{ ($jumlahNotifikasiBelumDibaca ?? 0) > 0 ? ' (' . $jumlahNotifikasiBelumDibaca . ' belum dibaca)' : '' }}"
-                           class="relative hidden shrink-0 rounded-lg p-1.5 transition-colors hover:bg-neutral-50 hover:text-neutral-900 xl:inline-flex {{ request()->routeIs('notifikasi.*') ? 'text-neutral-900' : 'text-neutral-700' }}">
+                           class="relative hidden h-9 w-9 shrink-0 sm:inline-flex items-center justify-center rounded-full border transition-colors hover:bg-neutral-50 hover:text-neutral-900 {{ request()->routeIs('notifikasi.*') ? 'border-neutral-900 text-neutral-900' : 'border-neutral-200 text-neutral-700' }}">
                             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                             </svg>
                             @if (($jumlahNotifikasiBelumDibaca ?? 0) > 0)
-                                <span class="absolute -right-0.5 -top-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-safety-rose px-1 text-[10px] font-bold leading-none text-white">
-                                    {{ $jumlahNotifikasiBelumDibaca > 99 ? '99+' : $jumlahNotifikasiBelumDibaca }}
+                                {{-- Denyut halus agar pengguna menyadari ada notifikasi baru --}}
+                                <span class="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center" aria-hidden="true">
+                                    <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-safety-rose opacity-60 motion-reduce:hidden"></span>
+                                    <span class="relative inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-safety-rose px-1 text-[10px] font-bold leading-none text-white ring-2 ring-white">
+                                        {{ $jumlahNotifikasiBelumDibaca > 99 ? '99+' : $jumlahNotifikasiBelumDibaca }}
+                                    </span>
                                 </span>
                             @endif
                         </a>
@@ -155,11 +159,19 @@
                 <x-quick-exit />
 
                 {{-- Mobile Menu Toggle --}}
-                <button type="button" class="rounded-md p-2 text-neutral-600 hover:bg-neutral-100 xl:hidden" @click="mobileMenuOpen = !mobileMenuOpen" :aria-expanded="mobileMenuOpen.toString()" aria-label="Buka menu">
+                <button type="button" class="relative rounded-md p-2 text-neutral-600 hover:bg-neutral-100 xl:hidden" @click="mobileMenuOpen = !mobileMenuOpen" :aria-expanded="mobileMenuOpen.toString()" aria-label="Buka menu">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
+                    @auth
+                        @if (($jumlahNotifikasiBelumDibaca ?? 0) > 0)
+                            {{-- PBI-18: Penanda notifikasi belum dibaca pada layar kecil (lonceng disembunyikan < 640px) --}}
+                            <span class="absolute right-0 top-0 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-safety-rose px-1 text-[10px] font-bold leading-none text-white ring-2 ring-white sm:hidden" aria-hidden="true">
+                                {{ $jumlahNotifikasiBelumDibaca > 99 ? '99+' : $jumlahNotifikasiBelumDibaca }}
+                            </span>
+                        @endif
+                    @endauth
                 </button>
             </div>
         </div>
