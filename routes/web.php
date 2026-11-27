@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ArtikelController as AdminArtikelController;
+use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\KategoriArtikelController as AdminKategoriArtikelController;
 use App\Http\Controllers\Admin\GlosariumKbgController as AdminGlosariumKbgController;
 use App\Http\Controllers\Admin\HalamanInformasiController as AdminHalamanInformasiController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Admin\PengumumanController as AdminPengumumanController
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\GlosariumController;
 use App\Http\Controllers\HalamanInformasiPublikController;
 use App\Http\Controllers\InstansiBantuanController;
@@ -219,6 +221,14 @@ Route::middleware(['auth', 'admin.kasus'])->prefix('admin')->name('admin.')->gro
     */
     Route::resource('pengumuman', AdminPengumumanController::class)
         ->parameters(['pengumuman' => 'pengumuman']);
+
+    /*
+    |--------------------------------------------------------------------------
+    | PBI-09: Manajemen FAQ / Pusat Bantuan (Admin Kasus)
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('faq', AdminFaqController::class)
+        ->parameters(['faq' => 'faq']);
 });
 
 /*
@@ -297,3 +307,10 @@ Route::controller(PengumumanPublikController::class)->prefix('pengumuman')->name
     Route::get('/', 'index')->name('index');
     Route::get('/{pengumuman}', 'show')->name('show');
 });
+
+/*
+|--------------------------------------------------------------------------
+| PBI-09: Pusat Bantuan / FAQ (Publik, tanpa login)
+|--------------------------------------------------------------------------
+*/
+Route::get('/pusat-bantuan', [FaqController::class, 'index'])->name('faq.index');
