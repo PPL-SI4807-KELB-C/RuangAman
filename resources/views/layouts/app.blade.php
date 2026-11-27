@@ -86,6 +86,23 @@
             {{-- Right Actions: Auth Status & Quick Exit Button --}}
             <div class="flex shrink-0 items-center gap-4">
                 @auth
+                    @can('kelola-notifikasi')
+                        {{-- PBI-18: Lonceng Notifikasi --}}
+                        <a href="{{ route('notifikasi.index') }}"
+                           id="navbar-notifikasi"
+                           title="Notifikasi"
+                           aria-label="Notifikasi{{ ($jumlahNotifikasiBelumDibaca ?? 0) > 0 ? ' (' . $jumlahNotifikasiBelumDibaca . ' belum dibaca)' : '' }}"
+                           class="relative hidden shrink-0 rounded-lg p-1.5 transition-colors hover:bg-neutral-50 hover:text-neutral-900 xl:inline-flex {{ request()->routeIs('notifikasi.*') ? 'text-neutral-900' : 'text-neutral-700' }}">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                            @if (($jumlahNotifikasiBelumDibaca ?? 0) > 0)
+                                <span class="absolute -right-0.5 -top-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-safety-rose px-1 text-[10px] font-bold leading-none text-white">
+                                    {{ $jumlahNotifikasiBelumDibaca > 99 ? '99+' : $jumlahNotifikasiBelumDibaca }}
+                                </span>
+                            @endif
+                        </a>
+                    @endcan
                     <div class="relative hidden xl:block" x-data="{ akunMenuOpen: false }" @click.outside="akunMenuOpen = false">
                         <button type="button" @click="akunMenuOpen = !akunMenuOpen" :aria-expanded="akunMenuOpen.toString()" aria-label="Menu akun"
                             class="inline-flex items-center gap-2 whitespace-nowrap text-xs font-medium text-neutral-700 transition-colors hover:text-neutral-900">
@@ -100,6 +117,14 @@
                             <p class="truncate px-3 pb-1 pt-2 text-sm font-semibold text-neutral-900">{{ Auth::user()->nama_tampilan }}</p>
                             <p class="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-600">{{ Auth::user()->role?->nama_role ?? 'User' }}</p>
                             <a href="{{ route('dashboard') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('dashboard') ? 'bg-neutral-50 text-neutral-900' : '' }}">Dashboard Saya</a>
+                            @can('kelola-notifikasi')
+                                <a href="{{ route('notifikasi.index') }}" class="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('notifikasi.*') ? 'bg-neutral-50 text-neutral-900' : '' }}">
+                                    <span>Notifikasi</span>
+                                    @if (($jumlahNotifikasiBelumDibaca ?? 0) > 0)
+                                        <span class="inline-flex min-w-5 items-center justify-center rounded-full bg-safety-rose px-1.5 py-0.5 text-[10px] font-bold text-white">{{ $jumlahNotifikasiBelumDibaca > 99 ? '99+' : $jumlahNotifikasiBelumDibaca }}</span>
+                                    @endif
+                                </a>
+                            @endcan
                             @if (Auth::user()->isPelapor())
                                 <a href="{{ route('laporan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 {{ request()->routeIs('laporan.index', 'laporan.show', 'laporan.edit') ? 'bg-neutral-50 text-neutral-900' : '' }}">Laporan Saya</a>
                                 <a href="{{ route('pendaftaran-kegiatan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50">Pendaftaran Saya</a>
@@ -164,6 +189,14 @@
                         <a href="{{ route('log-penanganan.index') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Log Penanganan</a>
                         <a href="{{ route('konselor.profil.edit') }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">Profil Saya</a>
                     @endif
+                    @can('kelola-notifikasi')
+                        <a href="{{ route('notifikasi.index') }}" class="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50">
+                            <span>Notifikasi</span>
+                            @if (($jumlahNotifikasiBelumDibaca ?? 0) > 0)
+                                <span class="inline-flex min-w-5 items-center justify-center rounded-full bg-safety-rose px-1.5 py-0.5 text-[10px] font-bold text-white">{{ $jumlahNotifikasiBelumDibaca > 99 ? '99+' : $jumlahNotifikasiBelumDibaca }}</span>
+                            @endif
+                        </a>
+                    @endcan
                 @endauth
 
                 @can('admin-kasus')
